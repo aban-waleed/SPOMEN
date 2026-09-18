@@ -23,7 +23,7 @@ xattr -dr com.apple.quarantine SPOMEN.app
 ## Usage
 
 1. Put both the modded PS4 and the normal PS4/PS5 into a LAN Party lobby.
-2. In the tool: **CONNECT** → **ATTACH** → select your menu file (`.gscc`) → **INJECT**.
+2. In the tool: **CONNECT** → **ATTACH** → select your menu file (`.gscc`) *Currently royal_menu_ps4.gscc is working* → **INJECT**.
 3. On the modded PS4, press **Start Match**.
 4. When the countdown reaches **3**, press **PUBLIC MATCH** in the tool.
 
