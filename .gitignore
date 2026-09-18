@@ -1,0 +1,10 @@
+# Local .NET SDK and decompiler tooling (not part of the source)
+.dotnet-sdk/
+.tools/
+
+# Build output
+bin/
+obj/
+*.user
+*.suo
+.vs/

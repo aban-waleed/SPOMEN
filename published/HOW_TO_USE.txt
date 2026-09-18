@@ -1,0 +1,37 @@
+=============================================
+ BO2 PS4 TOOL - INSTRUCTIONS / التعليمات
+ Made By Medo
+=============================================
+
+------------------------------
+ ENGLISH / الإنجليزية
+------------------------------
+
+1) Enter BOTH the modded PS4 and the normal PS4/5 into a LAN Party lobby.
+
+2) On the tool: CONNECT -> ATTACH -> select your menu file -> INJECT.
+
+3) On the modded PS4, press "Start Match".
+
+4) When the countdown reaches number 3, press the "PUBLIC MATCH"
+   button in the tool.
+
+5) Enjoy the mod <3
+
+------------------------------
+ ARABIC / العربية
+------------------------------
+
+1) الخطوة الأولى: ادخل السوني المعدل والعادي إلى LAN PARTY.
+
+2) من الأداة: CONNECT -> ATTACH -> اختر ملف المنيو -> INJECT (احقن).
+
+3) في السوني المعدل ضغط على زر START MATCH.
+
+4) إذا العداد وصل رقم 3 اضغط على زر PUBLIC MATCH في الأداة.
+
+5) Enjoy With Mod ^_^
+
+------------------------------
+ Made By Medo <3
+------------------------------

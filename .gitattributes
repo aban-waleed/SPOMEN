@@ -1,0 +1,10 @@
+* text=auto
+*.cs text
+*.xaml text
+*.csproj text
+*.md text
+*.dll binary
+*.exe binary
+*.gscc binary
+*.ico binary
+*.pdb binary
