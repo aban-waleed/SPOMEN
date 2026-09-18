@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Shared injector engine. Pure .NET: builds and runs on Windows, macOS and Linux. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>BO2InjectorGUI</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- ps4debug client. Managed AnyCPU assembly (TCP sockets only), so it loads on every platform. -->
+    <Reference Include="libdebug">
+      <HintPath>lib\libdebug.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

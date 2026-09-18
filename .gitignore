@@ -8,3 +8,7 @@ obj/
 *.user
 *.suo
 .vs/
+
+# Mac/Linux build output
+artifacts/
+.DS_Store

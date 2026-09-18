@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E21270E3-0277-4708-93B1-A40853AAF94E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPOMEN.Core", "src\SPOMEN.Core\SPOMEN.Core.csproj", "{4675CD0C-33CB-40CE-A73E-BA2F57EC2473}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BO2InjectorGUI", "src\BO2InjectorGUI\BO2InjectorGUI.csproj", "{00A7FC41-724E-40B6-9994-7C5B5E49680D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPOMEN.Mac", "src\SPOMEN.Mac\SPOMEN.Mac.csproj", "{2BE3B0B1-BD73-461E-B369-E5E5CFD99A96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4675CD0C-33CB-40CE-A73E-BA2F57EC2473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4675CD0C-33CB-40CE-A73E-BA2F57EC2473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4675CD0C-33CB-40CE-A73E-BA2F57EC2473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4675CD0C-33CB-40CE-A73E-BA2F57EC2473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A7FC41-724E-40B6-9994-7C5B5E49680D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A7FC41-724E-40B6-9994-7C5B5E49680D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A7FC41-724E-40B6-9994-7C5B5E49680D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A7FC41-724E-40B6-9994-7C5B5E49680D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BE3B0B1-BD73-461E-B369-E5E5CFD99A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BE3B0B1-BD73-461E-B369-E5E5CFD99A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BE3B0B1-BD73-461E-B369-E5E5CFD99A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BE3B0B1-BD73-461E-B369-E5E5CFD99A96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4675CD0C-33CB-40CE-A73E-BA2F57EC2473} = {E21270E3-0277-4708-93B1-A40853AAF94E}
+		{00A7FC41-724E-40B6-9994-7C5B5E49680D} = {E21270E3-0277-4708-93B1-A40853AAF94E}
+		{2BE3B0B1-BD73-461E-B369-E5E5CFD99A96} = {E21270E3-0277-4708-93B1-A40853AAF94E}
+	EndGlobalSection
+EndGlobal

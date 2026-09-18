@@ -8,6 +8,12 @@ This project was reconstructed from `published/BO2InjectorGUI.dll`, its matching
 C:\Users\phantom\Documents\SPOMEN\.dotnet-sdk\dotnet.exe build .\BO2InjectorGUI.csproj -c Release
 ```
 
+> **Layout change (2026-09-18):** the recovered sources were later split so the engine can be shared
+> with a macOS front end. The engine files now live in `src/SPOMEN.Core/`, the WPF files in
+> `src/BO2InjectorGUI/`, `libdebug.dll` in `src/SPOMEN.Core/lib/`, and the `.gscc` menus in `menus/`.
+> The file contents below are unchanged; only their paths moved. The WPF project still produces
+> `BO2InjectorGUI.exe` (x64), with the engine types now compiled into `SPOMEN.Core.dll` alongside it.
+
 The Release build completed with zero warnings and zero errors.
 
 ## Recovered source mapping

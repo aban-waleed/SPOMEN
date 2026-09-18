@@ -1,23 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <!-- Windows front end (WPF). Output is unchanged from the original: BO2InjectorGUI.exe, x64. -->
   <PropertyGroup>
     <AssemblyName>BO2InjectorGUI</AssemblyName>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <PlatformTarget>x64</PlatformTarget>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <RootNamespace>BO2InjectorGUI</RootNamespace>
     <Nullable>enable</Nullable>
-    <DefaultItemExcludes>$(DefaultItemExcludes);decompiled\**;pdb-decompiled\**;.tools\**</DefaultItemExcludes>
+    <!-- Lets the WPF project restore/build on macOS/Linux too (it still only runs on Windows). -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libdebug">
-      <HintPath>libdebug.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
+    <ProjectReference Include="..\SPOMEN.Core\SPOMEN.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="*.gscc" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\menus\*.gscc" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
