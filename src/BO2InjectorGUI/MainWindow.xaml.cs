@@ -471,11 +471,11 @@ public partial class MainWindow : Window
 		}
 		btnConnect.Content = "Connect";
 		lblStatus.Text = "Disconnected";
-		lblStatus.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0xA0, 0xB0));
+		lblStatus.Foreground = new SolidColorBrush(Color.FromRgb(0xB4, 0xBA, 0xC8));
 		Log("Disconnected");
 	}
 
-	private static readonly Brush LogGrey = new SolidColorBrush(Color.FromRgb(0x5A, 0x61, 0x72));
+	private static readonly Brush LogGrey = new SolidColorBrush(Color.FromRgb(0x7C, 0x84, 0x97));
 
 	private static readonly Brush LogGood = new SolidColorBrush(Color.FromRgb(0x4C, 0xE0, 0x7A));
 

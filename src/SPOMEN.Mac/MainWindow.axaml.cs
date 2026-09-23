@@ -15,7 +15,7 @@ namespace SPOMEN.Mac;
 // Avalonia dispatcher, StorageProvider file picker, and Launcher for the Ko-fi link.
 public partial class MainWindow : Window
 {
-	private static readonly IBrush StatusGrey = new SolidColorBrush(Color.FromRgb(0x9A, 0xA0, 0xB0));
+	private static readonly IBrush StatusGrey = new SolidColorBrush(Color.FromRgb(0xB4, 0xBA, 0xC8));
 	private static readonly IBrush Accent = new SolidColorBrush(Color.FromRgb(0xFF, 0x7A, 0x00));
 	private static readonly IBrush PulseBright = Brushes.Lime;
 	private static readonly IBrush PulseDim = new SolidColorBrush(Color.FromRgb(0, 140, 80));
@@ -444,7 +444,7 @@ public partial class MainWindow : Window
 		});
 	}
 
-	private static readonly IBrush LogGrey = new SolidColorBrush(Color.FromRgb(0x5A, 0x61, 0x72));
+	private static readonly IBrush LogGrey = new SolidColorBrush(Color.FromRgb(0x7C, 0x84, 0x97));
 
 	private static readonly IBrush LogGood = new SolidColorBrush(Color.FromRgb(0x4C, 0xE0, 0x7A));
 

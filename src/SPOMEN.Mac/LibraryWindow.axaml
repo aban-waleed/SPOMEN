@@ -46,7 +46,7 @@
               <DataTemplate x:DataType="local:LibraryWindow+Row">
                 <StackPanel>
                   <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Summary}" FontSize="10" Foreground="#9AA0B0" />
+                  <TextBlock Text="{Binding Summary}" FontSize="10" Foreground="#B4BAC8" />
                 </StackPanel>
               </DataTemplate>
             </ListBox.ItemTemplate>

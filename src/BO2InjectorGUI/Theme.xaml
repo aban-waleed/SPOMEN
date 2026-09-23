@@ -4,13 +4,13 @@
   <SolidColorBrush x:Key="Accent" Color="#FF7A00" />
   <SolidColorBrush x:Key="Ink" Color="#0B0C0E" />
   <SolidColorBrush x:Key="Text" Color="#EEF0F5" />
-  <SolidColorBrush x:Key="TextDim" Color="#9AA0B0" />
-  <SolidColorBrush x:Key="TextFaint" Color="#5A6172" />
+  <SolidColorBrush x:Key="TextDim" Color="#B4BAC8" />
+  <SolidColorBrush x:Key="TextFaint" Color="#7C8497" />
   <!-- glass surfaces: translucent so the backdrop (acrylic on Windows 11, gradient glows elsewhere) shows through -->
-  <SolidColorBrush x:Key="Glass" Color="#2E1B1F2A" />
-  <SolidColorBrush x:Key="GlassStrong" Color="#5A171A24" />
-  <SolidColorBrush x:Key="GlassInput" Color="#66101218" />
-  <SolidColorBrush x:Key="GlassHover" Color="#5A2A2F3C" />
+  <SolidColorBrush x:Key="Glass" Color="#8C141721" />
+  <SolidColorBrush x:Key="GlassStrong" Color="#9E15181F" />
+  <SolidColorBrush x:Key="GlassInput" Color="#A60D0F14" />
+  <SolidColorBrush x:Key="GlassHover" Color="#B02A2F3C" />
   <SolidColorBrush x:Key="Hairline" Color="#22FFFFFF" />
   <SolidColorBrush x:Key="HairlineStrong" Color="#38FFFFFF" />
   <!-- fallback window backdrop: dark ink with soft accent and cool glows -->
