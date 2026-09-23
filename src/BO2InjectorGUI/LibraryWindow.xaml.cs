@@ -42,7 +42,7 @@ public partial class LibraryWindow : Window
 		{
 			Row? r = list.SelectedItem as Row;
 			btnUse.IsEnabled = r != null;
-			txtNotes.Text = r == null ? "" : (r.Pack.Notes.Length > 0 ? r.Pack.Notes : string.Join("\n", r.Pack.Scripts.Select(s => s.Target)));
+			ShowNotes(r == null ? "" : (r.Pack.Notes.Length > 0 ? r.Pack.Notes : string.Join("\n", r.Pack.Scripts.Select(s => s.Target))));
 		};
 		list.MouseDoubleClick += delegate { Accept(); };
 		btnUse.Click += delegate { Accept(); };
@@ -61,6 +61,28 @@ public partial class LibraryWindow : Window
 			if (e.Key == Key.Escape) Close();
 			if (e.Key == Key.Enter && btnUse.IsEnabled) Accept();
 		};
+	}
+
+	private static readonly System.Windows.Media.Brush NoteGood = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xE0, 0x7A));
+
+	private static readonly System.Windows.Media.Brush NoteWarn = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xB3, 0x47));
+
+	private static readonly System.Windows.Media.Brush NoteBad = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0x5C, 0x5C));
+
+	private void ShowNotes(string text)
+	{
+		txtNotes.Document.Blocks.Clear();
+		foreach (string line in text.Replace("\r", "").Split('\n'))
+		{
+			LogTone tone = LogTones.ClassifyNote(line);
+			System.Windows.Documents.Paragraph para = new System.Windows.Documents.Paragraph { Margin = new Thickness(0), LineHeight = 13 };
+			para.Inlines.Add(new System.Windows.Documents.Run(line)
+			{
+				Foreground = tone == LogTone.Bad ? NoteBad : tone == LogTone.Warn ? NoteWarn : tone == LogTone.Good ? NoteGood : txtNotes.Foreground
+			});
+			txtNotes.Document.Blocks.Add(para);
+		}
+		txtNotes.ScrollToHome();
 	}
 
 	private void Refresh()

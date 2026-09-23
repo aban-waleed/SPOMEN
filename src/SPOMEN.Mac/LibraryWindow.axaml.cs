@@ -39,7 +39,7 @@ public partial class LibraryWindow : Window
 		{
 			Row? r = list.SelectedItem as Row;
 			btnUse.IsEnabled = r != null;
-			txtNotes.Text = r == null ? "" : (r.Pack.Notes.Length > 0 ? r.Pack.Notes : string.Join("\n", r.Pack.Scripts.Select(s => s.Target)));
+			ShowNotes(r == null ? "" : (r.Pack.Notes.Length > 0 ? r.Pack.Notes : string.Join("\n", r.Pack.Scripts.Select(s => s.Target))));
 		};
 		list.DoubleTapped += delegate { Accept(); };
 		btnUse.Click += delegate { Accept(); };
@@ -66,6 +66,33 @@ public partial class LibraryWindow : Window
 			if (e.Key == Key.Escape) Close(null);
 			if (e.Key == Key.Enter && btnUse.IsEnabled) Accept();
 		};
+	}
+
+	private static readonly Avalonia.Media.IBrush NoteGood = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(0x4C, 0xE0, 0x7A));
+
+	private static readonly Avalonia.Media.IBrush NoteWarn = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(0xFF, 0xB3, 0x47));
+
+	private static readonly Avalonia.Media.IBrush NoteBad = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(0xFF, 0x5C, 0x5C));
+
+	private void ShowNotes(string text)
+	{
+		Avalonia.Controls.Documents.InlineCollection inlines = new Avalonia.Controls.Documents.InlineCollection();
+		bool first = true;
+		foreach (string line in text.Replace("\r", "").Split('\n'))
+		{
+			if (!first)
+			{
+				inlines.Add(new Avalonia.Controls.Documents.LineBreak());
+			}
+			first = false;
+			LogTone tone = LogTones.ClassifyNote(line);
+			inlines.Add(new Avalonia.Controls.Documents.Run(line)
+			{
+				Foreground = tone == LogTone.Bad ? NoteBad : tone == LogTone.Warn ? NoteWarn : tone == LogTone.Good ? NoteGood : txtNotes.Foreground
+			});
+		}
+		txtNotes.Inlines = inlines;
+		notesScroll.ScrollToHome();
 	}
 
 	private void Refresh()

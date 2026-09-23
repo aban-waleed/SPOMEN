@@ -67,7 +67,9 @@
       </Grid>
     </StackPanel>
     <StackPanel DockPanel.Dock="Bottom">
-      <TextBox Name="txtNotes" Height="96" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="10" TextWrapping="Wrap" Margin="0,8,0,8" Foreground="#9AA0B0" />
+      <RichTextBox Name="txtNotes" Height="96" IsReadOnly="True" IsDocumentEnabled="False" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="10" Margin="0,8,0,8" Background="#14161B" Foreground="#9AA0B0" BorderBrush="#2E333F" Padding="6,4,6,4">
+        <FlowDocument PagePadding="0" />
+      </RichTextBox>
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />

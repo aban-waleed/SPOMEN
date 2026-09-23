@@ -7,7 +7,8 @@ public enum LogTone
 {
 	Normal,
 	Good,
-	Bad
+	Bad,
+	Warn
 }
 
 public static class LogTones
@@ -27,6 +28,25 @@ public static class LogTones
 		if (m.StartsWith("[+]", StringComparison.Ordinal) || Array.IndexOf(GoodExact, m) >= 0
 			|| m.StartsWith("Injected", StringComparison.Ordinal) || m.StartsWith("Uninjected", StringComparison.Ordinal)
 			|| m.StartsWith("PUBLIC match spoof sent", StringComparison.Ordinal))
+		{
+			return LogTone.Good;
+		}
+		return LogTone.Normal;
+	}
+
+	/// <summary>Tone for one line of a pack's NOTES.txt: installed script paths green, repairs amber, guessed slots red.</summary>
+	public static LogTone ClassifyNote(string line)
+	{
+		string t = line.TrimStart();
+		if (t.StartsWith("!", StringComparison.Ordinal))
+		{
+			return LogTone.Bad;
+		}
+		if (t.StartsWith("- ", StringComparison.Ordinal))
+		{
+			return LogTone.Warn;
+		}
+		if (t.StartsWith("maps/", StringComparison.Ordinal))
 		{
 			return LogTone.Good;
 		}

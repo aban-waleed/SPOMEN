@@ -166,6 +166,9 @@ public sealed class InjectorEngine
 	/// <summary>Set for codzm.elf: the LUI lua_State offset is multiplayer-only, so allocate through ps4debug instead.</summary>
 	private bool debugAllocOnly;
 
+	/// <summary>While a pack is being injected, per-script success lines are progress ("[.]"), not the outcome ("[+]").</summary>
+	private bool quietSteps;
+
 	/// <summary>
 	/// Copy the stock script's checksum (header bytes 8-11) into the injected file. The original tool
 	/// always did this; Fortis does it only for the royal menus and leaves converted menus at zero.
@@ -264,7 +267,7 @@ public sealed class InjectorEngine
 			if (!s_injected.Any(a => a.Pid == pid && a.Header == data))
 			{
 				s_injected.Add(new InjectedAsset(pid, target, data, origSize, origBuffer, origEnd, newBuf));
-				log($"[+] saved original {target}: size {origSize}, buffer 0x{origBuffer:X}");
+				log($"[.] saved original {target}: size {origSize}, buffer 0x{origBuffer:X}");
 				DumpOriginal(pid, target, origBuffer, origSize, localGsccPath);
 			}
 		}
@@ -286,7 +289,7 @@ public sealed class InjectorEngine
 		}
 		LastData = data;
 		LastPid = pid;
-		log($"[+] Injected OK, size {nb.Length}");
+		log(quietSteps ? $"[.] injected {target}, size {nb.Length}" : $"[+] Injected OK, size {nb.Length}");
 	}
 
 	/// <summary>
@@ -306,6 +309,7 @@ public sealed class InjectorEngine
 		// compiled (zero) instead of taking the stock script's checksum.
 		bool savedCrc = CopyStockCrc;
 		CopyStockCrc = false;
+		quietSteps = true;
 		try
 		{
 		foreach (LibraryScript s in pack.Scripts)
@@ -338,6 +342,7 @@ public sealed class InjectorEngine
 		finally
 		{
 			CopyStockCrc = savedCrc;
+			quietSteps = false;
 		}
 		log($"[+] pack '{pack.Name}': {done} script(s) injected");
 		return done;
@@ -358,7 +363,7 @@ public sealed class InjectorEngine
 			string dir = Path.Combine(DumpDir, $"{DateTime.Now:yyyyMMdd_HHmmss}_{safeMenu}");
 			Directory.CreateDirectory(dir);
 			LastDumpPath = GscSpy.Dump(dbg, pid, new LoadedGsc(buffer, size, target), dir);
-			log($"[+] stock script dumped: {LastDumpPath}");
+			log($"[.] stock script dumped: {LastDumpPath}");
 		}
 		catch (Exception ex)
 		{
@@ -405,7 +410,7 @@ public sealed class InjectorEngine
 				if (curNext != a.OrigEnd)
 				{
 					dbg.WriteU64(pid, a.Header + 24, a.OrigEnd);
-					log($"[+] {a.Target}: neighbour asset name pointer repaired");
+					log($"[.] {a.Target}: neighbour asset name pointer repaired");
 				}
 				uint back = BitConverter.ToUInt32(dbg.Read(pid, a.Header + 8, 4u), 0);
 				ulong backBuf = BitConverter.ToUInt64(dbg.Read(pid, a.Header + 16, 8u), 0);
@@ -414,7 +419,7 @@ public sealed class InjectorEngine
 					throw new Exception($"restore readback mismatch (size {back}, buffer 0x{backBuf:X})");
 				}
 				restored++;
-				log($"[+] restored {a.Target}: size {a.OrigSize}, buffer 0x{a.OrigBuffer:X}");
+				log($"[.] restored {a.Target}: size {a.OrigSize}, buffer 0x{a.OrigBuffer:X}");
 			}
 			catch (Exception ex)
 			{
@@ -551,7 +556,7 @@ public sealed class InjectorEngine
 			{
 				s_cbuf[pid] = fn;
 			}
-			log($"[+] Cbuf_AddText 0x{fn:X} (by signature)");
+			log($"[.] Cbuf_AddText 0x{fn:X} (by signature)");
 			return fn;
 		}
 		throw new Exception("Cbuf_AddText signature not found in this process");
@@ -654,7 +659,7 @@ public sealed class InjectorEngine
 			{
 				s_session[pid] = found;
 			}
-			log($"[+] session setter 0x{setter:X}, mask var 0x{mask:X} (by signature)");
+			log($"[.] session setter 0x{setter:X}, mask var 0x{mask:X} (by signature)");
 			return found;
 		}
 		throw new Exception("session setter signature not found in this process");
@@ -874,7 +879,7 @@ public sealed class InjectorEngine
 		SetSessionMode(pid, 1uL, on: false);
 		try
 		{
-			log($"[+] sessionmask=0x{SessionMask(pid):X8} (want bit2 set, bits 1+3 clear)");
+			log($"[.] sessionmask=0x{SessionMask(pid):X8} (want bit2 set, bits 1+3 clear)");
 		}
 		catch
 		{
@@ -887,7 +892,7 @@ public sealed class InjectorEngine
 		SetSessionMode(pid, 3uL, on: false);
 		SetSessionMode(pid, 1uL, on: false);
 		uint now = SessionMask(pid);
-		log($"[+] stat mode: sessionmask=0x{now:X8} (need bit2 only, bit3 clear)");
+		log($"[.] stat mode: sessionmask=0x{now:X8} (need bit2 only, bit3 clear)");
 		return now;
 	}
 
