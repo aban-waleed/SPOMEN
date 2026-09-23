@@ -68,6 +68,11 @@ public partial class MainWindow : Window
 		segGm.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.GameModes); };
 		btnConnect.Click += delegate
 		{
+			if (linked)
+			{
+				Disconnect();
+				return;
+			}
 			Run(delegate
 			{
 				dbg.Connect(txtIp.Text.Trim());
@@ -75,6 +80,7 @@ public partial class MainWindow : Window
 				settings.RememberIp(txtIp.Text);
 				lblStatus.Text = "Connected";
 				lblStatus.Foreground = Brushes.LightGreen;
+				btnConnect.Content = "Disconnect";
 				try
 				{
 					dbg.Notify("BO2 Injector: connected");
@@ -87,6 +93,11 @@ public partial class MainWindow : Window
 		};
 		btnAttach.Click += delegate
 		{
+			if (pid != 0)
+			{
+				Detach();
+				return;
+			}
 			Run(delegate
 			{
 				pid = 0;
@@ -117,6 +128,7 @@ public partial class MainWindow : Window
 				}
 				lblStatus.Text = $"Attached: {pname} (pid {pid}) - {GameModeInfo.Label(mode)}";
 				lblStatus.Foreground = Brushes.LightGreen;
+				btnAttach.Content = "Detach";
 				try
 				{
 					dbg.Notify("Attached: " + pname);
@@ -376,10 +388,54 @@ public partial class MainWindow : Window
 		if (pid != 0 && GameModeInfo.ProcessMismatch(m, pname))
 		{
 			pid = 0;
+			btnAttach.Content = "Attach";
 			lblStatus.Text = $"Connected - re-attach for {GameModeInfo.Label(m)}";
 			lblStatus.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0x7A, 0x00));
 			Log($"{pname} is not the {GameModeInfo.Label(m)} executable - press Attach again");
 		}
+	}
+
+	/// <summary>Forget the attached process. The ps4debug connection stays up.</summary>
+	private void Detach()
+	{
+		string was = pname;
+		pid = 0;
+		pname = "";
+		btnAttach.Content = "Attach";
+		lblStatus.Text = "Connected";
+		lblStatus.Foreground = Brushes.LightGreen;
+		try
+		{
+			dbg.Notify("Detached: " + was);
+		}
+		catch
+		{
+		}
+		Log($"Detached from {was}");
+	}
+
+	/// <summary>Close the ps4debug session and reset every connection-dependent control.</summary>
+	private void Disconnect()
+	{
+		if (pid != 0)
+		{
+			Detach();
+		}
+		try
+		{
+			dbg.Notify("BO2 Injector: disconnected");
+		}
+		catch
+		{
+		}
+		dbg.Dispose();
+		linked = false;
+		pulseOn = false;
+		dot.Fill = new SolidColorBrush(Color.FromRgb(0x7A, 0x30, 0x30));
+		btnConnect.Content = "Connect";
+		lblStatus.Text = "Disconnected";
+		lblStatus.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0xA0, 0xB0));
+		Log("Disconnected");
 	}
 
 	private void Log(string s)

@@ -91,6 +91,11 @@ public partial class MainWindow : Window
 
 		btnConnect.Click += delegate
 		{
+			if (linked)
+			{
+				Disconnect();
+				return;
+			}
 			string host = (txtIp.Text ?? "").Trim();
 			Run(btnConnect, delegate
 			{
@@ -98,6 +103,7 @@ public partial class MainWindow : Window
 				linked = true;
 				settings.RememberIp(host);
 				SetStatus("Connected", ok: true);
+				Dispatcher.UIThread.Post(delegate { btnConnect.Content = "Disconnect"; });
 				try
 				{
 					dbg.Notify("BO2 Injector: connected");
@@ -111,6 +117,11 @@ public partial class MainWindow : Window
 
 		btnAttach.Click += delegate
 		{
+			if (pid != 0)
+			{
+				Detach();
+				return;
+			}
 			Run(btnAttach, delegate
 			{
 				pid = 0;
@@ -140,6 +151,7 @@ public partial class MainWindow : Window
 					return $"No game process found - is BO2 {GameModeInfo.Label(mode)} running? (looked for {want})";
 				}
 				SetStatus($"Attached: {pname} (pid {pid}) - {GameModeInfo.Label(mode)}", ok: true);
+				Dispatcher.UIThread.Post(delegate { btnAttach.Content = "Detach"; });
 				try
 				{
 					dbg.Notify("Attached: " + pname);
@@ -358,11 +370,53 @@ public partial class MainWindow : Window
 			pid = 0;
 			Dispatcher.UIThread.Post(delegate
 			{
+				btnAttach.Content = "Attach";
 				lblStatus.Text = $"Connected - re-attach for {GameModeInfo.Label(m)}";
 				lblStatus.Foreground = Accent;
 			});
 			Log($"{pname} is not the {GameModeInfo.Label(m)} executable - press Attach again");
 		}
+	}
+
+	/// <summary>Forget the attached process. The ps4debug connection stays up.</summary>
+	private void Detach()
+	{
+		string was = pname;
+		pid = 0;
+		pname = "";
+		btnAttach.Content = "Attach";
+		SetStatus("Connected", ok: true);
+		try
+		{
+			dbg.Notify("Detached: " + was);
+		}
+		catch
+		{
+		}
+		Log($"Detached from {was}");
+	}
+
+	/// <summary>Close the ps4debug session and reset every connection-dependent control.</summary>
+	private void Disconnect()
+	{
+		if (pid != 0)
+		{
+			Detach();
+		}
+		try
+		{
+			dbg.Notify("BO2 Injector: disconnected");
+		}
+		catch
+		{
+		}
+		dbg.Dispose();
+		linked = false;
+		pulseOn = false;
+		dot.Fill = new SolidColorBrush(Color.FromRgb(0x7A, 0x30, 0x30));
+		btnConnect.Content = "Connect";
+		SetStatus("Disconnected", ok: false);
+		Log("Disconnected");
 	}
 
 	private void SetStatus(string text, bool ok)
