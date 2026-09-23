@@ -7,10 +7,11 @@
     <SolidColorBrush x:Key="Text">#EEF0F5</SolidColorBrush>
     <SolidColorBrush x:Key="TextDim">#B4BAC8</SolidColorBrush>
     <SolidColorBrush x:Key="TextFaint">#7C8497</SolidColorBrush>
+    <SolidColorBrush x:Key="Surface">#A60E1016</SolidColorBrush>
     <SolidColorBrush x:Key="Glass">#8C141721</SolidColorBrush>
-    <SolidColorBrush x:Key="GlassStrong">#9E15181F</SolidColorBrush>
-    <SolidColorBrush x:Key="GlassInput">#A60D0F14</SolidColorBrush>
-    <SolidColorBrush x:Key="GlassHover">#B02A2F3C</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassStrong">#5E1B1F2A</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassInput">#4A0D0F14</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassHover">#8C2A2F3C</SolidColorBrush>
     <SolidColorBrush x:Key="Hairline">#22FFFFFF</SolidColorBrush>
     <LinearGradientBrush x:Key="Backdrop" StartPoint="0%,0%" EndPoint="100%,100%">
       <GradientStop Color="#1A1410" Offset="0" />

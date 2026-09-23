@@ -10,7 +10,7 @@
   <Window.Background>
     <StaticResource ResourceKey="Backdrop" />
   </Window.Background>
-  <Border Style="{StaticResource GlassPanel}" Margin="16,14,16,16" Padding="24,20,24,18">
+  <Border Background="{StaticResource Surface}" Padding="28,20,28,16">
     <StackPanel>
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
         <Ellipse Name="dot" Width="13" Height="13" Fill="#7A3030" Margin="0,0,10,0">
