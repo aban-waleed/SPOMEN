@@ -116,7 +116,7 @@ public sealed class GscFile
 		for (int k = 0; k + 11 < Devblk.Length; k += 12)
 		{
 			uint code = U32(Devblk, k + 4);
-			uint name = U32(Devblk, k + 8);
+			uint name = U16(Devblk, k + 8); // low 16 bits; the high half is a count, not part of the offset
 			if (code < Hdr["cseg"] || code >= Hdr["devblk"])
 			{
 				out_.Add(new Issue("ERROR", $"devblk[{k / 12}] code 0x{code:X} outside cseg"));

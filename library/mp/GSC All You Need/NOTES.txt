@@ -1,0 +1,7 @@
+GSC All You Need  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 149 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - menustructure(): disabled - it would corrupt the PS4 script stack (call to menuoption with a broken stack)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)

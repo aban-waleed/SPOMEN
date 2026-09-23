@@ -1,0 +1,15 @@
+ZombieLand V3  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_rank.gsc  (from maps/mp/gametypes/_rank.gsc, PS3 / Xbox 360 (big endian), 255 functions)
+  - classsetup(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - packapunchweaponmonitor(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - blastfurnace(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - deadwire(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - thunderwall(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - fireworks(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - scorchinginferno(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doomsdaydevastation(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - poseidonswrath(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveplayerweaponattachment(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - giveplayerweaponattachment(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

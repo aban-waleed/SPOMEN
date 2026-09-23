@@ -1,0 +1,91 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SPOMEN.Mac"
+        x:Class="SPOMEN.Mac.LibraryWindow"
+        x:DataType="local:LibraryWindow"
+        Title="Library" Width="520" Height="560" CanResize="False"
+        Background="#0B0C0E" Foreground="#E8EAF0"
+        WindowStartupLocation="CenterOwner">
+  <Window.Styles>
+    <Style Selector="Button.go">
+      <Setter Property="Background" Value="#FF7A00" />
+      <Setter Property="Foreground" Value="#0B0C0E" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="10" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.go:disabled">
+      <Setter Property="Background" Value="#3A2A18" />
+      <Setter Property="Foreground" Value="#7A5A38" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="#14161B" />
+      <Setter Property="Foreground" Value="#E8EAF0" />
+      <Setter Property="BorderBrush" Value="#2E333F" />
+      <Setter Property="Padding" Value="8,6,8,6" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+    <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="#14161B" />
+      <Setter Property="BorderBrush" Value="#2E333F" />
+    </Style>
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="#14161B" />
+      <Setter Property="BorderBrush" Value="#FF7A00" />
+    </Style>
+    <Style Selector="ListBoxItem">
+      <Setter Property="Padding" Value="12,7,12,7" />
+      <Setter Property="Margin" Value="0,1,0,1" />
+      <Setter Property="CornerRadius" Value="0,8,8,0" />
+      <Setter Property="BorderThickness" Value="3,0,0,0" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#1A1D24" />
+    </Style>
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#242832" />
+      <Setter Property="BorderBrush" Value="#FF7A00" />
+    </Style>
+  </Window.Styles>
+
+  <DockPanel Margin="24,18,24,16">
+    <StackPanel DockPanel.Dock="Top">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="LIBRARY" FontSize="20" FontWeight="Black" Foreground="#FFFFFF" />
+        <TextBlock Name="lblMode" Text="MULTIPLAYER" FontSize="20" FontWeight="Black" Foreground="#FF7A00" Margin="10,0,0,0" />
+      </StackPanel>
+      <TextBlock Name="lblCount" Text="" FontSize="10" Foreground="#5A6172" Margin="1,0,0,8" />
+      <TextBox Name="txtSearch" Watermark="search packs" Margin="0,0,0,8" />
+    </StackPanel>
+    <StackPanel DockPanel.Dock="Bottom">
+      <TextBox Name="txtNotes" Height="96" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"
+               FontFamily="Menlo, Consolas, monospace" FontSize="10" Foreground="#9AA0B0" Margin="0,8,0,8"
+               ScrollViewer.VerticalScrollBarVisibility="Auto" />
+      <Button Name="btnUse" Classes="go" Content="USE THIS PACK" Height="40" IsEnabled="False" />
+    </StackPanel>
+    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="12" Padding="4">
+      <ListBox Name="list" Background="Transparent" BorderThickness="0" Foreground="#E8EAF0">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="local:LibraryWindow+Row">
+            <StackPanel>
+              <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding Summary}" FontSize="10" Foreground="#9AA0B0" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+  </DockPanel>
+</Window>

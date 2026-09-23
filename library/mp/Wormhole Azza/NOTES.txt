@@ -1,0 +1,12 @@
+Wormhole Azza  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 435 functions)
+  - storetext(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - submenu(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - docanswap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - docanswap2(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - cpcp(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - createhudtext(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - undovcs(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - undovcs(): disabled - it would corrupt the PS4 script stack (call to switchtoweapon with a broken stack)

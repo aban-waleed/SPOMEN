@@ -1,0 +1,14 @@
+Roll The Dice  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from _clientids.gsc, PS3 / Xbox 360 (big endian), 46 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - rtdgamemodesetup(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rtdgamemodesetup(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)
+  - mex(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - thungun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)

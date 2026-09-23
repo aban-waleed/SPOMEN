@@ -1,0 +1,72 @@
+Bossam V6  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 770 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - storetext(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - provideweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - main_lightningthunder(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveelite(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveced(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givedevgru(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveatac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveerol(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givesiberia(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givechoco(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebluet(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebloods(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveghostex(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givekryptek(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecarbonf(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecherryb(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveartw(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveronin(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveskull(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givegold(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveuk(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecomic(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givepaladin(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveafterlife(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givedeadm(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebeast(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveoctane(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveweapon115(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveghost(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givejungle(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebenj(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givedia(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givegraffiti(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givekawaii(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveparty(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givezombies(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveviper(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebacon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecyborg(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givedragon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveaqua(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebreach(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecoyote(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveglam(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giverogue(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givepacka(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - docaremaker2(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - nac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - nac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - nac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - akimbolasersman(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - shootjetplane(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - shootvader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - upandaway(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - r2supnaway(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - randomcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - docamoloop(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

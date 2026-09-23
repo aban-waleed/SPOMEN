@@ -1,0 +1,36 @@
+Radiant v1.5.1  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from _ambientpackage.gsc, PS3 / Xbox 360 (big endian), 332 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - thungun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givenewweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - landsonground(): disabled - it would corrupt the PS4 script stack (call to n with a broken stack)
+  - togglerockettele(): disabled - it would corrupt the PS4 script stack (argument count of takeweapon)
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): disabled - it would corrupt the PS4 script stack (call to missile_end_sounds with a broken stack)
+  - toggleknifetele(): disabled - it would corrupt the PS4 script stack (argument count of takeweapon)
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 332 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - thungun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givenewweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - landsonground(): disabled - it would corrupt the PS4 script stack (call to n with a broken stack)
+  - togglerockettele(): disabled - it would corrupt the PS4 script stack (argument count of takeweapon)
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): disabled - it would corrupt the PS4 script stack (call to missile_end_sounds with a broken stack)
+  - toggleknifetele(): disabled - it would corrupt the PS4 script stack (argument count of takeweapon)
+
+maps/mp/gametypes/_rank.gsc  (from _rank.gsc, PS3 / Xbox 360 (big endian), 51 functions)
+  - dorandom(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dorandom(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dorandom(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)
+
+maps/mp/gametypes/_shellshock.gsc  (from _shellshock.gsc, PS3 / Xbox 360 (big endian), 63 functions)
+  - givegoldengun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - onquickscopespawned(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - onquickscopespawned(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

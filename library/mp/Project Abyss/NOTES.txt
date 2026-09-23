@@ -1,0 +1,15 @@
+Project Abyss  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 423 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - closemenu(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - submenu(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dlccamochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givegold(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - lowstats(): 1 broken variable read(s) repaired (compiler bug in the original)

@@ -1,0 +1,46 @@
+Deradnought V5 BETA  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from maps/mp/_ambientpackage.gsc, PS3 / Xbox 360 (big endian), 565 functions)
+  - lowstats(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - do_vcs(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - carepackagegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - carepackageman(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - carepackageman(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - carepackageman(): disabled - it would corrupt the PS4 script stack (call to dropcrate with a broken stack)
+  - teleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initjet(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dropcan(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - creategrids(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 449 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - spawnmissle(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): disabled - it would corrupt the PS4 script stack (call to missile_end_sounds with a broken stack)
+  - followguy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - thungun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - bubblegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - sensorgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - watergun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - splcodeflow(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - splcodeflow(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - sglcodeflow(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - sglcodeflow(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - allplayeraw(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - allplayerghosts(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - allplayerce(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawndogg(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawndoggg(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnretard(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - allcamochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglemexicanwave(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - togglemexicanwave(): disabled - it would corrupt the PS4 script stack (call to array_delete with a broken stack)
+  - createmenu(): 1 broken variable read(s) repaired (compiler bug in the original)

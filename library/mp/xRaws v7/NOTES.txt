@@ -1,0 +1,14 @@
+xRaws v7  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 198 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - shootvader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - carepackagegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - teleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

@@ -1,0 +1,33 @@
+Blazed V2  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 397 functions)
+  - onplayerspawned(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - discocamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - flag_think(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - startnukemessage(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - link_water_tornado(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - flipthisdude(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - play_remote_hawk_fx(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - createflag(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - createmenu(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - onquickscopespawned(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawn_link_dog(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - set_dead_ops_view(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_ambientpackage.gsc  (from maps/mp/_ambientpackage.gsc, PS3 / Xbox 360 (big endian), 497 functions)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doweapontype(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - advweapon_suicide(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - crazyassionfx(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - cmkslikesextinct(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - upandaway(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - tag_k9_fx(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - diamon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - carepackagegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dodeathcrate(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - createhudtext(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - togglecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

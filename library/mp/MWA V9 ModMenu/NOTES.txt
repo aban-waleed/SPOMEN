@@ -1,0 +1,26 @@
+MWA V9 ModMenu  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 566 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - welcomemessage(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - aimbotofm1(): 4 broken variable read(s) repaired (compiler bug in the original)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - sniperclass(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - sniperclass(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - discocamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - headshothim(): disabled - it would corrupt the PS4 script stack (stack mismatch at a loop / branch)
+  - spectatorloop(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - onquickscopespawned(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dragongun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - diamon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - upandaway(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)

@@ -1,0 +1,17 @@
+Elegance v5.0 Lite  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from _clientids.gsc, PS3 / Xbox 360 (big endian), 621 functions)
+  - killstats(): could not be converted (invalid opcode 0xCD) - it now does nothing
+  - provideweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - changecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - changecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - diamon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - init_agrarmy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - init_agrarmy(): disabled - it would corrupt the PS4 script stack (call to optioncalledmesage with a broken stack)
+  - splspawned(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - init_giverandomweapon(): disabled - it would corrupt the PS4 script stack (argument count of giveweapon)
+  - kill_ball_out(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - preventplanting(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - followguy(): 1 broken variable read(s) repaired (compiler bug in the original)

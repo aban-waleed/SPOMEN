@@ -1,0 +1,41 @@
+Crystal v5  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 554 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - giveportalgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - carepackagegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglemexicanwave(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - togglemexicanwave(): disabled - it would corrupt the PS4 script stack (call to array_delete with a broken stack)
+  - toggledogwave(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - toggledogwave(): disabled - it would corrupt the PS4 script stack (call to array_delete with a broken stack)
+  - toggletagwave(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - toggletagwave(): disabled - it would corrupt the PS4 script stack (call to array_delete with a broken stack)
+  - followguy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - giveflame(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - giveflame(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - tooglelflm(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - tooglelflm(): disabled - it would corrupt the PS4 script stack (call to deleteonwait with a broken stack)
+  - endofdeath(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - endofdeath(): disabled - it would corrupt the PS4 script stack (call to deleteonwait with a broken stack)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - thungun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - shootvader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - giverweapon(): disabled - it would corrupt the PS4 script stack (argument count of giveweapon)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - creategrids(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - jack1(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - setcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - play_remote_fxz(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - ballfire(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dojuggod(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - createmenu(): 1 broken variable read(s) repaired (compiler bug in the original)

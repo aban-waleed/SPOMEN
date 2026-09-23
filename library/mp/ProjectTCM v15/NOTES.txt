@@ -1,0 +1,95 @@
+ProjectTCM v15  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from maps/mp/_ambientpackage.gsc, PS3 / Xbox 360 (big endian), 633 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - docaremaker2(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dlccamochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givegold(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - drugsbruwtf(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - drugsbru(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - creategrids(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - giverweapon(): disabled - it would corrupt the PS4 script stack (argument count of giveweapon)
+  - moredeath(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - moredeath(): disabled - it would corrupt the PS4 script stack (ClearParams without waittill)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveflame(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - endofdeath(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - endofdeath(): disabled - it would corrupt the PS4 script stack (call to deleteonwait with a broken stack)
+  - gaybutfunnyshit(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 362 functions)
+  - storeshaders(): could not be converted (invalid opcode 0xB5) - it now does nothing
+  - autohostlist(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - createhegtext(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - spectatorloop(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - giveflame(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - endofdeath(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - endofdeath(): disabled - it would corrupt the PS4 script stack (call to deleteonwait with a broken stack)
+  - airstrikegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - changemapgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - bubblegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - shootvader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - teleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - ionisgod(): 4 broken variable read(s) repaired (compiler bug in the original)
+  - fmegetready(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - fmegetfkready(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - crazyassionfx(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - upandaway(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - cmkslikesextinct(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - cmkslikesion(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - initjet(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - discosun(): disabled - it would corrupt the PS4 script stack (stack mismatch at a loop / branch)
+  - nmflsh(): disabled - it would corrupt the PS4 script stack (stack mismatch at a loop / branch)
+  - slidermess(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - slidermess(): disabled - it would corrupt the PS4 script stack (call to createfontstring with a broken stack)
+  - slidermess2(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - slidermess2(): disabled - it would corrupt the PS4 script stack (call to createfontstring with a broken stack)
+  - shootjetplane(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - overflowfix(): 6 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_explosive_bolt.gsc  (from maps/mp/_explosive_bolt.gsc, PS3 / Xbox 360 (big endian), 334 functions)
+  - platform(): could not be converted (invalid opcode 0x98) - it now does nothing
+  - somethingiwillneveruselele(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - changecombataxemodel(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - tomahawkaimbotfunnymodel(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - do_testsaber(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - createhudtext(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - toggle_coaster(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - nomorediving(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_sticky_grenade.gsc  (from maps/mp/_sticky_grenade.gsc, PS3 / Xbox 360 (big endian), 5 functions)
+  - createmenu(): could not be converted (control flow leaves the function) - it now does nothing
+
+maps/mp/gametypes/_globalentities.gsc  (from maps/mp/gametypes/_globalentities.gsc, PS3 / Xbox 360 (big endian), 500 functions)
+  - somethingiwillneveruselele(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - swapgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - swapgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - upandaway(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - camodisco(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - instagiveweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+
+maps/mp/gametypes/_rank.gsc  (from maps/mp/gametypes/_rank.gsc, PS3 / Xbox 360 (big endian), 48 functions)
+
+maps/mp/gametypes/_shellshock.gsc  (from maps/mp/gametypes/_shellshock.gsc, PS3 / Xbox 360 (big endian), 459 functions)
+  - fuckingweirdshitlel(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - fuckingweirdshitlel(): spawn called with 4 arguments (import said 2) - fixed
+  - fuckingweirdshitlel(): disabled - it would corrupt the PS4 script stack (Plus with a broken stack)
+  - onlynoscorelel(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - onlynoscorelel(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - onlynoscorelel(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)
+  - quickscopeonly(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - quickscopeonly(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - quickscopeonly(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)
+  - grapplegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - headshotthem(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - raindamodeltext(): 1 broken variable read(s) repaired (compiler bug in the original)

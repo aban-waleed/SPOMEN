@@ -1,0 +1,14 @@
+Millennium  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 365 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - doperksall(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - packopunch(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - displayadvert(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - ridepilotheli(): 1 broken variable read(s) repaired (compiler bug in the original)

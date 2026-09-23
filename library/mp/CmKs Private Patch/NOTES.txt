@@ -1,0 +1,29 @@
+CmKs Private Patch  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 611 functions)
+  - lightsaber(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - talibanpro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - giveallknife(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - cecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - didcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - awcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - ghostcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - canswap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - canswap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - canswap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - freezegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - grapplegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - cmksmoab(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givetsclass(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givetsclass(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givetsclass(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - donac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - donac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

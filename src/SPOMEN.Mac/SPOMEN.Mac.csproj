@@ -20,5 +20,6 @@
     <ProjectReference Include="..\SPOMEN.Core\SPOMEN.Core.csproj" />
     <AvaloniaResource Include="Assets\**" />
     <None Include="..\..\menus\*.gscc" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\library\**\*" Link="library\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

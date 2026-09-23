@@ -1,0 +1,6 @@
+FortisMP  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 315 functions)
+  - fortissetcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - fortiscamoloop(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

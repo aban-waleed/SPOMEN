@@ -45,6 +45,44 @@
       <Setter Property="BorderThickness" Value="0" />
     </Style>
 
+    <!-- Segmented mode pills (Multiplayer / Zombies / Game Modes). -->
+    <Style Selector="RadioButton.seg">
+      <Setter Property="Foreground" Value="#9AA0B0" />
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" CornerRadius="14" Padding="0,7,0,7" Margin="2">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="RadioButton.seg.small">
+      <Setter Property="FontSize" Value="10" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="0,4,0,4" Margin="2">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="RadioButton.seg:pointerover">
+      <Setter Property="Background" Value="#242832" />
+      <Setter Property="Foreground" Value="#E8EAF0" />
+    </Style>
+    <Style Selector="RadioButton.seg:checked">
+      <Setter Property="Background" Value="#FF7A00" />
+      <Setter Property="Foreground" Value="#0B0C0E" />
+    </Style>
+
     <Style Selector="TextBox">
       <Setter Property="Background" Value="#14161B" />
       <Setter Property="Foreground" Value="#E8EAF0" />
@@ -60,6 +98,10 @@
       <Setter Property="Background" Value="#14161B" />
       <Setter Property="BorderBrush" Value="#FF7A00" />
     </Style>
+    <Style Selector="TextBox.cmd /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
   </Window.Styles>
 
   <StackPanel Margin="28,20,28,16">
@@ -69,7 +111,22 @@
     </StackPanel>
     <TextBlock Text="PS4DEBUG  •  GOLDHEN" FontSize="10" Foreground="#FF7A00" Margin="33,0,0,2" />
     <Rectangle Height="2" Fill="#FF7A00" Margin="0,6,0,14" RadiusX="1" RadiusY="1" />
-    <TextBlock Name="lblStatus" Text="Disconnected" Foreground="#9AA0B0" FontSize="12" Margin="0,0,0,14" />
+    <TextBlock Name="lblStatus" Text="Disconnected" Foreground="#9AA0B0" FontSize="12" Margin="0,0,0,12" />
+
+    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="17" Margin="0,0,0,4">
+      <UniformGrid Columns="2">
+        <RadioButton Name="segMp" Classes="seg" Content="MULTIPLAYER" GroupName="game" IsChecked="True" />
+        <RadioButton Name="segZm" Classes="seg" Content="ZOMBIES" GroupName="game" />
+      </UniformGrid>
+    </Border>
+    <Border Name="subRow" Background="#0F1114" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="13" Margin="90,0,90,4">
+      <UniformGrid Columns="2">
+        <RadioButton Name="segMenus" Classes="seg small" Content="MOD MENUS" GroupName="mpkind" IsChecked="True" />
+        <RadioButton Name="segGm" Classes="seg small" Content="GAME MODES" GroupName="mpkind" />
+      </UniformGrid>
+    </Border>
+    <TextBlock Name="lblTarget" Text="maps/mp/gametypes/_clientids.gsc" Foreground="#5A6172" FontSize="10"
+               FontFamily="Menlo, Consolas, monospace" HorizontalAlignment="Center" Margin="0,0,0,12" />
 
     <Grid Margin="0,0,0,10" ColumnDefinitions="*,12,*">
       <StackPanel Grid.Column="0">
@@ -86,12 +143,26 @@
       <Button Name="btnConnect" Classes="big" Content="Connect" Height="52" Margin="0,0,5,5" />
       <Button Name="btnAttach" Classes="big" Content="Attach" Height="52" Margin="5,0,0,5" />
       <Button Name="btnSel" Classes="big" Content="Select GSC" Height="52" Margin="0,5,5,0" />
-      <Button Name="btnInj" Classes="big" Content="INJECT" Height="52" Margin="5,5,0,0" FontSize="16" FontWeight="Bold" />
+      <Button Name="btnLib" Classes="big" Content="Library" Height="52" Margin="5,5,0,0" />
     </UniformGrid>
+    <Button Name="btnInj" Classes="big" Content="INJECT" Height="48" Margin="0,10,0,0" FontSize="16" FontWeight="Bold" BorderBrush="#FF7A00" />
 
     <Button Name="btnPublic" Classes="big go" Content="PUBLIC MATCH" Height="40" Margin="0,10,0,0" FontSize="14" FontWeight="Bold" />
+    <UniformGrid Columns="2" Margin="0,8,0,0">
+      <Button Name="btnUninject" Classes="big" Content="UNINJECT ALL" Height="40" Margin="0,0,5,0" FontSize="13" FontWeight="Bold" ToolTip.Tip="Restore the stock script(s) replaced by this session. Start a new match afterwards." />
+      <Button Name="btnGive" Classes="big" Content="GIVE" Height="40" Margin="5,0,0,0" FontSize="13" FontWeight="Bold" ToolTip.Tip="Give rank, prestige and XP to players connected to your match." />
+    </UniformGrid>
 
-    <TextBox Name="txtLog" Margin="0,10,0,0" Height="80" IsReadOnly="True"
+    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="10" Margin="0,10,0,0" Padding="10,2,4,2">
+      <DockPanel>
+        <TextBlock Text="&gt;" DockPanel.Dock="Left" Foreground="#FF7A00" FontFamily="Menlo, Consolas, monospace" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0" />
+        <Button Name="btnSend" Classes="big" Content="SEND" DockPanel.Dock="Right" FontSize="10" Padding="10,4,10,4" BorderThickness="0" Background="#242832" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="6,0,0,0" />
+        <TextBox Name="txtCmd" Classes="cmd" Background="Transparent" BorderThickness="0" FontFamily="Menlo, Consolas, monospace" FontSize="12" Padding="0,4,0,4" VerticalContentAlignment="Center"
+                 Watermark="console command  ·  Enter to send, arrows for history" />
+      </DockPanel>
+    </Border>
+
+    <TextBox Name="txtLog" Margin="0,8,0,0" Height="80" IsReadOnly="True"
              AcceptsReturn="True" TextWrapping="Wrap"
              FontFamily="Menlo, Consolas, monospace" FontSize="11"
              ScrollViewer.VerticalScrollBarVisibility="Auto" />

@@ -1,0 +1,4 @@
+Hunted  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from _clientids.gsc, PS3 / Xbox 360 (big endian), 11 functions)

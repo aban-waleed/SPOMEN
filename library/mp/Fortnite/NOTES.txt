@@ -1,0 +1,11 @@
+Fortnite  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 231 functions)
+  - teststorm(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - setloadout(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - setloadout(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - setloadout(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - carryoutreviving(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - nearestteammate(): 4 broken variable read(s) repaired (compiler bug in the original)
+  - nearestteammate(): disabled - it would corrupt the PS4 script stack (argument count of distance)

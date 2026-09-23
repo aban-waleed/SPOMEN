@@ -1,0 +1,34 @@
+JR JS V6  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from maps/mp/_ambientpackage.gsc, PS3 / Xbox 360 (big endian), 293 functions)
+  - upandaway(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - spawndogggy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawndogggy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawncarsss(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - missilesmoving(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - shootvader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveafterlife(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveghost(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawndogzzzz(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 591 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - createmenu(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dlccamochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givegold(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawnmissle(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): disabled - it would corrupt the PS4 script stack (call to missile_end_sounds with a broken stack)
+  - spawndoggg(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - airstrikegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

@@ -1,0 +1,8 @@
+iKonroi v5 Remake  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 267 functions)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - dowarn(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - dojugover(): 1 broken variable read(s) repaired (compiler bug in the original)

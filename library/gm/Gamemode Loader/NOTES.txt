@@ -1,0 +1,27 @@
+Gamemode Loader  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from _clientids.gsc, PS3 / Xbox 360 (big endian), 41 functions)
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 464 functions)
+  - hotlinegamemodesetup(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - hotlinegamemodesetup(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - hotlinegamemodesetup(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - displaytarget(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - dohuntednewsbar(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - menuclosedondeath(): disabled - it would corrupt the PS4 script stack (call to exitmenu with a broken stack)
+  - onquickscopespawned(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - onquickscopespawned(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dorandom(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dorandom(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dorandom(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mex(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawnmissle(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): disabled - it would corrupt the PS4 script stack (call to missile_end_sounds with a broken stack)
+  - thungun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - startnukemessage(): 1 broken variable read(s) repaired (compiler bug in the original)

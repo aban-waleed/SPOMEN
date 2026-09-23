@@ -1,0 +1,11 @@
+Paintball v1  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from _clientids.gsc, PS3 / Xbox 360 (big endian), 124 functions)
+  - giverweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giverweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - falstalker(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - falstalker(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)
+  - kickplayer(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawns(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawns(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)

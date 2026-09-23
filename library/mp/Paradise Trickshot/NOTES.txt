@@ -1,0 +1,5 @@
+Paradise Trickshot  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 167 functions)
+  - adddvartoggle(): disabled - it would corrupt the PS4 script stack (stack mismatch at a loop / branch)

@@ -1,0 +1,7 @@
+The Purgatory  [Zombies]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes_zm/_clientids.gsc  (from maps/mp/gametypes_zm/_clientids.gsc, PC (little endian), 247 functions)
+  - _scrollupdate(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - stonedyodas_fx_gun_system(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - zombie_devgui_toggle_ammo(): 1 broken variable read(s) repaired (compiler bug in the original)

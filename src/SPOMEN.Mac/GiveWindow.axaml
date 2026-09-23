@@ -1,0 +1,134 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SPOMEN.Mac"
+        x:Class="SPOMEN.Mac.GiveWindow"
+        Title="Give" Width="520" SizeToContent="Height" CanResize="False"
+        Background="#0B0C0E" Foreground="#E8EAF0"
+        WindowStartupLocation="CenterOwner">
+  <Window.Styles>
+    <Style Selector="Button.go">
+      <Setter Property="Background" Value="#FF7A00" />
+      <Setter Property="Foreground" Value="#0B0C0E" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Padding" Value="10" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.go:disabled">
+      <Setter Property="Background" Value="#3A2A18" />
+      <Setter Property="Foreground" Value="#7A5A38" />
+    </Style>
+    <Style Selector="Button.go.dark">
+      <Setter Property="Background" Value="#1A1D24" />
+      <Setter Property="Foreground" Value="#E8EAF0" />
+    </Style>
+    <Style Selector="Button.pill">
+      <Setter Property="Background" Value="#242832" />
+      <Setter Property="Foreground" Value="#E8EAF0" />
+      <Setter Property="FontSize" Value="10" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Padding" Value="10,4,10,4" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.pill:pointerover">
+      <Setter Property="Background" Value="#FF7A00" />
+      <Setter Property="Foreground" Value="#0B0C0E" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="#14161B" />
+      <Setter Property="Foreground" Value="#E8EAF0" />
+      <Setter Property="BorderBrush" Value="#2E333F" />
+      <Setter Property="Padding" Value="8,6,8,6" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+    <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="#14161B" />
+      <Setter Property="BorderBrush" Value="#2E333F" />
+    </Style>
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="#14161B" />
+      <Setter Property="BorderBrush" Value="#FF7A00" />
+    </Style>
+    <Style Selector="TextBlock.cap">
+      <Setter Property="Foreground" Value="#9AA0B0" />
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="Margin" Value="0,0,0,4" />
+    </Style>
+    <Style Selector="ListBoxItem">
+      <Setter Property="Padding" Value="10,6,10,6" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+  </Window.Styles>
+
+  <StackPanel Margin="24,18,24,16">
+    <DockPanel>
+      <Button Name="btnRefresh" Classes="pill" Content="REFRESH" DockPanel.Dock="Right" VerticalAlignment="Center" />
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="GIVE" FontSize="20" FontWeight="Black" Foreground="#FFFFFF" />
+        <TextBlock Text="TO PLAYERS" FontSize="20" FontWeight="Black" Foreground="#FF7A00" Margin="10,0,0,0" />
+      </StackPanel>
+    </DockPanel>
+    <TextBlock Name="lblRoster" Text="players connected to your match" FontSize="10" Foreground="#5A6172" Margin="1,0,0,8" />
+    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="12" Padding="4" Height="150">
+      <ListBox Name="list" Background="Transparent" BorderThickness="0" Foreground="#E8EAF0">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="local:GiveWindow+Row">
+            <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}">
+              <StackPanel Margin="6,0,0,0">
+                <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Stats}" FontSize="10" Foreground="#9AA0B0" />
+              </StackPanel>
+            </CheckBox>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+    <Grid Margin="0,12,0,0" ColumnDefinitions="*,10,*,10,1.4*">
+      <StackPanel Grid.Column="0">
+        <TextBlock Classes="cap" Text="PRESTIGE  (0-11)" />
+        <TextBox Name="txtPrestige" Text="11" />
+      </StackPanel>
+      <StackPanel Grid.Column="2">
+        <TextBlock Classes="cap" Text="LEVEL  (1-55)" />
+        <TextBox Name="txtLevel" Text="55" />
+      </StackPanel>
+      <StackPanel Grid.Column="4">
+        <TextBlock Classes="cap" Text="RANK XP" />
+        <TextBox Name="txtXp" Text="1197300" />
+      </StackPanel>
+    </Grid>
+    <StackPanel Orientation="Horizontal" Margin="0,8,0,0" Spacing="6">
+      <Button Name="btnMaster" Classes="pill" Content="PRESTIGE MASTER" />
+      <Button Name="btnFresh" Classes="pill" Content="FRESH ACCOUNT" />
+      <Button Name="btnAll" Classes="pill" Content="SELECT ALL" />
+      <Button Name="btnNone" Classes="pill" Content="NONE" />
+    </StackPanel>
+    <CheckBox Name="chkUnlock" Margin="0,12,0,0">
+      <TextBlock Text="Also unlock everything for every player who joins. Arms the auto-unlock script in the mod-menu slot and replaces any injected menu until you Uninject." TextWrapping="Wrap" FontSize="11" Margin="4,0,0,0" />
+    </CheckBox>
+    <UniformGrid Columns="2" Margin="0,12,0,0">
+      <Button Name="btnApply" Classes="go" Content="APPLY" Height="44" Margin="0,0,5,0" />
+      <Button Name="btnEnd" Classes="go dark" Content="END MATCH &amp; SAVE" Height="44" Margin="5,0,0,0" />
+    </UniformGrid>
+    <TextBox Name="txtLog" Margin="0,10,0,0" Height="72" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"
+             FontFamily="Menlo, Consolas, monospace" FontSize="10" Foreground="#9AA0B0" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+  </StackPanel>
+</Window>

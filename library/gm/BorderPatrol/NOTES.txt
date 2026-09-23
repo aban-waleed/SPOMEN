@@ -1,0 +1,9 @@
+BorderPatrol  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from BorderPatrol.gsc, PS3 / Xbox 360 (big endian), 36 functions)
+  ! slot guessed: the original file had a custom name, so it is installed as _development_dvars.gsc
+  - doweapons(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doweapons(): disabled - it would corrupt the PS4 script stack (argument count of giveweapon)
+  - refillammo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - refillammo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

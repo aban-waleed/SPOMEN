@@ -1,0 +1,7 @@
+BounceLobby  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from BounceLobby.gsc, PS3 / Xbox 360 (big endian), 54 functions)
+  ! slot guessed: the original file had a custom name, so it is installed as _development_dvars.gsc
+  - togglecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - g_weapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

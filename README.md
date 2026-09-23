@@ -23,9 +23,19 @@ xattr -dr com.apple.quarantine SPOMEN.app
 ## Usage
 
 1. Put both the modded PS4 and the normal PS4/PS5 into a LAN Party lobby.
-2. In the tool: **CONNECT** → **ATTACH** → select your menu file (`.gscc`) *Currently royal_menu_ps4.gscc is working* → **INJECT**.
-3. On the modded PS4, press **Start Match**.
-4. When the countdown reaches **3**, press **PUBLIC MATCH** in the tool.
+2. Pick **MULTIPLAYER** or **ZOMBIES** on the selector. Under Multiplayer, choose **MOD MENUS** (replaces `maps/mp/gametypes/_clientids.gsc`) or **GAME MODES** (replaces `maps/mp/_development_dvars.gsc`, where custom game-mode scripts live); both run in the same `codmp.elf` process, so switching between them keeps your attachment. Zombies attaches to `codzm.elf`; switching between Multiplayer and Zombies asks you to attach again. The exact slot is shown under the selector.
+3. In the tool: **CONNECT** → **ATTACH** → pick a menu → **INJECT**. Either **Select GSC** for your own PS4 `.gscc` file (*royal_menu_ps4.gscc* is the known-good one), or **Library** to choose one of the bundled packs for the current mode. The library window filters by name as you type and shows each pack's conversion notes; packs with several scripts are injected together and rolled back together if one fails. See [`library/README.md`](library/README.md).
+4. On the modded PS4, press **Start Match**.
+5. When the countdown reaches **3**, press **PUBLIC MATCH** in the tool. The session-mode setter is located by byte signature in whichever executable is attached, so this works in Multiplayer and Zombies and does not depend on a specific game build. If the signature is not found, the tool falls back to the original multiplayer offsets and says so in the log.
+6. To switch menus or go back to the stock script, press **UNINJECT ALL**. It restores every script this session replaced, then start a new match so the running menu unloads. Closing the tool or restarting the game loses the saved originals, so uninject before you disconnect.
+
+**GIVE** (Multiplayer) opens the give panel while a match you host is running. It lists every player connected to your server with their current level and prestige, read from the game's scoreboard, and lets you write a prestige, level and rank XP into the server-side stats of the players you tick. The values are verified by reading them back. Press **END MATCH & SAVE** (or let the match end) so each console saves what it was given. XP is clamped to the game's rank table, so a level always comes with enough XP to keep it. The optional unlock-everything box arms the auto-unlock script in the mod-menu slot for every player who joins; it replaces any injected menu until you Uninject.
+
+The command line above the log sends a raw console command to the attached game (`map_restart`, `set g_gravity 200`, `xpartygo`, ...). Enter sends, Up/Down recall history. Commands go straight to the game's command buffer with no validation, so a typo is simply ignored by the game. Works in Multiplayer and Zombies: the command-buffer function is located by signature.
+
+Every first injection of a script slot saves the game's stock copy before replacing it, under `%APPDATA%\SPOMEN\Dumps\<date_time>_<menu name>\` on Windows or `~/.config/SPOMEN/Dumps/` on macOS. The log shows the path. Re-injecting the same slot does not dump again, so the saved file is always the original, never your own menu.
+
+The PS4 IP is remembered after a successful connect (and on close) in `%APPDATA%\SPOMEN\settings.json` on Windows or `~/.config/SPOMEN/settings.json` on macOS, so it is filled in on the next launch even from a freshly extracted build.
 
 The bundled menus are in [`menus/`](menus/) (also shipped inside every release). See `HOW_TO_USE.txt` in the release for English/Arabic instructions.
 
@@ -60,7 +70,8 @@ dotnet build SPOMEN.sln -c Release
 | `src/SPOMEN.Core/lib/libdebug.dll` | ps4debug client library (managed, AnyCPU) |
 | `src/BO2InjectorGUI/` | Windows front end (WPF, x64). Builds `BO2InjectorGUI.exe`, same as the original tool |
 | `src/SPOMEN.Mac/` | macOS front end (Avalonia). Same window, same buttons, same engine |
-| `menus/` | Bundled compiled GSC menus (`.gscc`) |
+| `menus/` | The three original compiled menus (`.gscc`) |
+| `library/` | 128 bundled community packs in PS4 format, one folder per pack with `NOTES.txt` |
 | `build-mac.sh` | Publishes the Avalonia app and packages it as `SPOMEN.app` |
 | `published/` | Reference copy of the original Windows build |
 | `decompiled/`, `pdb-decompiled/` | Reference output from decompiling the original binary |
@@ -73,6 +84,10 @@ dotnet build SPOMEN.sln -c Release
 | `InjectorEngine.cs` | Core injection logic (memory read/write, GSC loading, patching) |
 | `Ps4DebugClient.cs` | Thin wrapper around `libdebug.dll` (ps4debug) |
 | `GscParser.cs` / `GscSpy.cs` | GSC file parsing and inspection |
+| `GameMode.cs` | Multiplayer / Zombies / Game Modes: process names and script slots |
+| `MenuLibrary.cs` | Reads `library/` into packs for the picker |
+| `LobbyReader.cs` | Player names / levels from the party roster and in-match scoreboard (build-guarded) |
+| `UserSettings.cs` | Remembered PS4 IP |
 
 ## Credits
 

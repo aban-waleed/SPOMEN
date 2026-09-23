@@ -1,0 +1,6 @@
+n3m3sis v1 mod menu  [Zombies]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes_zm/_clientids.gsc  (from maps/mp/gametypes_zm/_clientids.gsc, PS3 / Xbox 360 (big endian), 240 functions)
+  - togglemexicanwave(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - togglemexicanwave(): disabled - it would corrupt the PS4 script stack (call to array_delete with a broken stack)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -15,6 +16,7 @@ namespace SPOMEN.Mac;
 public partial class MainWindow : Window
 {
 	private static readonly IBrush StatusGrey = new SolidColorBrush(Color.FromRgb(0x9A, 0xA0, 0xB0));
+	private static readonly IBrush Accent = new SolidColorBrush(Color.FromRgb(0xFF, 0x7A, 0x00));
 	private static readonly IBrush PulseBright = Brushes.Lime;
 	private static readonly IBrush PulseDim = new SolidColorBrush(Color.FromRgb(0, 140, 80));
 
@@ -33,9 +35,23 @@ public partial class MainWindow : Window
 
 	private string pname = "";
 
+	private GameMode mode = GameMode.Multiplayer;
+
+	private readonly UserSettings settings = UserSettings.Load();
+
+	private LibraryPack? selectedPack;
+
+	private readonly List<string> cmdHistory = new List<string>();
+
+	private int cmdIndex = -1;
+
 	public MainWindow()
 	{
 		InitializeComponent();
+		if (settings.LastIp.Length > 0)
+		{
+			txtIp.Text = settings.LastIp;
+		}
 
 		pulse.Tick += delegate
 		{
@@ -49,6 +65,7 @@ public partial class MainWindow : Window
 
 		Closed += delegate
 		{
+			settings.RememberIp(txtIp.Text ?? "");
 			pulse.Stop();
 			dbg.Dispose();
 		};
@@ -65,6 +82,25 @@ public partial class MainWindow : Window
 			}
 		};
 
+		segMp.IsCheckedChanged += delegate
+		{
+			if (segMp.IsChecked == true)
+			{
+				subRow.IsVisible = true;
+				SetMode(segGm.IsChecked == true ? GameMode.GameModes : GameMode.Multiplayer);
+			}
+		};
+		segZm.IsCheckedChanged += delegate
+		{
+			if (segZm.IsChecked == true)
+			{
+				subRow.IsVisible = false;
+				SetMode(GameMode.Zombies);
+			}
+		};
+		segMenus.IsCheckedChanged += delegate { if (segMenus.IsChecked == true && segMp.IsChecked == true) SetMode(GameMode.Multiplayer); };
+		segGm.IsCheckedChanged += delegate { if (segGm.IsChecked == true && segMp.IsChecked == true) SetMode(GameMode.GameModes); };
+
 		btnConnect.Click += delegate
 		{
 			string host = (txtIp.Text ?? "").Trim();
@@ -72,6 +108,7 @@ public partial class MainWindow : Window
 			{
 				dbg.Connect(host);
 				linked = true;
+				settings.RememberIp(host);
 				SetStatus("Connected", ok: true);
 				try
 				{
@@ -90,9 +127,10 @@ public partial class MainWindow : Window
 			{
 				pid = 0;
 				List<(int Pid, string Name)> list = dbg.ListProcesses();
+				string want = GameModeInfo.ProcessName(mode);
 				foreach (var current in list)
 				{
-					if (current.Name.Contains("codmp.elf"))
+					if (current.Name.Contains(want))
 					{
 						(pid, pname) = current;
 						break;
@@ -111,9 +149,9 @@ public partial class MainWindow : Window
 				}
 				if (pid == 0)
 				{
-					return "No game process found - is BO2 running?";
+					return $"No game process found - is BO2 {GameModeInfo.Label(mode)} running? (looked for {want})";
 				}
-				SetStatus($"Attached: {pname} (pid {pid})", ok: true);
+				SetStatus($"Attached: {pname} (pid {pid}) - {GameModeInfo.Label(mode)}", ok: true);
 				try
 				{
 					dbg.Notify("Attached: " + pname);
@@ -147,9 +185,27 @@ public partial class MainWindow : Window
 				Log("Could not resolve a local path for that file");
 				return;
 			}
+			selectedPack = null;
 			txtFile.Text = path;
 			FileInfo fileInfo = new FileInfo(path);
 			Log($"{fileInfo.Name} ({fileInfo.Length} bytes)");
+		};
+
+		btnLib.Click += async delegate
+		{
+			List<LibraryPack> packs = MenuLibrary.Scan(MenuLibrary.DefaultRoot, mode);
+			if (packs.Count == 0)
+			{
+				Log($"No {GameModeInfo.Label(mode)} packs found under {MenuLibrary.DefaultRoot}");
+				return;
+			}
+			LibraryPack? pick = await new LibraryWindow(mode, packs).ShowDialog<LibraryPack?>(this);
+			if (pick != null)
+			{
+				selectedPack = pick;
+				txtFile.Text = $"[library] {pick.Name}";
+				Log($"Pack: {pick.Name} ({pick.Scripts.Count} script(s)) -> {string.Join(", ", pick.Scripts.Select(s => s.Target))}");
+			}
 		};
 
 		btnInj.Click += async delegate
@@ -157,6 +213,36 @@ public partial class MainWindow : Window
 			if (pid == 0)
 			{
 				Log("ATTACH first");
+				return;
+			}
+			if (selectedPack != null)
+			{
+				btnInj.IsEnabled = false;
+				LibraryPack pack = selectedPack;
+				string pn = pname;
+				int pq = pid;
+				try
+				{
+					await Task.Run(delegate
+					{
+						int n = new InjectorEngine(dbg, Log).InjectPack(pq, pn, pack);
+						try
+						{
+							dbg.Notify($"Injected {pack.Name} ({n} scripts)");
+						}
+						catch
+						{
+						}
+					});
+				}
+				catch (Exception ex)
+				{
+					Log("ERROR: " + ex.Message);
+				}
+				finally
+				{
+					btnInj.IsEnabled = true;
+				}
 				return;
 			}
 			string file = txtFile.Text ?? "";
@@ -168,11 +254,13 @@ public partial class MainWindow : Window
 			btnInj.IsEnabled = false;
 			string name = pname;
 			int q = pid;
+			string target = GameModeInfo.Target(mode);
+			Log($"Target: {target}");
 			try
 			{
 				await Task.Run(delegate
 				{
-					new InjectorEngine(dbg, Log).Inject(q, name, file, InjectorEngine.TARGET_MP);
+					new InjectorEngine(dbg, Log).Inject(q, name, file, target);
 					try
 					{
 						dbg.Notify("Injected OK");
@@ -205,7 +293,124 @@ public partial class MainWindow : Window
 			});
 		};
 
+		btnGive.Click += async delegate
+		{
+			if (pid == 0)
+			{
+				Log("ATTACH first");
+				return;
+			}
+			if (mode == GameMode.Zombies)
+			{
+				Log("GIVE works in Multiplayer: the stat tree offsets are for codmp.elf");
+				return;
+			}
+			await new GiveWindow(dbg, pid).ShowDialog(this);
+		};
+		btnUninject.Click += delegate
+		{
+			Run(btnUninject, delegate
+			{
+				if (pid == 0)
+				{
+					return "ATTACH first";
+				}
+				int n = new InjectorEngine(dbg, Log).UninjectAll(pid);
+				try
+				{
+					dbg.Notify($"BO2 Injector: {n} menu(s) unloaded");
+				}
+				catch
+				{
+				}
+				return $"Uninjected {n} script(s)";
+			});
+		};
+
+		txtCmd.KeyDown += (_, e) =>
+		{
+			if (e.Key == Avalonia.Input.Key.Enter)
+			{
+				SendConsoleCommand();
+				e.Handled = true;
+			}
+			else if (e.Key == Avalonia.Input.Key.Up && cmdHistory.Count > 0)
+			{
+				cmdIndex = cmdIndex < 0 ? cmdHistory.Count - 1 : Math.Max(0, cmdIndex - 1);
+				txtCmd.Text = cmdHistory[cmdIndex];
+				txtCmd.CaretIndex = txtCmd.Text?.Length ?? 0;
+				e.Handled = true;
+			}
+			else if (e.Key == Avalonia.Input.Key.Down && cmdIndex >= 0)
+			{
+				cmdIndex = cmdIndex + 1 >= cmdHistory.Count ? -1 : cmdIndex + 1;
+				txtCmd.Text = cmdIndex < 0 ? "" : cmdHistory[cmdIndex];
+				txtCmd.CaretIndex = txtCmd.Text?.Length ?? 0;
+				e.Handled = true;
+			}
+		};
+		btnSend.Click += delegate { SendConsoleCommand(); };
+
 		Log("Ready.");
+	}
+
+	private void SendConsoleCommand()
+	{
+		string cmd = (txtCmd.Text ?? "").Trim();
+		if (cmd.Length == 0)
+		{
+			return;
+		}
+		if (pid == 0)
+		{
+			Log("ATTACH first");
+			return;
+		}
+		if (cmdHistory.Count == 0 || cmdHistory[^1] != cmd)
+		{
+			cmdHistory.Add(cmd);
+		}
+		cmdIndex = -1;
+		txtCmd.Text = "";
+		int q = pid;
+		Task.Run(delegate
+		{
+			try
+			{
+				new InjectorEngine(dbg, Log).SendCommand(q, cmd);
+			}
+			catch (Exception ex)
+			{
+				Log("ERROR: " + ex.Message);
+			}
+		});
+	}
+
+	private void SetMode(GameMode m)
+	{
+		if (m == mode)
+		{
+			return;
+		}
+		mode = m;
+		lblTarget.Text = GameModeInfo.Target(m);
+		Log($"Mode: {GameModeInfo.Label(m)}");
+		if (selectedPack != null && selectedPack.Mode != m)
+		{
+			Log($"Pack '{selectedPack.Name}' is a {GameModeInfo.Label(selectedPack.Mode)} pack - selection cleared");
+			selectedPack = null;
+			txtFile.Text = "No file selected";
+		}
+		if (pid != 0 && GameModeInfo.ProcessMismatch(m, pname))
+		{
+			pid = 0;
+			Dispatcher.UIThread.Post(delegate
+			{
+				lblStatus.Text = $"Connected - re-attach for {GameModeInfo.Label(m)}";
+				lblStatus.Foreground = Accent;
+			});
+			Log($"{pname} is not the {GameModeInfo.Label(m)} executable - press Attach again");
+		}
 	}
 
 	private void SetStatus(string text, bool ok)

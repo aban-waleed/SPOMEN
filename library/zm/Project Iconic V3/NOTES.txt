@@ -1,0 +1,12 @@
+Project Iconic V3  [Zombies]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes_zm/_clientids.gsc  (from maps/mp/gametypes_zm/_clientids.gsc, PS3 / Xbox 360 (big endian), 160 functions)
+  - (): 4 broken variable read(s) repaired (compiler bug in the original)
+  - player_too_many_players_check(): 4 broken variable read(s) repaired (compiler bug in the original)
+  - player_too_many_players_check_func(): 4 broken variable read(s) repaired (compiler bug in the original)
+  - player_intersection_tracker_override(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - player_intersection_tracker_override(): disabled - it would corrupt the PS4 script stack (SetVariableField with a broken stack)
+  - special_weapon_magicbox_check(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/gametypes_zm/_shellshock.gsc  (from maps/mp/gametypes_zm/_shellshock.gsc, PS3 / Xbox 360 (big endian), 15 functions)

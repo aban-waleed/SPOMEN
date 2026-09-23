@@ -1,0 +1,13 @@
+ZombiFied v1.0  [Zombies]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes_zm/_clientids.gsc  (from maps/mp/gametypes_zm/_clientids.gsc, PS3 / Xbox 360 (big endian), 216 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - give_money1(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - give_money2(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - give_money2(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - give_money1(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - notarget1(): 7 broken variable read(s) repaired (compiler bug in the original)
+  - sui(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - giveplayerweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

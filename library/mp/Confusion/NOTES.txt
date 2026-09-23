@@ -1,0 +1,10 @@
+Confusion  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 193 functions)
+  - thirdperson_setter(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - disablecam(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - cc_getcamoinput(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - settitlecolor(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - createmenu(): 1 broken variable read(s) repaired (compiler bug in the original)

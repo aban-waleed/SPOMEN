@@ -1,0 +1,18 @@
+E.N.D Engine Platinum v4  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from maps/mp/_ambientpackage.gsc, PS3 / Xbox 360 (big endian), 202 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - funmenufunnymods(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - vipmenumods(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - vipmenumods(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - vipmenumods(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - creategrids(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - tradeweapmonitor(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - snipermonitor(): disabled - it would corrupt the PS4 script stack (argument count of giveweapon)
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 73 functions)
+  - createtext(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - updatemenutext(): 1 broken variable read(s) repaired (compiler bug in the original)

@@ -1,0 +1,23 @@
+BatMan V17  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 591 functions)
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - headshothim(): disabled - it would corrupt the PS4 script stack (stack mismatch at a loop / branch)
+  - followguy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - g_weapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - resetkillstdm(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - resetkillstdm(): disabled - it would corrupt the PS4 script stack (call to giveteamscoreforobjective with a broken stack)
+  - ffatslobby(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - tdmtslobby(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - discocamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - followguy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - blackhole_pull(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - togglecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglecedigital(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - toggleghosts(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglecamodlc(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - thundergun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - submenu(): 1 broken variable read(s) repaired (compiler bug in the original)

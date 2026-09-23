@@ -1,0 +1,42 @@
+Illusion v1  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 569 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - followguy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - diamon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - init_agrarmy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - init_agrarmy(): disabled - it would corrupt the PS4 script stack (call to optioncalledmesage with a broken stack)
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - provideweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - changecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - changecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - fmegetready(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+
+maps/mp/gametypes/_rank.gsc  (from _rank.gsc, PS3 / Xbox 360 (big endian), 569 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - followguy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - diamon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - init_agrarmy(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - init_agrarmy(): disabled - it would corrupt the PS4 script stack (call to optioncalledmesage with a broken stack)
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - provideweapon(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - changecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - changecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - fmegetready(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)

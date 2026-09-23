@@ -1,0 +1,29 @@
+Predator v6.7  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from maps/mp/_ambientpackage.gsc, PS3 / Xbox 360 (big endian), 367 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - aimbotofm1(): 4 broken variable read(s) repaired (compiler bug in the original)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawnmissle(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnmissle(): disabled - it would corrupt the PS4 script stack (call to missile_end_sounds with a broken stack)
+  - flag_think(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - donac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - donac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dlccamochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - shootvader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dragongun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 67 functions)
+  - recreatetext(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/gametypes/_rank.gsc  (from maps/mp/gametypes/_rank.gsc, PS3 / Xbox 360 (big endian), 195 functions)
+  - upandaway(): 2 broken variable read(s) repaired (compiler bug in the original)

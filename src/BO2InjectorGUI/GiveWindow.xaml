@@ -1,0 +1,141 @@
+<Window x:Class="BO2InjectorGUI.GiveWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Give" Width="520" SizeToContent="Height" ResizeMode="NoResize" Background="#0B0C0E" Foreground="#E8EAF0" FontFamily="Segoe UI" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <Style x:Key="GoBtn" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#FF7A00" />
+        <Setter Property="Foreground" Value="#0B0C0E" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" CornerRadius="12" Padding="10">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter Property="Background" Value="#3A2A18" />
+                  <Setter Property="Foreground" Value="#7A5A38" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="DarkBtn" BasedOn="{StaticResource GoBtn}" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#1A1D24" />
+        <Setter Property="Foreground" Value="#E8EAF0" />
+      </Style>
+      <Style x:Key="Pill" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#242832" />
+        <Setter Property="Foreground" Value="#E8EAF0" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" CornerRadius="10" Padding="10,4,10,4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="#FF7A00" />
+                  <Setter Property="Foreground" Value="#0B0C0E" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="#14161B" />
+        <Setter Property="Foreground" Value="#E8EAF0" />
+        <Setter Property="BorderBrush" Value="#2E333F" />
+        <Setter Property="Padding" Value="8,6,8,6" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="CaretBrush" Value="#FF7A00" />
+      </Style>
+      <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
+        <Setter Property="Foreground" Value="#E8EAF0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+      </Style>
+      <Style x:Key="{x:Type ListBoxItem}" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+              <Border Background="#00000000" Padding="10,6,10,6">
+                <ContentPresenter />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="Cap" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="#9AA0B0" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Margin" Value="0,0,0,4" />
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <StackPanel Margin="24,18,24,16">
+    <DockPanel>
+      <Button Name="btnRefresh" Content="REFRESH" DockPanel.Dock="Right" Style="{StaticResource Pill}" VerticalAlignment="Center" />
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="GIVE" FontSize="20" FontWeight="Black" Foreground="#FFFFFF" />
+        <TextBlock Text="TO PLAYERS" FontSize="20" FontWeight="Black" Foreground="#FF7A00" Margin="10,0,0,0" />
+      </StackPanel>
+    </DockPanel>
+    <TextBlock Name="lblRoster" Text="players connected to your match" FontSize="10" Foreground="#5A6172" Margin="1,0,0,8" />
+    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="12" Padding="4" Height="150">
+      <ListBox Name="list" Background="#00000000" BorderThickness="0" Foreground="#E8EAF0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}" VerticalContentAlignment="Center">
+              <StackPanel Margin="6,0,0,0">
+                <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Stats}" FontSize="10" Foreground="#9AA0B0" />
+              </StackPanel>
+            </CheckBox>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+    <Grid Margin="0,12,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="1.4*" />
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0">
+        <TextBlock Text="PRESTIGE  (0-11)" Style="{StaticResource Cap}" />
+        <TextBox Name="txtPrestige" Text="11" />
+      </StackPanel>
+      <StackPanel Grid.Column="2">
+        <TextBlock Text="LEVEL  (1-55)" Style="{StaticResource Cap}" />
+        <TextBox Name="txtLevel" Text="55" />
+      </StackPanel>
+      <StackPanel Grid.Column="4">
+        <TextBlock Text="RANK XP" Style="{StaticResource Cap}" />
+        <TextBox Name="txtXp" Text="1197300" />
+      </StackPanel>
+    </Grid>
+    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+      <Button Name="btnMaster" Content="PRESTIGE MASTER" Style="{StaticResource Pill}" Margin="0,0,6,0" />
+      <Button Name="btnFresh" Content="FRESH ACCOUNT" Style="{StaticResource Pill}" Margin="0,0,6,0" />
+      <Button Name="btnAll" Content="SELECT ALL" Style="{StaticResource Pill}" Margin="0,0,6,0" />
+      <Button Name="btnNone" Content="NONE" Style="{StaticResource Pill}" />
+    </StackPanel>
+    <CheckBox Name="chkUnlock" Margin="0,12,0,0" VerticalContentAlignment="Center">
+      <TextBlock Text="Also unlock everything for every player who joins. Arms the auto-unlock script in the mod-menu slot and replaces any injected menu until you Uninject." TextWrapping="Wrap" FontSize="11" Margin="4,0,0,0" />
+    </CheckBox>
+    <UniformGrid Columns="2" Margin="0,12,0,0">
+      <Button Name="btnApply" Content="APPLY" Style="{StaticResource GoBtn}" Height="44" Margin="0,0,5,0" />
+      <Button Name="btnEnd" Content="END MATCH &amp; SAVE" Style="{StaticResource DarkBtn}" Height="44" Margin="5,0,0,0" />
+    </UniformGrid>
+    <TextBox Name="txtLog" Margin="0,10,0,0" Height="72" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="10" AcceptsReturn="True" TextWrapping="Wrap" Foreground="#9AA0B0" />
+  </StackPanel>
+</Window>

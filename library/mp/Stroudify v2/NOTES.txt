@@ -1,0 +1,40 @@
+Stroudify v2  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 568 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - rtd_gamemodesetup(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rtd_gamemodesetup(): disabled - it would corrupt the PS4 script stack (argument count of switchtoweapon)
+  - rtd_mex(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rtd_thungun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rtd_play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - rtd_initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rtd_mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rtd_lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - sniper_givecustomloadout(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - createmenu(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - changeteam(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - docaremaker2(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - donac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - donac(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - camodiscoloop(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dlccamochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givegold(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveerol(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givesiberia(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givechoco(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebluet(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givebloods(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveghostex(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givekryptek(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecarbonf(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecherryb(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveartw(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveronin(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveskull(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

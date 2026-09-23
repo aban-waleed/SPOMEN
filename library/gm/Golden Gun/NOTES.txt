@@ -1,0 +1,6 @@
+Golden Gun  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 34 functions)
+  - givegoldengun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - messupdc(): 1 broken variable read(s) repaired (compiler bug in the original)

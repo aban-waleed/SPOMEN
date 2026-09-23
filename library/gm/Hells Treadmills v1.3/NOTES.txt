@@ -1,0 +1,6 @@
+Hells Treadmills v1.3  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 78 functions)
+  - createtread(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - createtread(): disabled - it would corrupt the PS4 script stack (Minus with a broken stack)

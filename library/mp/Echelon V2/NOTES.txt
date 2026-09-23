@@ -1,0 +1,14 @@
+Echelon V2  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 391 functions)
+  - grapplegun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - pettingchopperxdend(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - shootvader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglemoddedsnd(): disabled - it would corrupt the PS4 script stack (stack mismatch at a loop / branch)
+  - camolooper(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - setrandomcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - setrandomcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

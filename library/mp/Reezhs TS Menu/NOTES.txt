@@ -1,0 +1,10 @@
+Reezhs TS Menu  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 294 functions)
+  - updatemenu(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - updatemenu(): disabled - it would corrupt the PS4 script stack (call to setsafetext with a broken stack)
+  - setrandomcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - quickestsetup1(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - quickestsetup1(): disabled - it would corrupt the PS4 script stack (call to ffa_fastlast with a broken stack)

@@ -1,0 +1,6 @@
+FenixV5  [Zombies]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes_zm/_clientids.gsc  (from maps/mp/gametypes_zm/_clientids.gsc, PS3 / Xbox 360 (big endian), 401 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)

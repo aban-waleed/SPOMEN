@@ -1,0 +1,16 @@
+EnCoRev9  [Zombies]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes_zm/_clientids.gsc  (from maps/mp/gametypes_zm/_clientids.gsc, PS3 / Xbox 360 (big endian), 247 functions)
+  - onplayerspawned(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - onplayerspawned(): iprintln called with 2 arguments (import said 1) - fixed
+  - model2(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - credits(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - fov(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - fov(): iprintln called with 2 arguments (import said 1) - fixed
+  - gunx(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - gunx(): iprintln called with 2 arguments (import said 1) - fixed
+  - guny(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - guny(): iprintln called with 2 arguments (import said 1) - fixed
+  - gunz(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - gunz(): iprintln called with 2 arguments (import said 1) - fixed

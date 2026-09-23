@@ -1,0 +1,16 @@
+UNKNOWNxMODDING Menu  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 290 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - togglemexicanwave(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - togglemexicanwave(): disabled - it would corrupt the PS4 script stack (call to array_delete with a broken stack)
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dlccamochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givediamond(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givegold(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - creategrids(): 1 broken variable read(s) repaired (compiler bug in the original)

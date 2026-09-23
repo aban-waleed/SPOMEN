@@ -28,10 +28,87 @@
           </Setter.Value>
         </Setter>
       </Style>
+      <Style x:Key="MiniBtn" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#242832" />
+        <Setter Property="Foreground" Value="#E8EAF0" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" CornerRadius="8" Padding="10,4,10,4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="#FF7A00" />
+                  <Setter Property="Foreground" Value="#0B0C0E" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
       <Style x:Key="GoBtn" BasedOn="{StaticResource BigBtn}" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="#FF7A00" />
         <Setter Property="Foreground" Value="#0B0C0E" />
         <Setter Property="BorderThickness" Value="0" />
+      </Style>
+      <Style x:Key="Seg" TargetType="{x:Type RadioButton}">
+        <Setter Property="Foreground" Value="#9AA0B0" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type RadioButton}">
+              <Border Name="pill" Background="#00000000" CornerRadius="14" Padding="0,7,0,7" Margin="2">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                  <Setter TargetName="pill" Property="Background" Value="#FF7A00" />
+                  <Setter Property="Foreground" Value="#0B0C0E" />
+                </Trigger>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False" />
+                    <Condition Property="UIElement.IsMouseOver" Value="True" />
+                  </MultiTrigger.Conditions>
+                  <Setter TargetName="pill" Property="Background" Value="#242832" />
+                  <Setter Property="Foreground" Value="#E8EAF0" />
+                </MultiTrigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="SegSmall" BasedOn="{StaticResource Seg}" TargetType="{x:Type RadioButton}">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type RadioButton}">
+              <Border Name="pill" Background="#00000000" CornerRadius="10" Padding="0,4,0,4" Margin="2">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                  <Setter TargetName="pill" Property="Background" Value="#FF7A00" />
+                  <Setter Property="Foreground" Value="#0B0C0E" />
+                </Trigger>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False" />
+                    <Condition Property="UIElement.IsMouseOver" Value="True" />
+                  </MultiTrigger.Conditions>
+                  <Setter TargetName="pill" Property="Background" Value="#242832" />
+                  <Setter Property="Foreground" Value="#E8EAF0" />
+                </MultiTrigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
       </Style>
       <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="#14161B" />
@@ -49,7 +126,20 @@
     </StackPanel>
     <TextBlock Text="PS4DEBUG  •  GOLDHEN" FontSize="10" Foreground="#FF7A00" Margin="33,0,0,2" />
     <Rectangle Height="2" Fill="#FF7A00" Margin="0,6,0,14" RadiusX="1" RadiusY="1" />
-    <TextBlock Name="lblStatus" Text="Disconnected" Foreground="#9AA0B0" FontSize="12" Margin="0,0,0,14" />
+    <TextBlock Name="lblStatus" Text="Disconnected" Foreground="#9AA0B0" FontSize="12" Margin="0,0,0,12" />
+    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="17" Margin="0,0,0,4">
+      <UniformGrid Columns="2">
+        <RadioButton Name="segMp" Content="MULTIPLAYER" Style="{StaticResource Seg}" GroupName="game" IsChecked="True" />
+        <RadioButton Name="segZm" Content="ZOMBIES" Style="{StaticResource Seg}" GroupName="game" />
+      </UniformGrid>
+    </Border>
+    <Border Name="subRow" Background="#0F1114" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="13" Margin="90,0,90,4">
+      <UniformGrid Columns="2">
+        <RadioButton Name="segMenus" Content="MOD MENUS" Style="{StaticResource SegSmall}" GroupName="mpkind" IsChecked="True" />
+        <RadioButton Name="segGm" Content="GAME MODES" Style="{StaticResource SegSmall}" GroupName="mpkind" />
+      </UniformGrid>
+    </Border>
+    <TextBlock Name="lblTarget" Text="maps/mp/gametypes/_clientids.gsc" Foreground="#5A6172" FontSize="10" FontFamily="Consolas" HorizontalAlignment="Center" Margin="0,0,0,12" />
     <Grid Margin="0,0,0,10">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
@@ -69,10 +159,25 @@
       <Button Name="btnConnect" Content="Connect" Style="{StaticResource BigBtn}" Height="52" Margin="0,0,5,5" />
       <Button Name="btnAttach" Content="Attach" Style="{StaticResource BigBtn}" Height="52" Margin="5,0,0,5" />
       <Button Name="btnSel" Content="Select GSC" Style="{StaticResource BigBtn}" Height="52" Margin="0,5,5,0" />
-      <Button Name="btnInj" Content="INJECT" Style="{StaticResource BigBtn}" Height="52" Margin="5,5,0,0" FontSize="16" FontWeight="Bold" />
+      <Button Name="btnLib" Content="Library" Style="{StaticResource BigBtn}" Height="52" Margin="5,5,0,0" />
     </UniformGrid>
+    <Button Name="btnInj" Content="INJECT" Style="{StaticResource BigBtn}" Height="48" Margin="0,10,0,0" FontSize="16" FontWeight="Bold" BorderBrush="#FF7A00" />
     <Button Name="btnPublic" Content="PUBLIC MATCH" Style="{StaticResource GoBtn}" Height="40" Margin="0,10,0,0" FontSize="14" FontWeight="Bold" />
-    <TextBox Name="txtLog" Margin="0,10,0,0" Height="80" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="11" AcceptsReturn="True" TextWrapping="Wrap" />
+    <UniformGrid Columns="2" Margin="0,8,0,0">
+      <Button Name="btnUninject" Content="UNINJECT ALL" Style="{StaticResource BigBtn}" Height="40" Margin="0,0,5,0" FontSize="13" FontWeight="Bold" ToolTip="Restore the stock script(s) replaced by this session. Start a new match afterwards." />
+      <Button Name="btnGive" Content="GIVE" Style="{StaticResource BigBtn}" Height="40" Margin="5,0,0,0" FontSize="13" FontWeight="Bold" ToolTip="Give rank, prestige and XP to players connected to your match." />
+    </UniformGrid>
+    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="10" Margin="0,10,0,0" Padding="10,2,4,2">
+      <DockPanel>
+        <TextBlock Text="&gt;" DockPanel.Dock="Left" Foreground="#FF7A00" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0" />
+        <Button Name="btnSend" Content="SEND" DockPanel.Dock="Right" Style="{StaticResource MiniBtn}" VerticalAlignment="Center" Margin="6,0,0,0" />
+        <Grid>
+          <TextBox Name="txtCmd" Background="#00000000" BorderThickness="0" FontFamily="Consolas" FontSize="12" Padding="0,4,0,4" VerticalContentAlignment="Center" CaretBrush="#FF7A00" />
+          <TextBlock Name="lblCmdHint" Text="console command  ·  Enter to send, arrows for history" Foreground="#5A6172" FontSize="11" VerticalAlignment="Center" IsHitTestVisible="False" />
+        </Grid>
+      </DockPanel>
+    </Border>
+    <TextBox Name="txtLog" Margin="0,8,0,0" Height="80" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="11" AcceptsReturn="True" TextWrapping="Wrap" />
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0">
       <TextBlock Text="by Medo" Foreground="#9AA0B0" FontSize="11" VerticalAlignment="Center" Margin="0,0,10,0" />
       <Button Name="btnCoffee" Style="{StaticResource BigBtn}" Height="32" Padding="16,0,16,0" ToolTip="https://ko-fi.com/imedo">

@@ -1,0 +1,24 @@
+Zombie Land v1.6  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from _ambientpackage.gsc, PS3 / Xbox 360 (big endian), 174 functions)
+  - doraygunm3(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doraygunm4(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dolightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - zvx1337bro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - inithatchetexecutioner(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dragongun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - swarmminigun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketmagnum(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - boomknife(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randomcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - spawncarepackage(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawncarepackage(): iprintln called with 2 arguments (import said 1) - fixed
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 152 functions)
+  - rgb(): 2 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/gametypes/_rank.gsc  (from _rank.gsc, PS3 / Xbox 360 (big endian), 41 functions)

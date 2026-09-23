@@ -1,0 +1,15 @@
+Revolution (GSC archive)  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 238 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - createmenu(): disabled - it would corrupt the PS4 script stack (call to add_option with a broken stack)
+  - updateplayersmenu(): disabled - it would corrupt the PS4 script stack (call to add_option with a broken stack)
+  - menuinit(): disabled - it would corrupt the PS4 script stack (call to submenu with a broken stack)
+  - newsbarslol(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - spawnjerichomissile(): radiusdamage called with 7 arguments (import said 5) - fixed
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - minespawner(): radiusdamage called with 7 arguments (import said 5) - fixed
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - setprestigemaster(): disabled - it would corrupt the PS4 script stack (call to setrank with a broken stack)
+  - jet_weapons_think(): disabled - it would corrupt the PS4 script stack (call to tracebullet with a broken stack)

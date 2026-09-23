@@ -16,6 +16,8 @@ public sealed class InjectorEngine
 
 	public const string TARGET_ZM = "maps/mp/gametypes_zm/_clientids.gsc";
 
+	public const string TARGET_GM = "maps/mp/_development_dvars.gsc";
+
 	private const int TEXT_FILEOFF = 16384;
 
 	private const int TEXT_SIZE = 11798596;
@@ -101,6 +103,23 @@ public sealed class InjectorEngine
 
 	public static int LastPid;
 
+	/// <summary>One asset header this tool has patched, with the fields it overwrote.</summary>
+	public sealed record InjectedAsset(int Pid, string Target, ulong Header, uint OrigSize, ulong OrigBuffer, ulong OrigEnd /* +24 = next asset's name ptr, kept for repair only */, ulong OurBuffer);
+
+	/// <summary>One game-side buffer per replaced slot, so a multi-script pack does not overwrite itself.</summary>
+	private static readonly Dictionary<(int Pid, string Target), ulong> s_bufs = new Dictionary<(int, string), ulong>();
+
+	private static readonly List<InjectedAsset> s_injected = new List<InjectedAsset>();
+
+	/// <summary>Number of scripts this tool has replaced in the given process and not yet restored.</summary>
+	public static int InjectedCount(int pid)
+	{
+		lock (s_injected)
+		{
+			return s_injected.Count(a => a.Pid == pid);
+		}
+	}
+
 	private const uint CAP = 1048576u;
 
 	public const ulong VADDR_DB_FINDXASSETHEADER = 1829248uL;
@@ -144,12 +163,38 @@ public sealed class InjectorEngine
 		return BitConverter.GetBytes(v);
 	}
 
+	/// <summary>Set for codzm.elf: the LUI lua_State offset is multiplayer-only, so allocate through ps4debug instead.</summary>
+	private bool debugAllocOnly;
+
+	/// <summary>
+	/// Copy the stock script's checksum (header bytes 8-11) into the injected file. The original tool
+	/// always did this; Fortis does it only for the royal menus and leaves converted menus at zero.
+	/// </summary>
+	public bool CopyStockCrc { get; set; } = true;
+
+	/// <summary>Folder that receives a copy of each stock script before it is replaced. One sub-folder per injection.</summary>
+	public static string DumpDir { get; set; } = Path.Combine(
+		Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create),
+		"SPOMEN", "Dumps");
+
+	/// <summary>Path of the most recent stock-script dump, or empty if none was written.</summary>
+	public static string LastDumpPath { get; private set; } = "";
+
 	public void Inject(int pid, string procName, string localGsccPath, string target)
 	{
+		debugAllocOnly = procName.Contains("codzm");
 		byte[] file = File.ReadAllBytes(localGsccPath);
 		if (file.Length < 64 || file[0] != 128 || file[1] != 71)
 		{
 			throw new Exception("Not a compiled GSC (bad magic)");
+		}
+		uint incLe = BitConverter.ToUInt32(file, 12);
+		if (incLe < 64 || incLe > (uint)file.Length)
+		{
+			uint incBe = (uint)((file[12] << 24) | (file[13] << 16) | (file[14] << 8) | file[15]);
+			throw new Exception(incBe >= 64 && incBe <= (uint)file.Length
+				? "This is a PS3 / Xbox 360 compiled GSC (big-endian). The PS4 needs a converted file - pick it from the library or convert it first."
+				: "Compiled GSC header is corrupt (section offset out of range)");
 		}
 		ulong dbAddr = FindDb(pid);
 		if (dbAddr == 0L)
@@ -190,20 +235,50 @@ public sealed class InjectorEngine
 		}
 		uint v = BitConverter.ToUInt32(dbg.Read(pid, buffer + 8, 4u), 0);
 		byte[] nb = (byte[])file.Clone();
-		Buffer.BlockCopy(U32(v), 0, nb, 8, 4);
+		if (CopyStockCrc)
+		{
+			Buffer.BlockCopy(U32(v), 0, nb, 8, 4);
+		}
+		log($"[.] header crc: file 0x{BitConverter.ToUInt32(file, 8):X8}, stock 0x{v:X8}, injected 0x{BitConverter.ToUInt32(nb, 8):X8}");
 		if ((uint)(nb.Length + 4096) > 1048576u)
 		{
 			throw new Exception("File too big (max 1MB)");
 		}
-		if (s_buf == 0L)
+		uint origSize = BitConverter.ToUInt32(value, 8);
+		ulong origBuffer = buffer;
+		ulong origEnd = BitConverter.ToUInt64(value, 24);
+		ulong newBuf;
+		lock (s_bufs)
 		{
-			s_buf = GameAlloc(pid, 1048576);
+			if (!s_bufs.TryGetValue((pid, target), out newBuf))
+			{
+				newBuf = GameAlloc(pid, (int)CAP);
+				s_bufs[(pid, target)] = newBuf;
+			}
 		}
-		ulong newBuf = s_buf;
+		s_buf = newBuf;
+		lock (s_injected)
+		{
+			// Re-injecting the same target: keep the stock values recorded the first time,
+			// otherwise "original" would point at our own buffer.
+			if (!s_injected.Any(a => a.Pid == pid && a.Header == data))
+			{
+				s_injected.Add(new InjectedAsset(pid, target, data, origSize, origBuffer, origEnd, newBuf));
+				log($"[+] saved original {target}: size {origSize}, buffer 0x{origBuffer:X}");
+				DumpOriginal(pid, target, origBuffer, origSize, localGsccPath);
+			}
+		}
 		dbg.Write(pid, newBuf, nb);
+		byte[] verify = dbg.Read(pid, newBuf, (uint)nb.Length);
+		if (!verify.AsSpan().SequenceEqual(nb))
+		{
+			throw new Exception("script buffer readback mismatch - write failed");
+		}
 		dbg.WriteU64(pid, data + 16, newBuf);
 		dbg.WriteU32(pid, data + 8, (uint)nb.Length);
-		dbg.WriteU64(pid, data + 24, (ulong)((long)newBuf + (long)nb.Length + 1));
+		// The asset record is 24 bytes: name(8) size(4) pad(4) buffer(8). Offset 24 is the NEXT
+		// asset's name pointer (e.g. _copter.gsc after _clientids.gsc). The original tool wrote
+		// buffer+size+1 there, which renamed the neighbour and crashed any menu that links to it.
 		uint back = BitConverter.ToUInt32(dbg.Read(pid, data + 8, 4u), 0);
 		if (back != (uint)nb.Length)
 		{
@@ -212,6 +287,148 @@ public sealed class InjectorEngine
 		LastData = data;
 		LastPid = pid;
 		log($"[+] Injected OK, size {nb.Length}");
+	}
+
+	/// <summary>
+	/// Injects every script of a library pack into its own slot. Anything this session injected
+	/// earlier is removed first so scripts from two packs never mix. If one script fails, the
+	/// ones already written are rolled back and the error is rethrown.
+	/// </summary>
+	public int InjectPack(int pid, string procName, LibraryPack pack)
+	{
+		if (InjectedCount(pid) > 0)
+		{
+			log("[.] removing previously injected script(s) first");
+			UninjectAll(pid);
+		}
+		int done = 0;
+		// Library packs are injected the way Fortis injects converted menus: header bytes 8-11 stay as
+		// compiled (zero) instead of taking the stock script's checksum.
+		bool savedCrc = CopyStockCrc;
+		CopyStockCrc = false;
+		try
+		{
+		foreach (LibraryScript s in pack.Scripts)
+		{
+			try
+			{
+				log($"[.] {pack.Name}: {s.Target}");
+				Inject(pid, procName, s.File, s.Target);
+				done++;
+			}
+			catch (Exception ex)
+			{
+				log($"[!] {s.Target}: {ex.Message}");
+				if (done > 0)
+				{
+					log("[.] rolling back the script(s) already injected");
+					try
+					{
+						UninjectAll(pid);
+					}
+					catch (Exception rx)
+					{
+						log("[!] rollback: " + rx.Message);
+					}
+				}
+				throw new Exception($"pack '{pack.Name}' failed at {s.Target}: {ex.Message}");
+			}
+		}
+		}
+		finally
+		{
+			CopyStockCrc = savedCrc;
+		}
+		log($"[+] pack '{pack.Name}': {done} script(s) injected");
+		return done;
+	}
+
+	/// <summary>Writes the game's current copy of <paramref name="target"/> to disk. Never throws: a failed dump is logged and injection continues.</summary>
+	private void DumpOriginal(int pid, string target, ulong buffer, uint size, string menuPath)
+	{
+		try
+		{
+			if (size == 0 || size > CAP)
+			{
+				log($"[!] dump skipped: implausible size {size}");
+				return;
+			}
+			string menu = Path.GetFileNameWithoutExtension(menuPath);
+			string safeMenu = string.Concat(menu.Split(Path.GetInvalidFileNameChars()));
+			string dir = Path.Combine(DumpDir, $"{DateTime.Now:yyyyMMdd_HHmmss}_{safeMenu}");
+			Directory.CreateDirectory(dir);
+			LastDumpPath = GscSpy.Dump(dbg, pid, new LoadedGsc(buffer, size, target), dir);
+			log($"[+] stock script dumped: {LastDumpPath}");
+		}
+		catch (Exception ex)
+		{
+			log("[!] dump failed: " + ex.Message);
+		}
+	}
+
+	/// <summary>
+	/// Restores the stock buffer pointer, size and end pointer of every script this tool
+	/// replaced in <paramref name="pid"/>. The game reads the stock script on its next load,
+	/// so a match restart is still needed to stop a menu that is already running.
+	/// Returns the number of scripts restored.
+	/// </summary>
+	public int UninjectAll(int pid)
+	{
+		List<InjectedAsset> mine;
+		lock (s_injected)
+		{
+			// Entries for other pids belong to a game process that no longer exists.
+			s_injected.RemoveAll(a => a.Pid != pid);
+			mine = s_injected.Where(a => a.Pid == pid).ToList();
+		}
+		if (mine.Count == 0)
+		{
+			throw new Exception("Nothing to uninject - no script was replaced in this process by this session");
+		}
+		int restored = 0;
+		foreach (InjectedAsset a in mine)
+		{
+			try
+			{
+				ulong curBuffer = BitConverter.ToUInt64(dbg.Read(pid, a.Header + 16, 8u), 0);
+				if (curBuffer != a.OurBuffer)
+				{
+					// The game already points somewhere else (asset reloaded, or restored by another tool).
+					// Writing stale values over it could corrupt a live asset, so leave it alone.
+					log($"[!] {a.Target}: header no longer points at our buffer (0x{curBuffer:X}), skipped");
+					continue;
+				}
+				dbg.WriteU64(pid, a.Header + 16, a.OrigBuffer);
+				dbg.WriteU32(pid, a.Header + 8, a.OrigSize);
+				// Repair the neighbour's name pointer only if something (an older build) changed it.
+				ulong curNext = BitConverter.ToUInt64(dbg.Read(pid, a.Header + 24, 8u), 0);
+				if (curNext != a.OrigEnd)
+				{
+					dbg.WriteU64(pid, a.Header + 24, a.OrigEnd);
+					log($"[+] {a.Target}: neighbour asset name pointer repaired");
+				}
+				uint back = BitConverter.ToUInt32(dbg.Read(pid, a.Header + 8, 4u), 0);
+				ulong backBuf = BitConverter.ToUInt64(dbg.Read(pid, a.Header + 16, 8u), 0);
+				if (back != a.OrigSize || backBuf != a.OrigBuffer)
+				{
+					throw new Exception($"restore readback mismatch (size {back}, buffer 0x{backBuf:X})");
+				}
+				restored++;
+				log($"[+] restored {a.Target}: size {a.OrigSize}, buffer 0x{a.OrigBuffer:X}");
+			}
+			catch (Exception ex)
+			{
+				log($"[!] {a.Target}: {ex.Message}");
+				throw;
+			}
+		}
+		lock (s_injected)
+		{
+			s_injected.RemoveAll(a => a.Pid == pid);
+		}
+		LastData = 0uL;
+		log($"[+] Uninject done: {restored} script(s) restored. Start a new match to unload a running menu.");
+		return restored;
 	}
 
 	public string Probe(int pid, string target)
@@ -278,6 +495,169 @@ public sealed class InjectorEngine
 			sb.AppendLine("buf unreadable: " + ex2.Message);
 		}
 		return sb.ToString();
+	}
+
+	/// <summary>Session setter and mask variable located by byte signature, per process.</summary>
+	private static readonly Dictionary<int, (ulong Setter, ulong Mask)> s_session = new Dictionary<int, (ulong, ulong)>();
+
+	// SetSessionMode(int bit, bool on) as compiled in both codmp.elf and codzm.elf:
+	//   push rbp; mov rbp,rsp; push r14; push rbx
+	//   cmp byte [rip+enabled],1 ; mov ebx,esi ; mov r14d,edi ; jne +..
+	//   lea rsi,[rip+str] ; xor edi,edi ; xor eax,eax ; call Com_Printf
+	//   mov eax,1 ; mov ecx,r14d ; shl eax,cl ; test bl,bl ; je +..
+	//   or eax,[rip+mask] ; jmp +.. ; andn eax,eax,[rip+mask]
+	//   mov [rip+mask],eax ; pop rbx ; pop r14 ; pop rbp ; ret
+	// '?' marks rip-relative displacements, call targets and short-jump offsets that differ per build.
+	private static readonly string SessionSetterSig =
+		"55 48 89 E5 41 56 53 80 3D ? ? ? ? 01 89 F3 41 89 FE 75 ? " +
+		"48 8D 35 ? ? ? ? 31 FF 31 C0 E8 ? ? ? ? " +
+		"B8 01 00 00 00 44 89 F1 D3 E0 84 DB 74 ? 0B 05 ? ? ? ? EB ? " +
+		"C4 E2 78 F2 05 ? ? ? ? 89 05 ? ? ? ? 5B 41 5E 5D C3";
+
+	private const int SessionSetterMaskDispOff = 0x46; // disp32 of the final "mov [rip+mask],eax"
+
+	// Cbuf_AddText(int localClientNum, const char* text) in codmp.elf and codzm.elf:
+	//   push rbp; mov rbp,rsp; push r14; push rbx; mov r14d,edi; mov edi,0x37; mov rbx,rsi; call Sys_EnterCriticalSection
+	//   movzx eax,byte [rbx]; mov ecx,eax; or ecx,0x20; cmp ecx,0x70; jne ..   ('p' prefix check)
+	//   movzx eax,byte [rbx+1]; xor ecx,ecx; and al,0xFC; cmp al,0x30; sete cl; movzx eax,[rbx+rcx*2]; lea rbx,[rbx+rcx*2]
+	//   movsxd rsi,r14d; test al,al; je ..
+	private static readonly string CbufAddTextSig =
+		"55 48 89 E5 41 56 53 41 89 FE BF 37 00 00 00 48 89 F3 E8 ? ? ? ? " +
+		"0F B6 03 89 C1 83 C9 20 83 F9 70 75 ? 0F B6 43 01 31 C9 24 FC 3C 30 0F 94 C1 " +
+		"0F B6 04 4B 48 8D 1C 4B 49 63 F6 84 C0 74 ?";
+
+	private static readonly Dictionary<int, ulong> s_cbuf = new Dictionary<int, ulong>();
+
+	/// <summary>Finds Cbuf_AddText by signature so console commands work on both executables. Cached per process.</summary>
+	public ulong FindCbufAddText(int pid)
+	{
+		lock (s_cbuf)
+		{
+			if (s_cbuf.TryGetValue(pid, out ulong cached))
+			{
+				return cached;
+			}
+		}
+		(byte[] sig, bool[] wild) = ParseSig(CbufAddTextSig);
+		foreach ((byte[] buf, ulong bufBase) in RxChunks(pid))
+		{
+			int i = IndexOfSig(buf, 0, sig, wild);
+			if (i < 0)
+			{
+				continue;
+			}
+			ulong fn = bufBase + (ulong)i;
+			lock (s_cbuf)
+			{
+				s_cbuf[pid] = fn;
+			}
+			log($"[+] Cbuf_AddText 0x{fn:X} (by signature)");
+			return fn;
+		}
+		throw new Exception("Cbuf_AddText signature not found in this process");
+	}
+
+	private static (byte[] Bytes, bool[] Wild) ParseSig(string sig)
+	{
+		string[] parts = sig.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		byte[] b = new byte[parts.Length];
+		bool[] w = new bool[parts.Length];
+		for (int i = 0; i < parts.Length; i++)
+		{
+			if (parts[i] == "?")
+			{
+				w[i] = true;
+			}
+			else
+			{
+				b[i] = Convert.ToByte(parts[i], 16);
+			}
+		}
+		return (b, w);
+	}
+
+	private static int IndexOfSig(byte[] hay, int from, byte[] sig, bool[] wild)
+	{
+		for (int i = from; i + sig.Length <= hay.Length; i++)
+		{
+			int k = 0;
+			while (k < sig.Length && (wild[k] || hay[i + k] == sig[k]))
+			{
+				k++;
+			}
+			if (k == sig.Length)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/// <summary>Walks every readable+executable mapping in 256 KB chunks with a 128-byte overlap.</summary>
+	private IEnumerable<(byte[] Buf, ulong Base)> RxChunks(int pid)
+	{
+		List<(ulong Start, ulong End, ulong Offset, uint Prot)> maps = (from m in dbg.Maps(pid)
+			where (m.Prot & 5) == 5 && m.End > m.Start + 64
+			select m).ToList();
+		foreach (var m in maps)
+		{
+			ulong mapLen = m.End - m.Start;
+			byte[] tail = Array.Empty<byte>();
+			for (ulong off = 0uL; off + 32 < mapLen; off += 262016)
+			{
+				uint want = (uint)Math.Min(262144uL, mapLen - off);
+				byte[] chunk;
+				try
+				{
+					chunk = dbg.Read(pid, m.Start + off, want);
+				}
+				catch
+				{
+					break;
+				}
+				if (chunk.Length != want)
+				{
+					break;
+				}
+				yield return (tail.Concat(chunk).ToArray(), m.Start + off - (ulong)tail.Length);
+				tail = chunk[^Math.Min(128, chunk.Length)..];
+			}
+		}
+	}
+
+	/// <summary>
+	/// Finds the game's session-mode setter by signature and reads the mask variable it writes.
+	/// Works on codmp.elf and codzm.elf without build-specific offsets. Cached per process.
+	/// </summary>
+	public (ulong Setter, ulong Mask) FindSessionSetter(int pid)
+	{
+		lock (s_session)
+		{
+			if (s_session.TryGetValue(pid, out var cached))
+			{
+				return cached;
+			}
+		}
+		(byte[] sig, bool[] wild) = ParseSig(SessionSetterSig);
+		foreach ((byte[] buf, ulong bufBase) in RxChunks(pid))
+		{
+			int i = IndexOfSig(buf, 0, sig, wild);
+			if (i < 0)
+			{
+				continue;
+			}
+			ulong setter = bufBase + (ulong)i;
+			int disp = BitConverter.ToInt32(buf, i + SessionSetterMaskDispOff);
+			ulong mask = setter + (ulong)SessionSetterMaskDispOff + 4 + (ulong)(long)disp;
+			var found = (setter, mask);
+			lock (s_session)
+			{
+				s_session[pid] = found;
+			}
+			log($"[+] session setter 0x{setter:X}, mask var 0x{mask:X} (by signature)");
+			return found;
+		}
+		throw new Exception("session setter signature not found in this process");
 	}
 
 	private ulong FindDb(int pid)
@@ -360,6 +740,10 @@ public sealed class InjectorEngine
 			s_stub = dbg.RpcInstall(pid);
 			s_pid = pid;
 			s_buf = 0uL;
+			lock (s_bufs)
+			{
+				s_bufs.Clear();
+			}
 		}
 		return s_stub;
 	}
@@ -395,43 +779,71 @@ public sealed class InjectorEngine
 
 	public void SendCommand(int pid, string text)
 	{
-		ulong gb = GameBase(pid);
-		if (gb == 0L)
+		ulong fn;
+		try
 		{
-			throw new Exception("cannot resolve game base");
+			fn = FindCbufAddText(pid);
 		}
-		byte[] cmd = Encoding.ASCII.GetBytes(text.Replace("\r", "") + "\0");
+		catch (Exception ex)
+		{
+			log("[!] " + ex.Message + "; trying fixed MP offset");
+			ulong gb = GameBase(pid);
+			if (gb == 0L)
+			{
+				throw new Exception("cannot resolve game base");
+			}
+			fn = gb + 3569312;
+		}
+		byte[] cmd = Encoding.ASCII.GetBytes(text.Replace("\r", "") + "\n\0");
 		ulong cmdAddr = dbg.Alloc(pid, (uint)cmd.Length);
 		dbg.Write(pid, cmdAddr, cmd);
 		ulong stub = RpcStub(pid);
-		dbg.RpcCall(pid, stub, gb + 3569312, 0uL, cmdAddr);
+		dbg.RpcCall(pid, stub, fn, 0uL, cmdAddr);
 		log("[+] queued: " + text.Replace("\n", " | "));
 	}
 
 	public void SetSessionMode(int pid, ulong mode, bool on)
 	{
-		ulong gb = GameBase(pid);
-		if (gb == 0L)
+		ulong setter;
+		try
 		{
-			throw new Exception("cannot resolve game base");
+			setter = FindSessionSetter(pid).Setter;
 		}
-		if (!LooksLikeSessionSetter(pid, gb))
+		catch (Exception ex)
 		{
-			throw new Exception("session setter signature mismatch (bad base) - aborted before RPC");
+			// Fall back to the original multiplayer base+offset path.
+			log("[!] " + ex.Message + "; trying fixed MP offsets");
+			ulong gb = GameBase(pid);
+			if (gb == 0L)
+			{
+				throw new Exception("cannot resolve game base");
+			}
+			if (!LooksLikeSessionSetter(pid, gb))
+			{
+				throw new Exception("session setter signature mismatch (bad base) - aborted before RPC");
+			}
+			setter = gb + 3596256;
 		}
-		log($"[.] base=0x{gb:X} set bit{mode}={on}");
+		log($"[.] setter=0x{setter:X} set bit{mode}={on}");
 		ulong stub = RpcStub(pid);
-		dbg.RpcCall(pid, stub, gb + 3596256, mode, (ulong)(on ? 1 : 0));
+		dbg.RpcCall(pid, stub, setter, mode, (ulong)(on ? 1 : 0));
 	}
 
 	public uint SessionMask(int pid)
 	{
-		ulong gb = GameBase(pid);
-		if (gb == 0L)
+		try
 		{
-			throw new Exception("cannot resolve game base");
+			return BitConverter.ToUInt32(dbg.Read(pid, FindSessionSetter(pid).Mask, 4u), 0);
 		}
-		return BitConverter.ToUInt32(dbg.Read(pid, gb + 37919448, 4u), 0);
+		catch
+		{
+			ulong gb = GameBase(pid);
+			if (gb == 0L)
+			{
+				throw new Exception("cannot resolve game base");
+			}
+			return BitConverter.ToUInt32(dbg.Read(pid, gb + 37919448, 4u), 0);
+		}
 	}
 
 	public void SpoofLobby(int pid)
@@ -460,6 +872,13 @@ public sealed class InjectorEngine
 		SetSessionMode(pid, 2uL, on: true);
 		SetSessionMode(pid, 3uL, on: false);
 		SetSessionMode(pid, 1uL, on: false);
+		try
+		{
+			log($"[+] sessionmask=0x{SessionMask(pid):X8} (want bit2 set, bits 1+3 clear)");
+		}
+		catch
+		{
+		}
 	}
 
 	public uint EnableStatSaving(int pid)
@@ -660,6 +1079,170 @@ public sealed class InjectorEngine
 					}
 				}
 			}
+		}
+	}
+
+	/// <summary>One connected server client and what the server currently holds for it.</summary>
+	public sealed record ClientInfo(int Slot, ulong Client, ulong Ps, uint DdlId, string Name, int Rank, int Prestige, int RankXp, byte[] Raw);
+
+	/// <summary>
+	/// Reads every connected client from the server's client list: name, and the rank / prestige /
+	/// rank XP the server holds in that client's stat tree. Read-only apart from the RPC stub.
+	/// </summary>
+	public List<ClientInfo> ReadRoster(int pid)
+	{
+		lock (RpcGate)
+		{
+			ulong gb = GameBase(pid);
+			if (gb == 0L)
+			{
+				throw new Exception("cannot resolve game base");
+			}
+			ulong stub = RpcStub(pid);
+			ulong tree = dbg.RpcCall(pid, stub, gb + OFF_DDL_TREE_FN);
+			ulong pPlevel = 0uL, pRank = 0uL, pRankxp = 0uL;
+			if (PlausiblePtr(tree))
+			{
+				pPlevel = BuildStatPath(pid, gb, stub, tree, new[] { "playerstatslist", "plevel", "StatValue" });
+				pRank = BuildStatPath(pid, gb, stub, tree, new[] { "playerstatslist", "rank", "StatValue" });
+				pRankxp = BuildStatPath(pid, gb, stub, tree, new[] { "playerstatslist", "rankxp", "StatValue" });
+			}
+			Dictionary<int, LobbyPlayerInfo> names = new Dictionary<int, LobbyPlayerInfo>();
+			try
+			{
+				foreach (LobbyPlayerInfo p in LobbyReader.Read(dbg, pid, gb))
+				{
+					names[p.Slot] = p;
+				}
+			}
+			catch (Exception ex)
+			{
+				log("[!] lobby names: " + ex.Message);
+			}
+			List<ClientInfo> list = new List<ClientInfo>();
+			foreach (var (idx, c, ps) in Clients(pid, gb))
+			{
+				byte[] raw = dbg.Read(pid, c, (uint)CLIENT_STRIDE);
+				uint ddlId = BitConverter.ToUInt32(raw, 0);
+				string name = names.TryGetValue((int)idx, out LobbyPlayerInfo? lp) ? lp.Name + (lp.IsHost || lp.IsLocal ? " (you)" : "") : "";
+				int rank = -1, prestige = -1, xp = -1;
+				if (pRank != 0L)
+				{
+					try
+					{
+						rank = (int)dbg.RpcCall(pid, stub, gb + OFF_DDL_GET, ddlId, pRank);
+						prestige = (int)dbg.RpcCall(pid, stub, gb + OFF_DDL_GET, ddlId, pPlevel);
+						xp = (int)dbg.RpcCall(pid, stub, gb + OFF_DDL_GET, ddlId, pRankxp);
+					}
+					catch (Exception ex)
+					{
+						log($"[!] client {idx} stat read: {ex.Message}");
+					}
+				}
+				list.Add(new ClientInfo((int)idx, c, ps, ddlId, name, rank, prestige, xp, raw));
+			}
+			return list;
+		}
+	}
+
+	/// <summary>XP at which each level (index = internal rank 0-54) begins. From the game's rank table.</summary>
+	public static readonly int[] LevelMinXp =
+	{
+		0, 800, 1900, 3300, 5300, 7900, 11100, 14900, 19300, 24300, 30100, 36700, 44100, 52300, 61300, 71100, 81700, 93100, 105300, 118300,
+		132100, 146700, 162100, 178300, 195300, 213100, 231700, 251100, 271300, 292300, 314100, 337100, 361300, 386700, 413300, 441100, 470100, 500300, 531700, 564300,
+		598100, 633100, 669300, 706700, 745300, 785100, 826100, 868300, 911700, 956300, 1002100, 1049100, 1097300, 1146700, 1197300
+	};
+
+	public const int MAX_XP = 1249100;
+
+	public static int MinXpForRank(uint rank) => LevelMinXp[Math.Min((int)rank, LevelMinXp.Length - 1)];
+
+	public const uint MAX_PRESTIGE = 11u;   // Prestige Master
+
+	public const uint MAX_RANK = 54u;       // internal 0-based; shown in game as level 55
+
+	/// <summary>
+	/// Writes prestige, rank and rank XP into the server-side stat tree of the selected clients only.
+	/// Stat saving is enabled around the writes and the session bits are restored afterwards, so the
+	/// values persist to each client's profile when the match ends. Returns the slots actually written.
+	/// </summary>
+	public List<int> GiveStats(int pid, IReadOnlyCollection<int> slots, uint prestige, uint rank, int rankXp)
+	{
+		if (slots == null || slots.Count == 0)
+		{
+			throw new ArgumentException("no players selected");
+		}
+		if (prestige > MAX_PRESTIGE)
+		{
+			throw new ArgumentOutOfRangeException(nameof(prestige), $"prestige must be 0-{MAX_PRESTIGE}");
+		}
+		if (rank > MAX_RANK)
+		{
+			throw new ArgumentOutOfRangeException(nameof(rank), $"rank must be 0-{MAX_RANK}");
+		}
+		if (rankXp < 0 || rankXp > MAX_XP)
+		{
+			throw new ArgumentOutOfRangeException(nameof(rankXp), $"rank XP must be 0-{MAX_XP}");
+		}
+		if (rankXp < MinXpForRank(rank))
+		{
+			throw new ArgumentOutOfRangeException(nameof(rankXp), $"level {rank + 1} needs at least {MinXpForRank(rank)} XP or the game will drop the level");
+		}
+		lock (RpcGate)
+		{
+			ulong gb = GameBase(pid);
+			if (gb == 0L)
+			{
+				throw new Exception("cannot resolve game base");
+			}
+			ulong stub = RpcStub(pid);
+			// Never flip session flags here: toggling system link / private mid-session drops the other
+			// consoles. PUBLIC MATCH already puts the session into stat-saving mode; just check and warn.
+			uint mask = SessionMask(pid);
+			if ((mask & 4) == 0)
+			{
+				log($"[!] sessionmask=0x{mask:X8}: stat saving is OFF. Press PUBLIC MATCH at the countdown first or the values will not persist.");
+			}
+			List<int> done = new List<int>();
+			{
+				ulong tree = dbg.RpcCall(pid, stub, gb + OFF_DDL_TREE_FN);
+				if (!PlausiblePtr(tree))
+				{
+					throw new Exception($"bad ddl tree 0x{tree:X}");
+				}
+				ulong pPlevel = BuildStatPath(pid, gb, stub, tree, new[] { "playerstatslist", "plevel", "StatValue" });
+				ulong pRank = BuildStatPath(pid, gb, stub, tree, new[] { "playerstatslist", "rank", "StatValue" });
+				ulong pRankxp = BuildStatPath(pid, gb, stub, tree, new[] { "playerstatslist", "rankxp", "StatValue" });
+				HashSet<int> want = new HashSet<int>(slots);
+				foreach (var (idx, c, _) in Clients(pid, gb))
+				{
+					if (!want.Contains((int)idx))
+					{
+						continue;
+					}
+					uint ddlId = BitConverter.ToUInt32(dbg.Read(pid, c, 4u), 0);
+					ulong r1 = dbg.RpcCall(pid, stub, gb + OFF_DDL_SET_INT, ddlId, pPlevel, prestige);
+					ulong r2 = dbg.RpcCall(pid, stub, gb + OFF_DDL_SET_INT, ddlId, pRank, rank);
+					ulong r3 = dbg.RpcCall(pid, stub, gb + OFF_DDL_SET_INT, ddlId, pRankxp, (ulong)rankXp);
+					int backRank = (int)dbg.RpcCall(pid, stub, gb + OFF_DDL_GET, ddlId, pRank);
+					int backPrestige = (int)dbg.RpcCall(pid, stub, gb + OFF_DDL_GET, ddlId, pPlevel);
+					if ((uint)backRank != rank || (uint)backPrestige != prestige)
+					{
+						log($"[!] slot {idx}: readback rank={backRank} prestige={backPrestige} (set returned {r1}/{r2}/{r3})");
+						continue;
+					}
+					done.Add((int)idx);
+					log($"[+] slot {idx}: prestige={prestige} rank={rank} rankxp={rankXp} verified");
+				}
+			}
+			foreach (int wanted in slots)
+			{
+				if (!done.Contains(wanted))
+				{
+					log($"[!] slot {wanted}: not connected or write not verified");
+				}
+			}
+			return done;
 		}
 	}
 
@@ -1034,6 +1617,10 @@ public sealed class InjectorEngine
 
 	public ulong GameAlloc(int pid, int len)
 	{
+		if (debugAllocOnly)
+		{
+			return dbg.Alloc(pid, (uint)len);
+		}
 		try
 		{
 			return LuaAlloc(pid, len);

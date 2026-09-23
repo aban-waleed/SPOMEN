@@ -17,5 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\menus\*.gscc" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\library\**\*" Link="library\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

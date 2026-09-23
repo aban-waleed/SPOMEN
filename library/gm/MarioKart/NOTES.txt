@@ -1,0 +1,5 @@
+MarioKart  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from MarioKart.gsc, PS3 / Xbox 360 (big endian), 39 functions)
+  ! slot guessed: the original file had a custom name, so it is installed as _development_dvars.gsc

@@ -1,0 +1,7 @@
+SupermanLobby  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from SupermanLobby.gsc, PS3 / Xbox 360 (big endian), 60 functions)
+  ! slot guessed: the original file had a custom name, so it is installed as _development_dvars.gsc
+  - pickcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - docamos(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions

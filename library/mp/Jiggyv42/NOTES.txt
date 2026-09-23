@@ -1,0 +1,23 @@
+Jiggyv42  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from _ambientpackage.gsc, PS3 / Xbox 360 (big endian), 395 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - discocamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lowstats(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - fireballstoggle(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - do_vcs(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - doraygunm3(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doraygunm4(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 349 functions)
+  - togglecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglecamoall(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - initphelinuke(): 1 broken variable read(s) repaired (compiler bug in the original)

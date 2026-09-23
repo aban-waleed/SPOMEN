@@ -1,0 +1,28 @@
+Jiggy v4.6  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_ambientpackage.gsc  (from maps/mp/_ambientpackage.gsc, PS3 / Xbox 360 (big endian), 352 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - togglecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - togglecamoall(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randommod(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - play_remote_fx(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - initphelinuke(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - discocamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lowstats(): 2 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_development_dvars.gsc  (from maps/mp/_development_dvars.gsc, PS3 / Xbox 360 (big endian), 93 functions)
+  - onplayerspawned(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/_sticky_grenade.gsc  (from maps/mp/_sticky_grenade.gsc, PS3 / Xbox 360 (big endian), 325 functions)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rocketteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - do_vcs(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - doraygunm3(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - doraygunm4(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - knifeteleportgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - fireballstoggle(): 1 broken variable read(s) repaired (compiler bug in the original)
+
+maps/mp/gametypes/_rank.gsc  (from maps/mp/gametypes/_rank.gsc, PS3 / Xbox 360 (big endian), 41 functions)

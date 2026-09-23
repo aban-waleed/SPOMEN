@@ -1,0 +1,27 @@
+Caked Up v1.8  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 339 functions)
+  - xxspnorm(): could not be converted (control flow leaves the function) - it now does nothing
+  - landsonground(): restored the missing notify('landedOnGround')
+  - menustructure(): disabled - it would corrupt the PS4 script stack (call to menuoption with a broken stack)
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - specnade(): playerlinkto called with 2 arguments (import said 1) - fixed
+  - noclip(): spawn called with 3 arguments (import said 2) - fixed
+  - noclip(): playerlinkto called with 2 arguments (import said 1) - fixed
+  - minespawner(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - minespawner(): radiusdamage called with 7 arguments (import said 5) - fixed
+  - spawnjerichomissile(): radiusdamage called with 7 arguments (import said 5) - fixed
+  - thungun(): giveweapon called with 3 arguments (import said 1) - fixed
+  - thundamage(): disabled - it would corrupt the PS4 script stack (argument count of setvelocity)
+  - packopunch(): giveweapon called with 3 arguments (import said 1) - fixed
+  - createramp(): spawn called with 5 arguments (import said 2) - fixed
+  - createramp(): spawn called with 5 arguments (import said 2) - fixed
+  - createwall(): spawn called with 5 arguments (import said 2) - fixed
+  - createwall(): spawn called with 5 arguments (import said 2) - fixed
+  - creategrids(): spawn called with 5 arguments (import said 2) - fixed
+  - jet(): spawn called with 3 arguments (import said 2) - fixed
+  - jet(): playerlinkto called with 2 arguments (import said 1) - fixed
+  - kickallbots(): disabled - it would corrupt the PS4 script stack (argument count of kick)
+  - doallunlockcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - doallunlockcamos(): disabled - it would corrupt the PS4 script stack (call to unlockallcamos with a broken stack)

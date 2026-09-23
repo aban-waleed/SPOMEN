@@ -1,0 +1,21 @@
+Zombieland 1.9.1  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 335 functions)
+  - typewritter(): could not be converted (invalid opcode 0xCA) - it now does nothing
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - camochanger(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - mustangbro(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - lightgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - zvx1337(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - rammer(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - exterminator(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - smagnum(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - gunslotgun(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - hellhound(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - giveplayercash(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - giveplayerhealth(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - rankupplayer(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - camoall(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+
+maps/mp/gametypes/_rank.gsc  (from _rank.gsc, PS3 / Xbox 360 (big endian), 41 functions)

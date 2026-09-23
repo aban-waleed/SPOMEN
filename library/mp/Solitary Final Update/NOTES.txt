@@ -1,0 +1,14 @@
+Solitary Final Update  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 426 functions)
+  - init(): 3 broken variable read(s) repaired (compiler bug in the original)
+  - givecamoshader(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - givecamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - randomcamos(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveweapon_editor(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - kamikazebomber(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - createweaponpickup(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - tradeweapmonitor(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - snipermonitor(): disabled - it would corrupt the PS4 script stack (argument count of giveweapon)
+  - thesniperscheck(): disabled - it would corrupt the PS4 script stack (argument count of giveweapon)

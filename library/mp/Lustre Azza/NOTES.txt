@@ -1,0 +1,6 @@
+Lustre Azza  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 334 functions)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - monitorclass(): disabled - it would corrupt the PS4 script stack (stack mismatch at a loop / branch)

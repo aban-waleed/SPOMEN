@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,12 +29,30 @@ public partial class MainWindow : Window
 
 	private string pname = "";
 
+	private GameMode mode = GameMode.Multiplayer;
+
+	private readonly UserSettings settings = UserSettings.Load();
+
+	private LibraryPack? selectedPack;
+
+	private readonly List<string> cmdHistory = new List<string>();
+
+	private int cmdIndex = -1;
+
 	public MainWindow()
 	{
 		//IL_000c: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0011: Unknown result type (might be due to invalid IL or missing references)
 		//IL_002a: Expected O, but got Unknown
 		InitializeComponent();
+		if (settings.LastIp.Length > 0)
+		{
+			txtIp.Text = settings.LastIp;
+		}
+		Closed += delegate
+		{
+			settings.RememberIp(txtIp.Text);
+		};
 		pulse.Tick += delegate
 		{
 			if (linked)
@@ -57,12 +76,17 @@ public partial class MainWindow : Window
 				Log("ERROR: " + ex.Message);
 			}
 		};
+		segMp.Checked += delegate { subRow.Visibility = Visibility.Visible; SetMode(segGm.IsChecked == true ? GameMode.GameModes : GameMode.Multiplayer); };
+		segZm.Checked += delegate { subRow.Visibility = Visibility.Collapsed; SetMode(GameMode.Zombies); };
+		segMenus.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.Multiplayer); };
+		segGm.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.GameModes); };
 		btnConnect.Click += delegate
 		{
 			Run(delegate
 			{
 				dbg.Connect(txtIp.Text.Trim());
 				linked = true;
+				settings.RememberIp(txtIp.Text);
 				lblStatus.Text = "Connected";
 				lblStatus.Foreground = Brushes.LightGreen;
 				try
@@ -81,9 +105,10 @@ public partial class MainWindow : Window
 			{
 				pid = 0;
 				List<(int, string)> list = dbg.ListProcesses();
+				string want = GameModeInfo.ProcessName(mode);
 				foreach (var current in list)
 				{
-					if (current.Item2.Contains("codmp.elf"))
+					if (current.Item2.Contains(want))
 					{
 						(pid, pname) = current;
 						break;
@@ -102,9 +127,9 @@ public partial class MainWindow : Window
 				}
 				if (pid == 0)
 				{
-					return "No game process found - is BO2 running?";
+					return $"No game process found - is BO2 {GameModeInfo.Label(mode)} running? (looked for {want})";
 				}
-				lblStatus.Text = $"Attached: {pname} (pid {pid})";
+				lblStatus.Text = $"Attached: {pname} (pid {pid}) - {GameModeInfo.Label(mode)}";
 				lblStatus.Foreground = Brushes.LightGreen;
 				try
 				{
@@ -124,9 +149,26 @@ public partial class MainWindow : Window
 			};
 			if (openFileDialog.ShowDialog() == true)
 			{
+				selectedPack = null;
 				txtFile.Text = openFileDialog.FileName;
 				FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
 				Log($"{fileInfo.Name} ({fileInfo.Length} bytes)");
+			}
+		};
+		btnLib.Click += delegate
+		{
+			List<LibraryPack> packs = MenuLibrary.Scan(MenuLibrary.DefaultRoot, mode);
+			if (packs.Count == 0)
+			{
+				Log($"No {GameModeInfo.Label(mode)} packs found under {MenuLibrary.DefaultRoot}");
+				return;
+			}
+			LibraryWindow win = new LibraryWindow(mode, packs) { Owner = this };
+			if (win.ShowDialog() == true && win.Selected != null)
+			{
+				selectedPack = win.Selected;
+				txtFile.Text = $"[library] {selectedPack.Name}";
+				Log($"Pack: {selectedPack.Name} ({selectedPack.Scripts.Count} script(s)) -> {string.Join(", ", selectedPack.Scripts.Select(s => s.Target))}");
 			}
 		};
 		btnInj.Click += async delegate
@@ -134,6 +176,43 @@ public partial class MainWindow : Window
 			if (pid == 0)
 			{
 				Log("ATTACH first");
+			}
+			else if (selectedPack != null)
+			{
+				btnInj.IsEnabled = false;
+				LibraryPack pack = selectedPack;
+				string name = pname;
+				int q = pid;
+				await Task.Run(delegate
+				{
+					try
+					{
+						int n = new InjectorEngine(dbg, delegate(string m)
+						{
+							MainWindow mainWindow = this;
+							((DispatcherObject)this).Dispatcher.Invoke((Action)delegate
+							{
+								mainWindow.Log(m);
+							});
+						}).InjectPack(q, name, pack);
+						try
+						{
+							dbg.Notify($"Injected {pack.Name} ({n} scripts)");
+						}
+						catch
+						{
+						}
+					}
+					catch (Exception ex)
+					{
+						Exception ex3 = ex;
+						((DispatcherObject)this).Dispatcher.Invoke((Action)delegate
+						{
+							Log("ERROR: " + ex3.Message);
+						});
+					}
+				});
+				btnInj.IsEnabled = true;
 			}
 			else if (!File.Exists(txtFile.Text))
 			{
@@ -145,6 +224,8 @@ public partial class MainWindow : Window
 				string file = txtFile.Text;
 				string name = pname;
 				int q = pid;
+				string target = GameModeInfo.Target(mode);
+				Log($"Target: {target}");
 				await Task.Run(delegate
 				{
 					try
@@ -156,7 +237,7 @@ public partial class MainWindow : Window
 							{
 								mainWindow.Log(m);
 							});
-						}).Inject(q, name, file, "maps/mp/gametypes/_clientids.gsc");
+						}).Inject(q, name, file, target);
 						try
 						{
 							dbg.Notify("Injected OK");
@@ -193,7 +274,144 @@ public partial class MainWindow : Window
 				return "PUBLIC match spoof sent";
 			});
 		};
+		btnGive.Click += delegate
+		{
+			if (pid == 0)
+			{
+				Log("ATTACH first");
+				return;
+			}
+			if (mode == GameMode.Zombies)
+			{
+				Log("GIVE works in Multiplayer: the stat tree offsets are for codmp.elf");
+				return;
+			}
+			new GiveWindow(dbg, pid) { Owner = this }.ShowDialog();
+		};
+		btnUninject.Click += async delegate
+		{
+			if (pid == 0)
+			{
+				Log("ATTACH first");
+				return;
+			}
+			btnUninject.IsEnabled = false;
+			int q = pid;
+			await Task.Run(delegate
+			{
+				try
+				{
+					int n = new InjectorEngine(dbg, delegate(string m)
+					{
+						MainWindow mainWindow = this;
+						((DispatcherObject)this).Dispatcher.Invoke((Action)delegate
+						{
+							mainWindow.Log(m);
+						});
+					}).UninjectAll(q);
+					try
+					{
+						dbg.Notify($"BO2 Injector: {n} menu(s) unloaded");
+					}
+					catch
+					{
+					}
+				}
+				catch (Exception ex)
+				{
+					Exception ex3 = ex;
+					((DispatcherObject)this).Dispatcher.Invoke((Action)delegate
+					{
+						Log("ERROR: " + ex3.Message);
+					});
+				}
+			});
+			btnUninject.IsEnabled = true;
+		};
+		txtCmd.TextChanged += delegate
+		{
+			lblCmdHint.Visibility = string.IsNullOrEmpty(txtCmd.Text) ? Visibility.Visible : Visibility.Collapsed;
+		};
+		txtCmd.PreviewKeyDown += (_, e) =>
+		{
+			if (e.Key == System.Windows.Input.Key.Enter)
+			{
+				SendConsoleCommand();
+				e.Handled = true;
+			}
+			else if (e.Key == System.Windows.Input.Key.Up && cmdHistory.Count > 0)
+			{
+				cmdIndex = cmdIndex < 0 ? cmdHistory.Count - 1 : Math.Max(0, cmdIndex - 1);
+				txtCmd.Text = cmdHistory[cmdIndex];
+				txtCmd.CaretIndex = txtCmd.Text.Length;
+				e.Handled = true;
+			}
+			else if (e.Key == System.Windows.Input.Key.Down && cmdIndex >= 0)
+			{
+				cmdIndex = cmdIndex + 1 >= cmdHistory.Count ? -1 : cmdIndex + 1;
+				txtCmd.Text = cmdIndex < 0 ? "" : cmdHistory[cmdIndex];
+				txtCmd.CaretIndex = txtCmd.Text.Length;
+				e.Handled = true;
+			}
+		};
+		btnSend.Click += delegate { SendConsoleCommand(); };
 		Log("Ready.");
+	}
+
+	private void SendConsoleCommand()
+	{
+		string cmd = (txtCmd.Text ?? "").Trim();
+		if (cmd.Length == 0)
+		{
+			return;
+		}
+		if (pid == 0)
+		{
+			Log("ATTACH first");
+			return;
+		}
+		if (cmdHistory.Count == 0 || cmdHistory[^1] != cmd)
+		{
+			cmdHistory.Add(cmd);
+		}
+		cmdIndex = -1;
+		txtCmd.Text = "";
+		int q = pid;
+		Task.Run(delegate
+		{
+			try
+			{
+				new InjectorEngine(dbg, Log).SendCommand(q, cmd);
+			}
+			catch (Exception ex)
+			{
+				Log("ERROR: " + ex.Message);
+			}
+		});
+	}
+
+	private void SetMode(GameMode m)
+	{
+		if (m == mode)
+		{
+			return;
+		}
+		mode = m;
+		lblTarget.Text = GameModeInfo.Target(m);
+		Log($"Mode: {GameModeInfo.Label(m)}");
+		if (selectedPack != null && selectedPack.Mode != m)
+		{
+			Log($"Pack '{selectedPack.Name}' is a {GameModeInfo.Label(selectedPack.Mode)} pack - selection cleared");
+			selectedPack = null;
+			txtFile.Text = "No file selected";
+		}
+		if (pid != 0 && GameModeInfo.ProcessMismatch(m, pname))
+		{
+			pid = 0;
+			lblStatus.Text = $"Connected - re-attach for {GameModeInfo.Label(m)}";
+			lblStatus.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0x7A, 0x00));
+			Log($"{pname} is not the {GameModeInfo.Label(m)} executable - press Attach again");
+		}
 	}
 
 	private void Log(string s)

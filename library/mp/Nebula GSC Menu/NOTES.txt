@@ -1,0 +1,10 @@
+Nebula GSC Menu  [Multiplayer]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/gametypes/_clientids.gsc  (from maps/mp/gametypes/_clientids.gsc, PS3 / Xbox 360 (big endian), 292 functions)
+  - landsonground(): restored the missing notify('landedOnGround')
+  - landsonground(): disabled - it would corrupt the PS4 script stack (notify with a broken stack)
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - initgiveweap(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - dowarn(): 2 broken variable read(s) repaired (compiler bug in the original)
+  - dojugover(): 1 broken variable read(s) repaired (compiler bug in the original)

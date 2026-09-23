@@ -1,0 +1,11 @@
+XPLobbyNBBV2.0  [Game Modes]
+Converted to PS4 format from the original console release. Review the notes: repaired functions may behave differently from the original.
+
+maps/mp/_development_dvars.gsc  (from _development_dvars.gsc, PS3 / Xbox 360 (big endian), 116 functions)
+  - randcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveplayerrandcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - setcamo(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - selfgiveplayerrandcamotowhoishigh(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - giveplayerrandcamotowhoishigh(): old 7-argument giveweapon converted to giveweapon + calcweaponoptions
+  - playerunlockallcamos(): 1 broken variable read(s) repaired (compiler bug in the original)
+  - playercamonlock(): 1 broken variable read(s) repaired (compiler bug in the original)
