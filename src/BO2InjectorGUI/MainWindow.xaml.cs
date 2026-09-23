@@ -45,6 +45,7 @@ public partial class MainWindow : Window
 		//IL_000c: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0011: Unknown result type (might be due to invalid IL or missing references)
 		//IL_002a: Expected O, but got Unknown
+		SourceInitialized += delegate { Glass.TryApply(this); };
 		InitializeComponent();
 		if (settings.LastIp.Length > 0)
 		{
@@ -60,6 +61,10 @@ public partial class MainWindow : Window
 			{
 				pulseOn = !pulseOn;
 				dot.Fill = (pulseOn ? Brushes.Lime : new SolidColorBrush(Color.FromRgb(0, 140, 80)));
+				if (dot.Effect is System.Windows.Media.Effects.DropShadowEffect glow)
+				{
+					glow.Color = Colors.Lime;
+				}
 			}
 		};
 		pulse.Start();
@@ -460,6 +465,10 @@ public partial class MainWindow : Window
 		linked = false;
 		pulseOn = false;
 		dot.Fill = new SolidColorBrush(Color.FromRgb(0x7A, 0x30, 0x30));
+		if (dot.Effect is System.Windows.Media.Effects.DropShadowEffect glowOff)
+		{
+			glowOff.Color = Color.FromRgb(0x7A, 0x30, 0x30);
+		}
 		btnConnect.Content = "Connect";
 		lblStatus.Text = "Disconnected";
 		lblStatus.Foreground = new SolidColorBrush(Color.FromRgb(0x9A, 0xA0, 0xB0));

@@ -1,0 +1,197 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Glass theme shared by every window. Colours mirror src/BO2InjectorGUI/Theme.xaml. -->
+  <Styles.Resources>
+    <SolidColorBrush x:Key="Accent">#FF7A00</SolidColorBrush>
+    <SolidColorBrush x:Key="Ink">#0B0C0E</SolidColorBrush>
+    <SolidColorBrush x:Key="Text">#EEF0F5</SolidColorBrush>
+    <SolidColorBrush x:Key="TextDim">#9AA0B0</SolidColorBrush>
+    <SolidColorBrush x:Key="TextFaint">#5A6172</SolidColorBrush>
+    <SolidColorBrush x:Key="Glass">#2E1B1F2A</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassStrong">#5A171A24</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassInput">#66101218</SolidColorBrush>
+    <SolidColorBrush x:Key="GlassHover">#5A2A2F3C</SolidColorBrush>
+    <SolidColorBrush x:Key="Hairline">#22FFFFFF</SolidColorBrush>
+    <LinearGradientBrush x:Key="Backdrop" StartPoint="0%,0%" EndPoint="100%,100%">
+      <GradientStop Color="#1A1410" Offset="0" />
+      <GradientStop Color="#0E1016" Offset="0.45" />
+      <GradientStop Color="#0C1020" Offset="1" />
+    </LinearGradientBrush>
+    <!-- Fluent scrollbar brushes -->
+    <SolidColorBrush x:Key="ScrollBarThumbFill">#26FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbFillPointerOver">#66FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbFillPressed">#FF7A00</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackground">#26FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPointerOver">#66FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPressed">#FF7A00</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackFill">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackFillPointerOver">#14161B</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackStroke">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackStrokePointerOver">Transparent</SolidColorBrush>
+  </Styles.Resources>
+
+  <!-- panels -->
+  <Style Selector="Border.glass">
+    <Setter Property="Background" Value="{StaticResource Glass}" />
+    <Setter Property="BorderBrush" Value="{StaticResource Hairline}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="18" />
+    <Setter Property="BoxShadow" Value="0 6 28 0 #73000000" />
+  </Style>
+  <Style Selector="Border.inset">
+    <Setter Property="Background" Value="{StaticResource GlassInput}" />
+    <Setter Property="BorderBrush" Value="{StaticResource Hairline}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="12" />
+  </Style>
+
+  <!-- buttons -->
+  <Style Selector="Button.big">
+    <Setter Property="Background" Value="{StaticResource GlassStrong}" />
+    <Setter Property="Foreground" Value="{StaticResource Text}" />
+    <Setter Property="BorderBrush" Value="{StaticResource Hairline}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Padding" Value="10" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="14" Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="Button.big:pointerover">
+    <Setter Property="Background" Value="{StaticResource GlassHover}" />
+    <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+  </Style>
+  <Style Selector="Button.big:pressed">
+    <Setter Property="Background" Value="#40FF7A00" />
+  </Style>
+  <Style Selector="Button.big:disabled">
+    <Setter Property="Foreground" Value="{StaticResource TextFaint}" />
+  </Style>
+  <Style Selector="Button.go">
+    <Setter Property="Background" Value="{StaticResource Accent}" />
+    <Setter Property="Foreground" Value="{StaticResource Ink}" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Padding" Value="10" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" CornerRadius="14" Padding="{TemplateBinding Padding}" BoxShadow="0 0 22 0 #73FF7A00" BorderThickness="1" BorderBrush="#40FFFFFF">
+          <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="Button.go:pointerover">
+    <Setter Property="Background" Value="#FF8F2A" />
+  </Style>
+  <Style Selector="Button.go:pressed">
+    <Setter Property="Background" Value="#E56D00" />
+  </Style>
+  <Style Selector="Button.go:disabled">
+    <Setter Property="Background" Value="#4A3A2A18" />
+    <Setter Property="Foreground" Value="#7A5A38" />
+  </Style>
+  <Style Selector="Button.mini">
+    <Setter Property="Background" Value="{StaticResource GlassStrong}" />
+    <Setter Property="Foreground" Value="{StaticResource Text}" />
+    <Setter Property="FontSize" Value="10" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Padding" Value="10,4,10,4" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" BorderBrush="{StaticResource Hairline}" BorderThickness="1" CornerRadius="9" Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="Button.mini:pointerover">
+    <Setter Property="Background" Value="{StaticResource Accent}" />
+    <Setter Property="Foreground" Value="{StaticResource Ink}" />
+  </Style>
+
+  <!-- segmented pills -->
+  <Style Selector="RadioButton.seg">
+    <Setter Property="Foreground" Value="{StaticResource TextDim}" />
+    <Setter Property="FontSize" Value="11" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" CornerRadius="14" Padding="0,7,0,7" Margin="3">
+          <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="RadioButton.seg.small">
+    <Setter Property="FontSize" Value="10" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="0,4,0,4" Margin="2">
+          <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="RadioButton.seg:pointerover">
+    <Setter Property="Background" Value="{StaticResource GlassHover}" />
+    <Setter Property="Foreground" Value="{StaticResource Text}" />
+  </Style>
+  <Style Selector="RadioButton.seg:checked">
+    <Setter Property="Background" Value="{StaticResource Accent}" />
+    <Setter Property="Foreground" Value="{StaticResource Ink}" />
+  </Style>
+
+  <!-- inputs -->
+  <Style Selector="TextBox">
+    <Setter Property="Background" Value="{StaticResource GlassInput}" />
+    <Setter Property="Foreground" Value="{StaticResource Text}" />
+    <Setter Property="BorderBrush" Value="{StaticResource Hairline}" />
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="Padding" Value="10,7,10,7" />
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="CaretBrush" Value="{StaticResource Accent}" />
+    <Setter Property="SelectionBrush" Value="{StaticResource Accent}" />
+  </Style>
+  <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="{StaticResource GlassInput}" />
+    <Setter Property="BorderBrush" Value="{StaticResource Hairline}" />
+  </Style>
+  <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="{StaticResource GlassInput}" />
+    <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+  </Style>
+  <Style Selector="TextBox.cmd /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+  <Style Selector="ListBoxItem">
+    <Setter Property="Padding" Value="12,7,12,7" />
+    <Setter Property="Margin" Value="0,1,0,1" />
+    <Setter Property="CornerRadius" Value="0,10,10,0" />
+    <Setter Property="BorderThickness" Value="3,0,0,0" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#1AFFFFFF" />
+  </Style>
+  <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#26FF7A00" />
+    <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+  </Style>
+</Styles>

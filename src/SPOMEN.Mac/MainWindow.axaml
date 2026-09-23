@@ -2,186 +2,96 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="SPOMEN.Mac.MainWindow"
         Title="BO2 Injector"
-        Width="520" SizeToContent="Height" CanResize="False"
-        Background="#0B0C0E" Foreground="#E8EAF0"
+        Width="540" SizeToContent="Height" CanResize="False"
+        Background="Transparent" TransparencyLevelHint="AcrylicBlur, Blur, Transparent"
+        Foreground="#EEF0F5"
         WindowStartupLocation="CenterScreen"
         Icon="avares://SPOMEN/Assets/icon.png">
-
-  <!-- Same look as the WPF window: WPF styles/triggers translated to Avalonia selectors. -->
-  <Window.Resources>
-    <!-- Slim scrollbar that blends into the dark panels until hovered. -->
-    <SolidColorBrush x:Key="ScrollBarThumbFill">#1E2128</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarThumbFillPointerOver">#5A6172</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarThumbFillPressed">#FF7A00</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarThumbBackground">#1E2128</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPointerOver">#5A6172</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPressed">#FF7A00</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarTrackFill">#14161B</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarTrackFillPointerOver">#14161B</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarTrackStroke">Transparent</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarTrackStrokePointerOver">Transparent</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarButtonArrowForeground">#5A6172</SolidColorBrush>
-    <SolidColorBrush x:Key="ScrollBarButtonArrowForegroundPointerOver">#E8EAF0</SolidColorBrush>
-  </Window.Resources>
   <Window.Styles>
-    <Style Selector="Button.big">
-      <Setter Property="Background" Value="#1A1D24" />
-      <Setter Property="Foreground" Value="#E8EAF0" />
-      <Setter Property="FontSize" Value="14" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-      <Setter Property="Cursor" Value="Hand" />
-      <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="BorderBrush" Value="#2E333F" />
-      <Setter Property="Padding" Value="10" />
-      <Setter Property="HorizontalAlignment" Value="Stretch" />
-      <Setter Property="Template">
-        <ControlTemplate>
-          <Border Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  CornerRadius="12"
-                  Padding="{TemplateBinding Padding}">
-            <ContentPresenter Content="{TemplateBinding Content}"
-                              HorizontalAlignment="Center" VerticalAlignment="Center" />
-          </Border>
-        </ControlTemplate>
-      </Setter>
-    </Style>
-    <Style Selector="Button.big:pointerover">
-      <Setter Property="Background" Value="#242832" />
-      <Setter Property="BorderBrush" Value="#FF7A00" />
-    </Style>
-    <Style Selector="Button.big:disabled">
-      <Setter Property="Foreground" Value="#5A6172" />
-    </Style>
-    <Style Selector="Button.go">
-      <Setter Property="Background" Value="#FF7A00" />
-      <Setter Property="Foreground" Value="#0B0C0E" />
-      <Setter Property="BorderThickness" Value="0" />
-    </Style>
-
-    <!-- Segmented mode pills (Multiplayer / Zombies / Game Modes). -->
-    <Style Selector="RadioButton.seg">
-      <Setter Property="Foreground" Value="#9AA0B0" />
-      <Setter Property="FontSize" Value="11" />
-      <Setter Property="FontWeight" Value="Bold" />
-      <Setter Property="Cursor" Value="Hand" />
-      <Setter Property="Background" Value="Transparent" />
-      <Setter Property="HorizontalAlignment" Value="Stretch" />
-      <Setter Property="HorizontalContentAlignment" Value="Center" />
-      <Setter Property="Template">
-        <ControlTemplate>
-          <Border Background="{TemplateBinding Background}" CornerRadius="14" Padding="0,7,0,7" Margin="2">
-            <ContentPresenter Content="{TemplateBinding Content}"
-                              HorizontalAlignment="Center" VerticalAlignment="Center" />
-          </Border>
-        </ControlTemplate>
-      </Setter>
-    </Style>
-    <Style Selector="RadioButton.seg.small">
-      <Setter Property="FontSize" Value="10" />
-      <Setter Property="Template">
-        <ControlTemplate>
-          <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="0,4,0,4" Margin="2">
-            <ContentPresenter Content="{TemplateBinding Content}"
-                              HorizontalAlignment="Center" VerticalAlignment="Center" />
-          </Border>
-        </ControlTemplate>
-      </Setter>
-    </Style>
-    <Style Selector="RadioButton.seg:pointerover">
-      <Setter Property="Background" Value="#242832" />
-      <Setter Property="Foreground" Value="#E8EAF0" />
-    </Style>
-    <Style Selector="RadioButton.seg:checked">
-      <Setter Property="Background" Value="#FF7A00" />
-      <Setter Property="Foreground" Value="#0B0C0E" />
-    </Style>
-
-    <Style Selector="TextBox">
-      <Setter Property="Background" Value="#14161B" />
-      <Setter Property="Foreground" Value="#E8EAF0" />
-      <Setter Property="BorderBrush" Value="#2E333F" />
-      <Setter Property="Padding" Value="8,6,8,6" />
-      <Setter Property="FontSize" Value="12" />
-    </Style>
-    <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
-      <Setter Property="Background" Value="#14161B" />
-      <Setter Property="BorderBrush" Value="#2E333F" />
-    </Style>
-    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-      <Setter Property="Background" Value="#14161B" />
-      <Setter Property="BorderBrush" Value="#FF7A00" />
-    </Style>
-    <Style Selector="TextBox.cmd /template/ Border#PART_BorderElement">
-      <Setter Property="Background" Value="Transparent" />
-      <Setter Property="BorderThickness" Value="0" />
-    </Style>
+    <StyleInclude Source="avares://SPOMEN/Theme.axaml" />
   </Window.Styles>
 
-  <StackPanel Margin="28,20,28,16">
-    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-      <Ellipse Name="dot" Width="13" Height="13" Fill="#7A3030" Margin="0,0,10,0" VerticalAlignment="Center" />
-      <TextBlock Text="BO2  INJECTOR" FontSize="24" FontWeight="Black" Foreground="#FFFFFF" />
-    </StackPanel>
-    <TextBlock Text="PS4DEBUG  •  GOLDHEN" FontSize="10" Foreground="#FF7A00" Margin="33,0,0,2" />
-    <Rectangle Height="2" Fill="#FF7A00" Margin="0,6,0,14" RadiusX="1" RadiusY="1" />
-    <TextBlock Name="lblStatus" Text="Disconnected" Foreground="#9AA0B0" FontSize="12" Margin="0,0,0,12" />
+  <Panel>
+    <!-- backdrop: real blur where the platform supports it, dark gradient underneath otherwise -->
+    <Border Background="{StaticResource Backdrop}" />
+    <ExperimentalAcrylicBorder IsHitTestVisible="False">
+      <ExperimentalAcrylicBorder.Material>
+        <ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="#0E1016" TintOpacity="0.82" MaterialOpacity="0.6" />
+      </ExperimentalAcrylicBorder.Material>
+    </ExperimentalAcrylicBorder>
 
-    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="17" Margin="0,0,0,4">
-      <UniformGrid Columns="2">
-        <RadioButton Name="segMp" Classes="seg" Content="MULTIPLAYER" GroupName="game" IsChecked="True" />
-        <RadioButton Name="segZm" Classes="seg" Content="ZOMBIES" GroupName="game" />
-      </UniformGrid>
-    </Border>
-    <Border Name="subRow" Background="#0F1114" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="13" Margin="90,0,90,4">
-      <UniformGrid Columns="2">
-        <RadioButton Name="segMenus" Classes="seg small" Content="MOD MENUS" GroupName="mpkind" IsChecked="True" />
-        <RadioButton Name="segGm" Classes="seg small" Content="GAME MODES" GroupName="mpkind" />
-      </UniformGrid>
-    </Border>
-    <TextBlock Name="lblTarget" Text="maps/mp/gametypes/_clientids.gsc" Foreground="#5A6172" FontSize="10"
-               FontFamily="Menlo, Consolas, monospace" HorizontalAlignment="Center" Margin="0,0,0,12" />
+    <Border Classes="glass" Margin="16,14,16,16" Padding="24,20,24,18">
+      <StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Ellipse Name="dot" Width="13" Height="13" Fill="#7A3030" Margin="0,0,10,0" VerticalAlignment="Center" />
+          <TextBlock Text="BO2  INJECTOR" FontSize="24" FontWeight="Black" Foreground="#FFFFFF" />
+        </StackPanel>
+        <TextBlock Text="PS4DEBUG  •  GOLDHEN" FontSize="10" Foreground="{StaticResource Accent}" Margin="33,0,0,2" />
+        <Rectangle Height="2" Margin="0,6,0,14" RadiusX="1" RadiusY="1">
+          <Rectangle.Fill>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+              <GradientStop Color="#FF7A00" Offset="0" />
+              <GradientStop Color="#00FF7A00" Offset="1" />
+            </LinearGradientBrush>
+          </Rectangle.Fill>
+        </Rectangle>
+        <TextBlock Name="lblStatus" Text="Disconnected" Foreground="{StaticResource TextDim}" FontSize="12" Margin="0,0,0,12" />
 
-    <Grid Margin="0,0,0,10" ColumnDefinitions="*,12,*">
-      <StackPanel Grid.Column="0">
-        <TextBlock Text="PS4 IP" Foreground="#9AA0B0" FontSize="11" Margin="0,0,0,4" />
-        <TextBox Name="txtIp" Text="192.168.100.66" />
+        <Border Classes="inset" CornerRadius="20" Margin="0,0,0,4">
+          <UniformGrid Columns="2">
+            <RadioButton Name="segMp" Classes="seg" Content="MULTIPLAYER" GroupName="game" IsChecked="True" />
+            <RadioButton Name="segZm" Classes="seg" Content="ZOMBIES" GroupName="game" />
+          </UniformGrid>
+        </Border>
+        <Border Name="subRow" Classes="inset" CornerRadius="13" Margin="90,0,90,4">
+          <UniformGrid Columns="2">
+            <RadioButton Name="segMenus" Classes="seg small" Content="MOD MENUS" GroupName="mpkind" IsChecked="True" />
+            <RadioButton Name="segGm" Classes="seg small" Content="GAME MODES" GroupName="mpkind" />
+          </UniformGrid>
+        </Border>
+        <TextBlock Name="lblTarget" Text="maps/mp/gametypes/_clientids.gsc" Foreground="{StaticResource TextFaint}" FontSize="10"
+                   FontFamily="Menlo, Consolas, monospace" HorizontalAlignment="Center" Margin="0,0,0,12" />
+
+        <Grid Margin="0,0,0,10" ColumnDefinitions="*,12,*">
+          <StackPanel Grid.Column="0">
+            <TextBlock Text="PS4 IP" Foreground="{StaticResource TextDim}" FontSize="11" Margin="2,0,0,4" />
+            <TextBox Name="txtIp" Text="192.168.100.66" />
+          </StackPanel>
+          <StackPanel Grid.Column="2">
+            <TextBlock Text="gsc file" Foreground="{StaticResource TextDim}" FontSize="11" Margin="2,0,0,4" />
+            <TextBox Name="txtFile" IsReadOnly="True" Text="No file selected" />
+          </StackPanel>
+        </Grid>
+
+        <UniformGrid Columns="2" Rows="1" Margin="0,2,0,0">
+          <Button Name="btnConnect" Classes="big" Content="Connect" Height="52" Margin="0,0,5,0" />
+          <Button Name="btnAttach" Classes="big" Content="Attach" Height="52" Margin="5,0,0,0" />
+        </UniformGrid>
+        <Button Name="btnLib" Classes="big" Content="Library" Height="52" Margin="0,10,0,0" />
+        <Button Name="btnInj" Classes="big" Content="INJECT" Height="48" Margin="0,10,0,0" FontSize="16" FontWeight="Bold" BorderBrush="{StaticResource Accent}" />
+        <Button Name="btnPublic" Classes="go" Content="PUBLIC MATCH" Height="40" Margin="0,10,0,0" />
+        <Button Name="btnUninject" Classes="big" Content="UNINJECT ALL" Height="40" Margin="0,8,0,0" FontSize="13" FontWeight="Bold" ToolTip.Tip="Restore the stock script(s) replaced by this session. Start a new match afterwards." />
+
+        <Border Classes="inset" Margin="0,10,0,0" Padding="10,2,4,2">
+          <DockPanel>
+            <TextBlock Text="&gt;" DockPanel.Dock="Left" Foreground="{StaticResource Accent}" FontFamily="Menlo, Consolas, monospace" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <Button Name="btnSend" Classes="mini" Content="SEND" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="6,0,0,0" />
+            <TextBox Name="txtCmd" Classes="cmd" Background="Transparent" BorderThickness="0" FontFamily="Menlo, Consolas, monospace" FontSize="12" Padding="0,4,0,4" VerticalContentAlignment="Center"
+                     Watermark="console command  ·  Enter to send, arrows for history" />
+          </DockPanel>
+        </Border>
+
+        <Border Classes="inset" Margin="0,8,0,0" Height="100" Padding="8,6,8,6">
+          <ScrollViewer Name="logScroll" VerticalScrollBarVisibility="Auto">
+            <SelectableTextBlock Name="txtLog" FontFamily="Menlo, Consolas, monospace" FontSize="11" TextWrapping="Wrap" Foreground="{StaticResource Text}" />
+          </ScrollViewer>
+        </Border>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+          <TextBlock Text="by Aban" Foreground="{StaticResource Text}" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />
+          <TextBlock Text="  ·  thank you Medo for the base" Foreground="{StaticResource TextFaint}" FontSize="11" VerticalAlignment="Center" />
+        </StackPanel>
       </StackPanel>
-      <StackPanel Grid.Column="2">
-        <TextBlock Text="gsc file" Foreground="#9AA0B0" FontSize="11" Margin="0,0,0,4" />
-        <TextBox Name="txtFile" IsReadOnly="True" Text="No file selected" />
-      </StackPanel>
-    </Grid>
-
-    <UniformGrid Columns="2" Rows="1" Margin="0,2,0,0">
-      <Button Name="btnConnect" Classes="big" Content="Connect" Height="52" Margin="0,0,5,0" />
-      <Button Name="btnAttach" Classes="big" Content="Attach" Height="52" Margin="5,0,0,0" />
-    </UniformGrid>
-    <Button Name="btnLib" Classes="big" Content="Library" Height="52" Margin="0,10,0,0" />
-    <Button Name="btnInj" Classes="big" Content="INJECT" Height="48" Margin="0,10,0,0" FontSize="16" FontWeight="Bold" BorderBrush="#FF7A00" />
-
-    <Button Name="btnPublic" Classes="big go" Content="PUBLIC MATCH" Height="40" Margin="0,10,0,0" FontSize="14" FontWeight="Bold" />
-    <Button Name="btnUninject" Classes="big" Content="UNINJECT ALL" Height="40" Margin="0,8,0,0" FontSize="13" FontWeight="Bold" ToolTip.Tip="Restore the stock script(s) replaced by this session. Start a new match afterwards." />
-
-    <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="10" Margin="0,10,0,0" Padding="10,2,4,2">
-      <DockPanel>
-        <TextBlock Text="&gt;" DockPanel.Dock="Left" Foreground="#FF7A00" FontFamily="Menlo, Consolas, monospace" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0" />
-        <Button Name="btnSend" Classes="big" Content="SEND" DockPanel.Dock="Right" FontSize="10" Padding="10,4,10,4" BorderThickness="0" Background="#242832" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="6,0,0,0" />
-        <TextBox Name="txtCmd" Classes="cmd" Background="Transparent" BorderThickness="0" FontFamily="Menlo, Consolas, monospace" FontSize="12" Padding="0,4,0,4" VerticalContentAlignment="Center"
-                 Watermark="console command  ·  Enter to send, arrows for history" />
-      </DockPanel>
     </Border>
-
-    <Border Margin="0,8,0,0" Height="100" Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="3" Padding="6,4,6,4">
-      <ScrollViewer Name="logScroll" VerticalScrollBarVisibility="Auto">
-        <SelectableTextBlock Name="txtLog" FontFamily="Menlo, Consolas, monospace" FontSize="11" TextWrapping="Wrap" Foreground="#E8EAF0" />
-      </ScrollViewer>
-    </Border>
-
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
-      <TextBlock Text="by Aban" Foreground="#E8EAF0" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />
-      <TextBlock Text="  ·  thank you Medo for the base" Foreground="#5A6172" FontSize="11" VerticalAlignment="Center" />
-    </StackPanel>
-  </StackPanel>
+  </Panel>
 </Window>
