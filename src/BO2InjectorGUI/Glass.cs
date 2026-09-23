@@ -16,6 +16,15 @@ public static class Glass
 	[DllImport("dwmapi.dll")]
 	private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int value, int size);
 
+	[StructLayout(LayoutKind.Sequential)]
+	private struct Margins
+	{
+		public int Left, Right, Top, Bottom;
+	}
+
+	[DllImport("dwmapi.dll")]
+	private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref Margins margins);
+
 	private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 	private const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
 	private const int DWMSBT_TRANSIENTWINDOW = 3; // acrylic
@@ -33,6 +42,13 @@ public static class Glass
 			DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref dark, sizeof(int));
 			int backdrop = DWMSBT_TRANSIENTWINDOW;
 			if (DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdrop, sizeof(int)) != 0)
+			{
+				return false;
+			}
+			// The backdrop is only composed behind the DWM frame; extend the frame over the whole
+			// client area so the blurred desktop shows through every transparent pixel we draw.
+			Margins all = new Margins { Left = -1, Right = -1, Top = -1, Bottom = -1 };
+			if (DwmExtendFrameIntoClientArea(hwnd, ref all) != 0)
 			{
 				return false;
 			}

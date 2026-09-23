@@ -45,7 +45,7 @@ public partial class MainWindow : Window
 		//IL_000c: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0011: Unknown result type (might be due to invalid IL or missing references)
 		//IL_002a: Expected O, but got Unknown
-		SourceInitialized += delegate { Glass.TryApply(this); };
+		SourceInitialized += delegate { Log(Glass.TryApply(this) ? "Glass: acrylic backdrop on" : "Glass: acrylic backdrop unavailable, using gradient"); };
 		InitializeComponent();
 		if (settings.LastIp.Length > 0)
 		{
