@@ -8,6 +8,21 @@
         Icon="avares://SPOMEN/Assets/icon.png">
 
   <!-- Same look as the WPF window: WPF styles/triggers translated to Avalonia selectors. -->
+  <Window.Resources>
+    <!-- Slim scrollbar that blends into the dark panels until hovered. -->
+    <SolidColorBrush x:Key="ScrollBarThumbFill">#1E2128</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbFillPointerOver">#5A6172</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbFillPressed">#FF7A00</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackground">#1E2128</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPointerOver">#5A6172</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPressed">#FF7A00</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackFill">#14161B</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackFillPointerOver">#14161B</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackStroke">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackStrokePointerOver">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarButtonArrowForeground">#5A6172</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarButtonArrowForegroundPointerOver">#E8EAF0</SolidColorBrush>
+  </Window.Resources>
   <Window.Styles>
     <Style Selector="Button.big">
       <Setter Property="Background" Value="#1A1D24" />
@@ -158,7 +173,7 @@
       </DockPanel>
     </Border>
 
-    <Border Margin="0,8,0,0" Height="80" Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="3" Padding="6,4,6,4">
+    <Border Margin="0,8,0,0" Height="100" Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="3" Padding="6,4,6,4">
       <ScrollViewer Name="logScroll" VerticalScrollBarVisibility="Auto">
         <SelectableTextBlock Name="txtLog" FontFamily="Menlo, Consolas, monospace" FontSize="11" TextWrapping="Wrap" Foreground="#E8EAF0" />
       </ScrollViewer>

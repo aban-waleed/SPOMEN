@@ -6,6 +6,21 @@
         Title="Library" Width="520" Height="560" CanResize="False"
         Background="#0B0C0E" Foreground="#E8EAF0"
         WindowStartupLocation="CenterOwner">
+  <Window.Resources>
+    <!-- Slim scrollbar that blends into the dark panels until hovered. -->
+    <SolidColorBrush x:Key="ScrollBarThumbFill">#1E2128</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbFillPointerOver">#5A6172</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbFillPressed">#FF7A00</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackground">#1E2128</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPointerOver">#5A6172</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarThumbBackgroundPressed">#FF7A00</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackFill">#14161B</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackFillPointerOver">#14161B</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackStroke">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarTrackStrokePointerOver">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarButtonArrowForeground">#5A6172</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBarButtonArrowForegroundPointerOver">#E8EAF0</SolidColorBrush>
+  </Window.Resources>
   <Window.Styles>
     <Style Selector="Button.go">
       <Setter Property="Background" Value="#FF7A00" />

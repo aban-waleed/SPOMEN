@@ -1,6 +1,9 @@
 <Window x:Class="BO2InjectorGUI.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="BO2 Injector" Width="520" ResizeMode="CanMinimize" SizeToContent="Height" Background="#0B0C0E" Foreground="#E8EAF0" FontFamily="Segoe UI" WindowStartupLocation="CenterScreen" xmlns:bo2injectorgui="clr-namespace:BO2InjectorGUI;assembly=BO2InjectorGUI">
   <FrameworkElement.Resources>
     <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Theme.xaml" />
+      </ResourceDictionary.MergedDictionaries>
       <Style x:Key="BigBtn" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="#1A1D24" />
         <Setter Property="Foreground" Value="#E8EAF0" />
@@ -173,7 +176,7 @@
         </Grid>
       </DockPanel>
     </Border>
-    <RichTextBox Name="txtLog" Margin="0,8,0,0" Height="80" IsReadOnly="True" IsDocumentEnabled="False" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="11" Background="#14161B" Foreground="#E8EAF0" BorderBrush="#2E333F" Padding="6,4,6,4">
+    <RichTextBox Name="txtLog" Margin="0,8,0,0" Height="100" IsReadOnly="True" IsDocumentEnabled="False" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="11" Background="#14161B" Foreground="#E8EAF0" BorderBrush="#2E333F" Padding="6,4,6,4">
       <FlowDocument PagePadding="0" />
     </RichTextBox>
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
