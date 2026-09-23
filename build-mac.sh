@@ -37,6 +37,8 @@ cp -R "$PUB/." "$APP/Contents/MacOS/"
 cp "$ROOT/src/SPOMEN.Mac/Info.plist" "$APP/Contents/Info.plist"
 chmod +x "$APP/Contents/MacOS/SPOMEN"
 rm -rf "$PUB"
+# Data belongs in Resources: codesign treats dotted folders in MacOS (e.g. "RDC v2.6") as bundles and fails
+mv "$APP/Contents/MacOS/library" "$APP/Contents/Resources/library"
 
 # App icon (macOS tools only)
 if command -v sips >/dev/null 2>&1 && command -v iconutil >/dev/null 2>&1; then

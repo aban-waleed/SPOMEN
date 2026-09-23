@@ -76,7 +76,9 @@ public partial class MainWindow : Window
 			{
 				if (!TabAllowed(GameMode.Multiplayer))
 				{
-					segZm.IsChecked = true; // stay on Zombies
+					// Revert after the group has finished unchecking the other tab; reverting inside this
+					// handler is undone, because RadioButton updates its group after raising IsCheckedChanged.
+					Dispatcher.UIThread.Post(delegate { segZm.IsChecked = true; }); // stay on Zombies
 					return;
 				}
 				subRow.IsVisible = true;
@@ -89,7 +91,7 @@ public partial class MainWindow : Window
 			{
 				if (!TabAllowed(GameMode.Zombies))
 				{
-					segMp.IsChecked = true; // stay on Multiplayer
+					Dispatcher.UIThread.Post(delegate { segMp.IsChecked = true; }); // stay on Multiplayer
 					return;
 				}
 				subRow.IsVisible = false;

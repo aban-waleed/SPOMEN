@@ -12,3 +12,4 @@ obj/
 # Mac/Linux build output
 artifacts/
 .DS_Store
+.idea/
