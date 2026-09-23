@@ -62,8 +62,26 @@ public partial class MainWindow : Window
 			}
 		};
 		pulse.Start();
-		segMp.Checked += delegate { subRow.Visibility = Visibility.Visible; SetMode(segGm.IsChecked == true ? GameMode.GameModes : GameMode.Multiplayer); };
-		segZm.Checked += delegate { subRow.Visibility = Visibility.Collapsed; SetMode(GameMode.Zombies); };
+		segMp.Checked += delegate
+		{
+			if (!TabAllowed(GameMode.Multiplayer))
+			{
+				segZm.IsChecked = true; // stay on Zombies
+				return;
+			}
+			subRow.Visibility = Visibility.Visible;
+			SetMode(segGm.IsChecked == true ? GameMode.GameModes : GameMode.Multiplayer);
+		};
+		segZm.Checked += delegate
+		{
+			if (!TabAllowed(GameMode.Zombies))
+			{
+				segMp.IsChecked = true; // stay on Multiplayer
+				return;
+			}
+			subRow.Visibility = Visibility.Collapsed;
+			SetMode(GameMode.Zombies);
+		};
 		segMenus.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.Multiplayer); };
 		segGm.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.GameModes); };
 		btnConnect.Click += delegate
@@ -385,19 +403,27 @@ public partial class MainWindow : Window
 			selectedPack = null;
 			txtFile.Text = "No file selected";
 		}
+	}
+
+	/// <summary>A tab may only be entered when nothing is attached, or the attached process runs that tab's executable.</summary>
+	private bool TabAllowed(GameMode m)
+	{
 		if (pid != 0 && GameModeInfo.ProcessMismatch(m, pname))
 		{
-			pid = 0;
-			btnAttach.Content = "Attach";
-			lblStatus.Text = $"Connected - re-attach for {GameModeInfo.Label(m)}";
-			lblStatus.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0x7A, 0x00));
-			Log($"{pname} is not the {GameModeInfo.Label(m)} executable - press Attach again");
+			Log($"Detach first: {pname} is attached and {GameModeInfo.Label(m)} runs in a different process");
+			return false;
 		}
+		return true;
 	}
 
 	/// <summary>Forget the attached process. The ps4debug connection stays up.</summary>
-	private void Detach()
+	private bool Detach()
 	{
+		if (InjectorEngine.InjectedCount(pid) > 0)
+		{
+			Log($"Uninject All first: {InjectorEngine.InjectedCount(pid)} script(s) are still injected in {pname}");
+			return false;
+		}
 		string was = pname;
 		pid = 0;
 		pname = "";
@@ -412,14 +438,15 @@ public partial class MainWindow : Window
 		{
 		}
 		Log($"Detached from {was}");
+		return true;
 	}
 
 	/// <summary>Close the ps4debug session and reset every connection-dependent control.</summary>
 	private void Disconnect()
 	{
-		if (pid != 0)
+		if (pid != 0 && !Detach())
 		{
-			Detach();
+			return; // still injected: keep the session so Uninject All can run
 		}
 		try
 		{
