@@ -164,15 +164,9 @@
              FontFamily="Menlo, Consolas, monospace" FontSize="11"
              ScrollViewer.VerticalScrollBarVisibility="Auto" />
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0">
-      <TextBlock Text="by Medo" Foreground="#9AA0B0" FontSize="11" VerticalAlignment="Center" Margin="0,0,10,0" />
-      <Button Name="btnCoffee" Classes="big" Height="32" Padding="16,0,16,0" ToolTip.Tip="https://ko-fi.com/imedo">
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-          <Path Data="M4,8 L13,8 L12.4,15 A2.8,2.8 0 0 1 9.6,17.8L7,17.8 A2.6,2.6 0 0 1 4.4,15.2M13,9.5 A2.6,2.6 0 0 1 13,14.5M3,20 L15,20"
-                Stroke="#FF7A00" StrokeThickness="1.6" Width="12" Height="14" Stretch="Uniform" />
-          <TextBlock Text="Coffee" Foreground="#E8EAF0" FontSize="11" VerticalAlignment="Center" Margin="6,0,0,0" />
-        </StackPanel>
-      </Button>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+      <TextBlock Text="by Aban" Foreground="#E8EAF0" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />
+      <TextBlock Text="  ·  thank you Medo for the base" Foreground="#5A6172" FontSize="11" VerticalAlignment="Center" />
     </StackPanel>
   </StackPanel>
 </Window>

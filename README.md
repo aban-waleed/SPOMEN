@@ -88,4 +88,4 @@ dotnet build SPOMEN.sln -c Release
 
 ## Credits
 
-Original tool by Medo. Source reconstructed from the published assembly — see `RECOVERY_NOTES.md`.
+Made by Aban. Thank you Medo for the base: the original injector this project grew from, reconstructed from its published assembly (see `RECOVERY_NOTES.md`).

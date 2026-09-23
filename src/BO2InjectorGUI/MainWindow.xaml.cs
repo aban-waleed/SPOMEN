@@ -62,24 +62,6 @@ public partial class MainWindow : Window
 			}
 		};
 		pulse.Start();
-		btnCoffee.Click += delegate
-		{
-			try
-			{
-				Process.Start(new ProcessStartInfo("https://ko-fi.com/imedo")
-				{
-					UseShellExecute = true
-				});
-			}
-			catch (Exception ex)
-			{
-				Log("ERROR: " + ex.Message);
-			}
-		};
-		segMp.Checked += delegate { subRow.Visibility = Visibility.Visible; SetMode(segGm.IsChecked == true ? GameMode.GameModes : GameMode.Multiplayer); };
-		segZm.Checked += delegate { subRow.Visibility = Visibility.Collapsed; SetMode(GameMode.Zombies); };
-		segMenus.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.Multiplayer); };
-		segGm.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.GameModes); };
 		btnConnect.Click += delegate
 		{
 			Run(delegate
