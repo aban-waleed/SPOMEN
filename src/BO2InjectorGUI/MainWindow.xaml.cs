@@ -62,6 +62,10 @@ public partial class MainWindow : Window
 			}
 		};
 		pulse.Start();
+		segMp.Checked += delegate { subRow.Visibility = Visibility.Visible; SetMode(segGm.IsChecked == true ? GameMode.GameModes : GameMode.Multiplayer); };
+		segZm.Checked += delegate { subRow.Visibility = Visibility.Collapsed; SetMode(GameMode.Zombies); };
+		segMenus.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.Multiplayer); };
+		segGm.Checked += delegate { if (segMp.IsChecked == true) SetMode(GameMode.GameModes); };
 		btnConnect.Click += delegate
 		{
 			Run(delegate

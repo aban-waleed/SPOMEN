@@ -70,6 +70,25 @@ public partial class MainWindow : Window
 			dbg.Dispose();
 		};
 
+		segMp.IsCheckedChanged += delegate
+		{
+			if (segMp.IsChecked == true)
+			{
+				subRow.IsVisible = true;
+				SetMode(segGm.IsChecked == true ? GameMode.GameModes : GameMode.Multiplayer);
+			}
+		};
+		segZm.IsCheckedChanged += delegate
+		{
+			if (segZm.IsChecked == true)
+			{
+				subRow.IsVisible = false;
+				SetMode(GameMode.Zombies);
+			}
+		};
+		segMenus.IsCheckedChanged += delegate { if (segMenus.IsChecked == true && segMp.IsChecked == true) SetMode(GameMode.Multiplayer); };
+		segGm.IsCheckedChanged += delegate { if (segGm.IsChecked == true && segMp.IsChecked == true) SetMode(GameMode.GameModes); };
+
 		btnConnect.Click += delegate
 		{
 			string host = (txtIp.Text ?? "").Trim();
