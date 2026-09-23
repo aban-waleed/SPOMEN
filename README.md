@@ -29,8 +29,6 @@ xattr -dr com.apple.quarantine SPOMEN.app
 5. When the countdown reaches **3**, press **PUBLIC MATCH** in the tool. The session-mode setter is located by byte signature in whichever executable is attached, so this works in Multiplayer and Zombies and does not depend on a specific game build. If the signature is not found, the tool falls back to the original multiplayer offsets and says so in the log.
 6. To switch menus or go back to the stock script, press **UNINJECT ALL**. It restores every script this session replaced, then start a new match so the running menu unloads. Closing the tool or restarting the game loses the saved originals, so uninject before you disconnect.
 
-**GIVE** (Multiplayer) opens the give panel while a match you host is running. It lists every player connected to your server with their current level and prestige, read from the game's scoreboard, and lets you write a prestige, level and rank XP into the server-side stats of the players you tick. The values are verified by reading them back. Press **END MATCH & SAVE** (or let the match end) so each console saves what it was given. XP is clamped to the game's rank table, so a level always comes with enough XP to keep it. The optional unlock-everything box arms the auto-unlock script in the mod-menu slot for every player who joins; it replaces any injected menu until you Uninject.
-
 The command line above the log sends a raw console command to the attached game (`map_restart`, `set g_gravity 200`, `xpartygo`, ...). Enter sends, Up/Down recall history. Commands go straight to the game's command buffer with no validation, so a typo is simply ignored by the game. Works in Multiplayer and Zombies: the command-buffer function is located by signature.
 
 Every first injection of a script slot saves the game's stock copy before replacing it, under `%APPDATA%\SPOMEN\Dumps\<date_time>_<menu name>\` on Windows or `~/.config/SPOMEN/Dumps/` on macOS. The log shows the path. Re-injecting the same slot does not dump again, so the saved file is always the original, never your own menu.
@@ -86,7 +84,6 @@ dotnet build SPOMEN.sln -c Release
 | `GscParser.cs` / `GscSpy.cs` | GSC file parsing and inspection |
 | `GameMode.cs` | Multiplayer / Zombies / Game Modes: process names and script slots |
 | `MenuLibrary.cs` | Reads `library/` into packs for the picker |
-| `LobbyReader.cs` | Player names / levels from the party roster and in-match scoreboard (build-guarded) |
 | `UserSettings.cs` | Remembered PS4 IP |
 
 ## Credits

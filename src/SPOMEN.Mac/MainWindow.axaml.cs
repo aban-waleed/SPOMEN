@@ -293,20 +293,6 @@ public partial class MainWindow : Window
 			});
 		};
 
-		btnGive.Click += async delegate
-		{
-			if (pid == 0)
-			{
-				Log("ATTACH first");
-				return;
-			}
-			if (mode == GameMode.Zombies)
-			{
-				Log("GIVE works in Multiplayer: the stat tree offsets are for codmp.elf");
-				return;
-			}
-			await new GiveWindow(dbg, pid).ShowDialog(this);
-		};
 		btnUninject.Click += delegate
 		{
 			Run(btnUninject, delegate

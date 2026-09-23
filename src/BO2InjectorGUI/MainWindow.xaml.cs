@@ -274,20 +274,6 @@ public partial class MainWindow : Window
 				return "PUBLIC match spoof sent";
 			});
 		};
-		btnGive.Click += delegate
-		{
-			if (pid == 0)
-			{
-				Log("ATTACH first");
-				return;
-			}
-			if (mode == GameMode.Zombies)
-			{
-				Log("GIVE works in Multiplayer: the stat tree offsets are for codmp.elf");
-				return;
-			}
-			new GiveWindow(dbg, pid) { Owner = this }.ShowDialog();
-		};
 		btnUninject.Click += async delegate
 		{
 			if (pid == 0)

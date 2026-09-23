@@ -148,10 +148,7 @@
     <Button Name="btnInj" Classes="big" Content="INJECT" Height="48" Margin="0,10,0,0" FontSize="16" FontWeight="Bold" BorderBrush="#FF7A00" />
 
     <Button Name="btnPublic" Classes="big go" Content="PUBLIC MATCH" Height="40" Margin="0,10,0,0" FontSize="14" FontWeight="Bold" />
-    <UniformGrid Columns="2" Margin="0,8,0,0">
-      <Button Name="btnUninject" Classes="big" Content="UNINJECT ALL" Height="40" Margin="0,0,5,0" FontSize="13" FontWeight="Bold" ToolTip.Tip="Restore the stock script(s) replaced by this session. Start a new match afterwards." />
-      <Button Name="btnGive" Classes="big" Content="GIVE" Height="40" Margin="5,0,0,0" FontSize="13" FontWeight="Bold" ToolTip.Tip="Give rank, prestige and XP to players connected to your match." />
-    </UniformGrid>
+    <Button Name="btnUninject" Classes="big" Content="UNINJECT ALL" Height="40" Margin="0,8,0,0" FontSize="13" FontWeight="Bold" ToolTip.Tip="Restore the stock script(s) replaced by this session. Start a new match afterwards." />
 
     <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="10" Margin="0,10,0,0" Padding="10,2,4,2">
       <DockPanel>
