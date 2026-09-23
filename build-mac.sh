@@ -5,7 +5,15 @@
 #   ./build-mac.sh osx-x64    # Intel Macs
 #
 # Needs the .NET 8 SDK. The publish step works on any OS; the .icns icon and
-# ad-hoc code signature are only produced when run on a Mac (sips/iconutil/codesign).
+# code signature are only produced when run on a Mac (sips/iconutil/codesign).
+#
+# Signing / notarization (optional, needs an Apple Developer account):
+#   MAC_SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)"   # from `security find-identity -v -p codesigning`
+#   MAC_NOTARY_PROFILE="SPOMEN"   # keychain profile made once with:
+#       xcrun notarytool store-credentials SPOMEN --apple-id you@example.com --team-id TEAMID --password <app-specific password>
+#   or instead of the profile: APPLE_ID, APPLE_TEAM_ID, APPLE_APP_PASSWORD
+#   MAC_SIGN_IDENTITY="Developer ID Application: ..." MAC_NOTARY_PROFILE=SPOMEN ./build-mac.sh
+# With MAC_SIGN_IDENTITY unset the app is ad-hoc signed and users right-click > Open the first time.
 set -euo pipefail
 
 RID="${1:-osx-arm64}"
@@ -42,9 +50,25 @@ if command -v sips >/dev/null 2>&1 && command -v iconutil >/dev/null 2>&1; then
   rm -rf "$ICONSET"
 fi
 
-# Ad-hoc signature so Gatekeeper allows launch (users still right-click > Open the first time)
+# Code signature
 if command -v codesign >/dev/null 2>&1; then
-  codesign --force --deep --sign - "$APP"
+  if [[ -n "${MAC_SIGN_IDENTITY:-}" ]]; then
+    ENT="$ROOT/src/SPOMEN.Mac/entitlements.plist"
+    echo "Signing with: $MAC_SIGN_IDENTITY"
+    # Sign every Mach-O inside the bundle first (dylibs and the .NET native host), then the bundle
+    # itself. Apple rejects --deep for notarization, so this is done explicitly, innermost first.
+    while IFS= read -r -d '' f; do
+      if file "$f" | grep -q 'Mach-O'; then
+        codesign --force --options runtime --timestamp --entitlements "$ENT" --sign "$MAC_SIGN_IDENTITY" "$f"
+      fi
+    done < <(find "$APP/Contents/MacOS" -type f ! -name SPOMEN -print0)
+    codesign --force --options runtime --timestamp --entitlements "$ENT" --sign "$MAC_SIGN_IDENTITY" "$APP/Contents/MacOS/SPOMEN"
+    codesign --force --options runtime --timestamp --entitlements "$ENT" --sign "$MAC_SIGN_IDENTITY" "$APP"
+    codesign --verify --deep --strict --verbose=2 "$APP"
+  else
+    # Ad-hoc signature so Gatekeeper allows launch (users still right-click > Open the first time)
+    codesign --force --deep --sign - "$APP"
+  fi
 fi
 
 # Menus and instructions next to the app
@@ -73,4 +97,32 @@ with zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as z:
                 z.writestr(zi, fh.read())
 PY
 fi
+# Notarization: submit the zip, staple the ticket into the app, then re-zip so the download carries it.
+if [[ -n "${MAC_SIGN_IDENTITY:-}" ]] && command -v xcrun >/dev/null 2>&1; then
+  NOTARY_ARGS=()
+  if [[ -n "${MAC_NOTARY_PROFILE:-}" ]]; then
+    NOTARY_ARGS=(--keychain-profile "$MAC_NOTARY_PROFILE")
+  elif [[ -n "${APPLE_ID:-}" && -n "${APPLE_TEAM_ID:-}" && -n "${APPLE_APP_PASSWORD:-}" ]]; then
+    NOTARY_ARGS=(--apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_APP_PASSWORD")
+  fi
+  if [[ ${#NOTARY_ARGS[@]} -gt 0 ]]; then
+    echo "Submitting to Apple notary service (this waits for the verdict)..."
+    NOTARY_ZIP="$OUT/notarize-$RID.zip"
+    ditto -c -k --keepParent "$APP" "$NOTARY_ZIP"
+    if ! xcrun notarytool submit "$NOTARY_ZIP" "${NOTARY_ARGS[@]}" --wait; then
+      echo "Notarization failed. Inspect with: xcrun notarytool log <submission-id> ${NOTARY_ARGS[*]}" >&2
+      exit 1
+    fi
+    rm -f "$NOTARY_ZIP"
+    xcrun stapler staple "$APP"
+    xcrun stapler validate "$APP"
+    spctl -a -vv -t exec "$APP" || true
+    rm -f "$ZIP"
+    ditto -c -k --sequesterRsrc --keepParent "$STAGE" "$ZIP"
+    echo "Signed, notarized and stapled."
+  else
+    echo "MAC_SIGN_IDENTITY set but no notary credentials (MAC_NOTARY_PROFILE or APPLE_ID/APPLE_TEAM_ID/APPLE_APP_PASSWORD); app is signed but NOT notarized." >&2
+  fi
+fi
+
 echo "Built: $ZIP"

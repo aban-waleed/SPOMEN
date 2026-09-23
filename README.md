@@ -54,6 +54,15 @@ dotnet build .\src\BO2InjectorGUI\BO2InjectorGUI.csproj -c Release
 ./build-mac.sh osx-x64    # Intel
 ```
 
+**Signed and notarized macOS build** (on a Mac, needs an Apple Developer account). Create a notary keychain profile once, then pass your Developer ID identity to the script:
+
+```bash
+xcrun notarytool store-credentials SPOMEN --apple-id you@example.com --team-id TEAMID --password <app-specific password>
+MAC_SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" MAC_NOTARY_PROFILE=SPOMEN ./build-mac.sh
+```
+
+The script signs every binary with the hardened runtime and `src/SPOMEN.Mac/entitlements.plist`, submits the app to Apple, staples the ticket, and re-zips. The result opens with a normal double-click. Without `MAC_SIGN_IDENTITY` the app is ad-hoc signed and needs the right-click → Open step above.
+
 **Everything** (any OS; the WPF project compiles on macOS/Linux thanks to `EnableWindowsTargeting`, but only runs on Windows):
 
 ```bash
