@@ -158,10 +158,11 @@
       </DockPanel>
     </Border>
 
-    <TextBox Name="txtLog" Margin="0,8,0,0" Height="80" IsReadOnly="True"
-             AcceptsReturn="True" TextWrapping="Wrap"
-             FontFamily="Menlo, Consolas, monospace" FontSize="11"
-             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+    <Border Margin="0,8,0,0" Height="80" Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="3" Padding="6,4,6,4">
+      <ScrollViewer Name="logScroll" VerticalScrollBarVisibility="Auto">
+        <SelectableTextBlock Name="txtLog" FontFamily="Menlo, Consolas, monospace" FontSize="11" TextWrapping="Wrap" Foreground="#E8EAF0" />
+      </ScrollViewer>
+    </Border>
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
       <TextBlock Text="by Aban" Foreground="#E8EAF0" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />

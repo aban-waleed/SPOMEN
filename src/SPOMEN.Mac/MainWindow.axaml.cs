@@ -444,12 +444,25 @@ public partial class MainWindow : Window
 		});
 	}
 
+	private static readonly IBrush LogGrey = new SolidColorBrush(Color.FromRgb(0x5A, 0x61, 0x72));
+
+	private static readonly IBrush LogGood = new SolidColorBrush(Color.FromRgb(0x4C, 0xE0, 0x7A));
+
+	private static readonly IBrush LogBad = new SolidColorBrush(Color.FromRgb(0xFF, 0x5C, 0x5C));
+
 	private void Log(string s)
 	{
 		Dispatcher.UIThread.Post(delegate
 		{
-			txtLog.Text += $"[{DateTime.Now:HH:mm:ss}] {s}\n";
-			txtLog.CaretIndex = txtLog.Text?.Length ?? 0;
+			LogTone tone = LogTones.Classify(s);
+			txtLog.Inlines ??= new Avalonia.Controls.Documents.InlineCollection();
+			if (txtLog.Inlines.Count > 0)
+			{
+				txtLog.Inlines.Add(new Avalonia.Controls.Documents.LineBreak());
+			}
+			txtLog.Inlines.Add(new Avalonia.Controls.Documents.Run($"[{DateTime.Now:HH:mm:ss}] ") { Foreground = LogGrey });
+			txtLog.Inlines.Add(new Avalonia.Controls.Documents.Run(s) { Foreground = tone == LogTone.Bad ? LogBad : tone == LogTone.Good ? LogGood : txtLog.Foreground });
+			logScroll.ScrollToEnd();
 		});
 	}
 

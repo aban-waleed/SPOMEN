@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Win32;
@@ -465,11 +466,21 @@ public partial class MainWindow : Window
 		Log("Disconnected");
 	}
 
+	private static readonly Brush LogGrey = new SolidColorBrush(Color.FromRgb(0x5A, 0x61, 0x72));
+
+	private static readonly Brush LogGood = new SolidColorBrush(Color.FromRgb(0x4C, 0xE0, 0x7A));
+
+	private static readonly Brush LogBad = new SolidColorBrush(Color.FromRgb(0xFF, 0x5C, 0x5C));
+
 	private void Log(string s)
 	{
 		((DispatcherObject)this).Dispatcher.Invoke((Action)delegate
 		{
-			txtLog.AppendText($"[{DateTime.Now:HH:mm:ss}] {s}\r\n");
+			LogTone tone = LogTones.Classify(s);
+			Paragraph para = new Paragraph { Margin = new Thickness(0), LineHeight = 14 };
+			para.Inlines.Add(new System.Windows.Documents.Run($"[{DateTime.Now:HH:mm:ss}] ") { Foreground = LogGrey });
+			para.Inlines.Add(new System.Windows.Documents.Run(s) { Foreground = tone == LogTone.Bad ? LogBad : tone == LogTone.Good ? LogGood : txtLog.Foreground });
+			txtLog.Document.Blocks.Add(para);
 			txtLog.ScrollToEnd();
 		});
 	}
