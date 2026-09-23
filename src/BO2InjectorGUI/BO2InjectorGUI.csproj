@@ -9,6 +9,7 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
     <RootNamespace>BO2InjectorGUI</RootNamespace>
     <Nullable>enable</Nullable>
+    <Version>1.5.0</Version>
     <!-- Lets the WPF project restore/build on macOS/Linux too (it still only runs on Windows). -->
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>

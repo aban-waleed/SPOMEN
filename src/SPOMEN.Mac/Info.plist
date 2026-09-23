@@ -9,9 +9,9 @@
   <key>CFBundleIdentifier</key>
   <string>com.abanwaleed.spomen</string>
   <key>CFBundleVersion</key>
-  <string>1.0.0</string>
+  <string>1.5.0</string>
   <key>CFBundleShortVersionString</key>
-  <string>1.0.0</string>
+  <string>1.5.0</string>
   <key>CFBundleExecutable</key>
   <string>SPOMEN</string>
   <key>CFBundleIconFile</key>

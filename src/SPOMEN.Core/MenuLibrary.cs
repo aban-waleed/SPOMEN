@@ -23,7 +23,23 @@ public sealed record LibraryPack(string Name, GameMode Mode, string Dir, IReadOn
 /// </summary>
 public static class MenuLibrary
 {
-	public static string DefaultRoot => Path.Combine(AppContext.BaseDirectory, "library");
+	/// <summary>
+	/// The bundled library folder. Next to the executable on Windows and in a plain publish; inside a
+	/// macOS bundle it may be placed under Contents/Resources instead of Contents/MacOS, so both are tried.
+	/// </summary>
+	public static string DefaultRoot
+	{
+		get
+		{
+			string beside = Path.Combine(AppContext.BaseDirectory, "library");
+			if (Directory.Exists(beside))
+			{
+				return beside;
+			}
+			string resources = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "library"));
+			return Directory.Exists(resources) ? resources : beside;
+		}
+	}
 
 	public static string ModeFolder(GameMode mode) => mode switch
 	{

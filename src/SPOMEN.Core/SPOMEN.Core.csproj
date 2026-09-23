@@ -5,6 +5,7 @@
     <RootNamespace>BO2InjectorGUI</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
+    <Version>1.5.0</Version>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
