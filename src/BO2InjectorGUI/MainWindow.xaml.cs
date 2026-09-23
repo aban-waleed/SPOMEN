@@ -123,30 +123,26 @@ public partial class MainWindow : Window
 				return "Attached";
 			});
 		};
-		btnSel.Click += delegate
-		{
-			OpenFileDialog openFileDialog = new OpenFileDialog
-			{
-				Filter = "GSC|*.gsc;*.gscc|All|*.*"
-			};
-			if (openFileDialog.ShowDialog() == true)
-			{
-				selectedPack = null;
-				txtFile.Text = openFileDialog.FileName;
-				FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
-				Log($"{fileInfo.Name} ({fileInfo.Length} bytes)");
-			}
-		};
 		btnLib.Click += delegate
 		{
 			List<LibraryPack> packs = MenuLibrary.Scan(MenuLibrary.DefaultRoot, mode);
 			if (packs.Count == 0)
 			{
-				Log($"No {GameModeInfo.Label(mode)} packs found under {MenuLibrary.DefaultRoot}");
-				return;
+				Log($"No {GameModeInfo.Label(mode)} packs found under {MenuLibrary.DefaultRoot} - use CUSTOM GSC");
 			}
 			LibraryWindow win = new LibraryWindow(mode, packs) { Owner = this };
-			if (win.ShowDialog() == true && win.Selected != null)
+			if (win.ShowDialog() != true)
+			{
+				return;
+			}
+			if (win.CustomFile != null)
+			{
+				selectedPack = null;
+				txtFile.Text = win.CustomFile;
+				FileInfo fileInfo = new FileInfo(win.CustomFile);
+				Log($"{fileInfo.Name} ({fileInfo.Length} bytes)");
+			}
+			else if (win.Selected != null)
 			{
 				selectedPack = win.Selected;
 				txtFile.Text = $"[library] {selectedPack.Name}";
@@ -198,7 +194,7 @@ public partial class MainWindow : Window
 			}
 			else if (!File.Exists(txtFile.Text))
 			{
-				Log("Select a GSC file first");
+				Log("Pick a pack or a custom GSC in Library first");
 			}
 			else
 			{

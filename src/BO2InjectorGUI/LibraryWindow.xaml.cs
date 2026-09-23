@@ -23,6 +23,9 @@ public partial class LibraryWindow : Window
 
 	public LibraryPack? Selected { get; private set; }
 
+	/// <summary>Set instead of <see cref="Selected"/> when the user picked their own file.</summary>
+	public string? CustomFile { get; private set; }
+
 	public LibraryWindow(GameMode mode, List<LibraryPack> packs)
 	{
 		InitializeComponent();
@@ -43,6 +46,16 @@ public partial class LibraryWindow : Window
 		};
 		list.MouseDoubleClick += delegate { Accept(); };
 		btnUse.Click += delegate { Accept(); };
+		btnCustom.Click += delegate
+		{
+			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog { Filter = "GSC|*.gsc;*.gscc|All|*.*", Title = "Custom GSC" };
+			if (dlg.ShowDialog(this) == true)
+			{
+				CustomFile = dlg.FileName;
+				DialogResult = true;
+				Close();
+			}
+		};
 		KeyDown += (_, e) =>
 		{
 			if (e.Key == Key.Escape) Close();

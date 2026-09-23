@@ -73,7 +73,10 @@
       <TextBox Name="txtNotes" Height="96" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"
                FontFamily="Menlo, Consolas, monospace" FontSize="10" Foreground="#9AA0B0" Margin="0,8,0,8"
                ScrollViewer.VerticalScrollBarVisibility="Auto" />
-      <Button Name="btnUse" Classes="go" Content="USE THIS PACK" Height="40" IsEnabled="False" />
+      <Grid ColumnDefinitions="*,8,150">
+        <Button Name="btnUse" Grid.Column="0" Classes="go" Content="USE THIS PACK" Height="40" IsEnabled="False" />
+        <Button Name="btnCustom" Grid.Column="2" Classes="go" Content="CUSTOM GSC" Height="40" Background="#1A1D24" Foreground="#E8EAF0" ToolTip.Tip="Pick your own PS4-format .gscc / .gsc file instead of a bundled pack" />
+      </Grid>
     </StackPanel>
     <Border Background="#14161B" BorderBrush="#2E333F" BorderThickness="1" CornerRadius="12" Padding="4">
       <ListBox Name="list" Background="Transparent" BorderThickness="0" Foreground="#E8EAF0">

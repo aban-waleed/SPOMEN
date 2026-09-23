@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Platform.Storage;
 using BO2InjectorGUI;
 
 namespace SPOMEN.Mac;
@@ -42,6 +43,24 @@ public partial class LibraryWindow : Window
 		};
 		list.DoubleTapped += delegate { Accept(); };
 		btnUse.Click += delegate { Accept(); };
+		btnCustom.Click += async delegate
+		{
+			var files = await StorageProvider.OpenFilePickerAsync(new Avalonia.Platform.Storage.FilePickerOpenOptions
+			{
+				Title = "Custom GSC",
+				AllowMultiple = false,
+				FileTypeFilter = new[] { new Avalonia.Platform.Storage.FilePickerFileType("GSC") { Patterns = new[] { "*.gsc", "*.gscc" } }, Avalonia.Platform.Storage.FilePickerFileTypes.All }
+			});
+			if (files.Count == 0)
+			{
+				return;
+			}
+			string? path = files[0].TryGetLocalPath();
+			if (path != null)
+			{
+				Close(path);
+			}
+		};
 		KeyDown += (_, e) =>
 		{
 			if (e.Key == Key.Escape) Close(null);

@@ -132,48 +132,26 @@ public partial class MainWindow : Window
 			});
 		};
 
-		btnSel.Click += async delegate
-		{
-			IReadOnlyList<IStorageFile> files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-			{
-				Title = "Select GSC",
-				AllowMultiple = false,
-				FileTypeFilter = new[]
-				{
-					new FilePickerFileType("GSC") { Patterns = new[] { "*.gsc", "*.gscc" } },
-					FilePickerFileTypes.All
-				}
-			});
-			if (files.Count == 0)
-			{
-				return;
-			}
-			string? path = files[0].TryGetLocalPath();
-			if (path == null)
-			{
-				Log("Could not resolve a local path for that file");
-				return;
-			}
-			selectedPack = null;
-			txtFile.Text = path;
-			FileInfo fileInfo = new FileInfo(path);
-			Log($"{fileInfo.Name} ({fileInfo.Length} bytes)");
-		};
-
 		btnLib.Click += async delegate
 		{
 			List<LibraryPack> packs = MenuLibrary.Scan(MenuLibrary.DefaultRoot, mode);
 			if (packs.Count == 0)
 			{
-				Log($"No {GameModeInfo.Label(mode)} packs found under {MenuLibrary.DefaultRoot}");
-				return;
+				Log($"No {GameModeInfo.Label(mode)} packs found under {MenuLibrary.DefaultRoot} - use CUSTOM GSC");
 			}
-			LibraryPack? pick = await new LibraryWindow(mode, packs).ShowDialog<LibraryPack?>(this);
-			if (pick != null)
+			object? pick = await new LibraryWindow(mode, packs).ShowDialog<object?>(this);
+			if (pick is string file)
 			{
-				selectedPack = pick;
-				txtFile.Text = $"[library] {pick.Name}";
-				Log($"Pack: {pick.Name} ({pick.Scripts.Count} script(s)) -> {string.Join(", ", pick.Scripts.Select(s => s.Target))}");
+				selectedPack = null;
+				txtFile.Text = file;
+				FileInfo fileInfo = new FileInfo(file);
+				Log($"{fileInfo.Name} ({fileInfo.Length} bytes)");
+			}
+			else if (pick is LibraryPack pack)
+			{
+				selectedPack = pack;
+				txtFile.Text = $"[library] {pack.Name}";
+				Log($"Pack: {pack.Name} ({pack.Scripts.Count} script(s)) -> {string.Join(", ", pack.Scripts.Select(s => s.Target))}");
 			}
 		};
 
@@ -217,7 +195,7 @@ public partial class MainWindow : Window
 			string file = txtFile.Text ?? "";
 			if (!File.Exists(file))
 			{
-				Log("Select a GSC file first");
+				Log("Pick a pack or a custom GSC in Library first");
 				return;
 			}
 			btnInj.IsEnabled = false;
