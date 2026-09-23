@@ -3,6 +3,7 @@
         x:Class="SPOMEN.Mac.MainWindow"
         Title="BO2 Injector"
         Width="540" SizeToContent="Height" CanResize="False"
+        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaChromeHints="NoChrome" ExtendClientAreaTitleBarHeightHint="-1"
         Background="Transparent" TransparencyLevelHint="AcrylicBlur, Blur, Transparent"
         Foreground="#EEF0F5"
         WindowStartupLocation="CenterScreen"
@@ -20,13 +21,21 @@
       </ExperimentalAcrylicBorder.Material>
     </ExperimentalAcrylicBorder>
 
-    <Border Background="{StaticResource Surface}" Padding="28,20,28,16">
+    <Border Background="{StaticResource Surface}" Padding="28,14,28,16">
       <StackPanel>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-          <Ellipse Name="dot" Width="13" Height="13" Fill="#7A3030" Margin="0,0,10,0" VerticalAlignment="Center" />
-          <TextBlock Text="BO2  INJECTOR" FontSize="24" FontWeight="Black" Foreground="#FFFFFF" />
+        <!-- title bar: traffic lights + header; the whole strip drags the window -->
+        <StackPanel Name="titleBar" Background="Transparent">
+          <StackPanel Orientation="Horizontal" Margin="-12,0,0,12">
+            <Button Name="btnWinClose" Classes="traffic close" />
+            <Button Name="btnWinMin" Classes="traffic min" />
+            <Button Name="btnWinMax" Classes="traffic max" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Ellipse Name="dot" Width="13" Height="13" Fill="#7A3030" Margin="0,0,10,0" VerticalAlignment="Center" />
+            <TextBlock Text="BO2  INJECTOR" FontSize="24" FontWeight="Black" Foreground="#FFFFFF" />
+          </StackPanel>
+          <TextBlock Text="PS4DEBUG  •  GOLDHEN" FontSize="10" Foreground="{StaticResource Accent}" Margin="33,0,0,2" />
         </StackPanel>
-        <TextBlock Text="PS4DEBUG  •  GOLDHEN" FontSize="10" Foreground="{StaticResource Accent}" Margin="33,0,0,2" />
         <Rectangle Height="2" Margin="0,6,0,14" RadiusX="1" RadiusY="1">
           <Rectangle.Fill>
             <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">

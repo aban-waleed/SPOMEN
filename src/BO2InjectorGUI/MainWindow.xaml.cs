@@ -45,8 +45,14 @@ public partial class MainWindow : Window
 		//IL_000c: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0011: Unknown result type (might be due to invalid IL or missing references)
 		//IL_002a: Expected O, but got Unknown
-		SourceInitialized += delegate { Glass.TryApply(this); };
+		SourceInitialized += delegate
+		{
+			Glass.TryApply(this);
+			Glass.HideCaptionButtons(this);
+		};
 		InitializeComponent();
+		btnWinClose.Click += delegate { Close(); };
+		btnWinMin.Click += delegate { WindowState = WindowState.Minimized; };
 		if (settings.LastIp.Length > 0)
 		{
 			txtIp.Text = settings.LastIp;

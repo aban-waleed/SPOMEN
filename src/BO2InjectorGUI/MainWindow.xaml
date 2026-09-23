@@ -7,11 +7,21 @@
       <Style x:Key="{x:Type TextBox}" BasedOn="{StaticResource GlassTextBox}" TargetType="{x:Type TextBox}" />
     </ResourceDictionary>
   </FrameworkElement.Resources>
+  <WindowChrome.WindowChrome>
+    <!-- No native title bar or caption buttons; the top strip below is the drag handle. GlassFrameThickness -1 keeps
+         the whole window on DWM glass so the acrylic backdrop (Glass.cs) still shows through. -->
+    <WindowChrome CaptionHeight="96" CornerRadius="0" GlassFrameThickness="-1" ResizeBorderThickness="0" NonClientFrameEdges="None" UseAeroCaptionButtons="False" />
+  </WindowChrome.WindowChrome>
   <Window.Background>
     <StaticResource ResourceKey="Backdrop" />
   </Window.Background>
-  <Border Background="{StaticResource Surface}" Padding="28,20,28,16">
+  <Border Background="{StaticResource Surface}" Padding="28,14,28,16">
     <StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="-12,0,0,12">
+        <Button Name="btnWinClose" Style="{StaticResource TrafficClose}" />
+        <Button Name="btnWinMin" Style="{StaticResource TrafficMin}" />
+        <Button Name="btnWinMax" Style="{StaticResource TrafficMax}" />
+      </StackPanel>
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
         <Ellipse Name="dot" Width="13" Height="13" Fill="#7A3030" Margin="0,0,10,0">
           <Ellipse.Effect>

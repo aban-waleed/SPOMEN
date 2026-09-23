@@ -344,4 +344,55 @@
       </Trigger>
     </Style.Triggers>
   </Style>
+
+  <!-- ===== window chrome: mac-style traffic lights (native caption buttons are removed by WindowChrome) ===== -->
+  <StreamGeometry x:Key="GlyphClose">M0,0 L6,6 M6,0 L0,6</StreamGeometry>
+  <StreamGeometry x:Key="GlyphMin">M0,3 L6,3</StreamGeometry>
+  <StreamGeometry x:Key="GlyphMax">M0,3 L6,3 M3,0 L3,6</StreamGeometry>
+  <Style x:Key="Traffic" TargetType="{x:Type Button}">
+    <Setter Property="Width" Value="12" />
+    <Setter Property="Height" Value="12" />
+    <Setter Property="Margin" Value="0,0,8,0" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+    <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Button}">
+          <Grid Background="#00000000">
+            <Ellipse Name="dot" Fill="{TemplateBinding Background}" Stroke="#33000000" StrokeThickness="0.5" />
+            <Path Name="glyph" Data="{TemplateBinding Tag}" Stroke="#A6000000" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Width="6" Height="6" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="UIElement.IsMouseOver" Value="True">
+              <Setter TargetName="glyph" Property="Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="ButtonBase.IsPressed" Value="True">
+              <Setter TargetName="dot" Property="Opacity" Value="0.7" />
+            </Trigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+              <Setter TargetName="glyph" Property="Opacity" Value="0" />
+              <Setter TargetName="dot" Property="Opacity" Value="0.35" />
+              <Setter Property="FrameworkElement.Cursor" Value="Arrow" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style x:Key="TrafficClose" BasedOn="{StaticResource Traffic}" TargetType="{x:Type Button}">
+    <Setter Property="Background" Value="#FF5F57" />
+    <Setter Property="Tag" Value="{StaticResource GlyphClose}" />
+    <Setter Property="ToolTip" Value="Close" />
+  </Style>
+  <Style x:Key="TrafficMin" BasedOn="{StaticResource Traffic}" TargetType="{x:Type Button}">
+    <Setter Property="Background" Value="#FEBC2E" />
+    <Setter Property="Tag" Value="{StaticResource GlyphMin}" />
+    <Setter Property="ToolTip" Value="Minimize" />
+  </Style>
+  <Style x:Key="TrafficMax" BasedOn="{StaticResource Traffic}" TargetType="{x:Type Button}">
+    <Setter Property="Background" Value="#28C840" />
+    <Setter Property="Tag" Value="{StaticResource GlyphMax}" />
+    <Setter Property="IsEnabled" Value="False" />
+  </Style>
 </ResourceDictionary>

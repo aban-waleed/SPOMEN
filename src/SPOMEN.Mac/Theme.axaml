@@ -29,6 +29,10 @@
     <SolidColorBrush x:Key="ScrollBarTrackFillPointerOver">#14161B</SolidColorBrush>
     <SolidColorBrush x:Key="ScrollBarTrackStroke">Transparent</SolidColorBrush>
     <SolidColorBrush x:Key="ScrollBarTrackStrokePointerOver">Transparent</SolidColorBrush>
+    <!-- traffic-light glyphs (shown on hover) -->
+    <StreamGeometry x:Key="GlyphClose">M0,0 L6,6 M6,0 L0,6</StreamGeometry>
+    <StreamGeometry x:Key="GlyphMin">M0,3 L6,3</StreamGeometry>
+    <StreamGeometry x:Key="GlyphMax">M0,3 L6,3 M3,0 L3,6</StreamGeometry>
   </Styles.Resources>
 
   <!-- panels -->
@@ -194,5 +198,48 @@
   <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="#26FF7A00" />
     <Setter Property="BorderBrush" Value="{StaticResource Accent}" />
+  </Style>
+
+  <!-- window chrome: mac-style traffic lights (system chrome is hidden by ExtendClientAreaChromeHints=NoChrome) -->
+  <Style Selector="Button.traffic">
+    <Setter Property="Width" Value="12" />
+    <Setter Property="Height" Value="12" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Margin" Value="0,0,8,0" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel Background="Transparent">
+          <Ellipse Name="dot" Fill="{TemplateBinding Background}" Stroke="#33000000" StrokeThickness="0.5" />
+          <Path Name="glyph" Data="{TemplateBinding Tag}" Stroke="#A6000000" StrokeThickness="1.4" StrokeLineCap="Round" Width="6" Height="6" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" />
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="Button.traffic:pointerover /template/ Path#glyph">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="Button.traffic:pressed /template/ Ellipse#dot">
+    <Setter Property="Opacity" Value="0.7" />
+  </Style>
+  <Style Selector="Button.traffic:disabled">
+    <Setter Property="Opacity" Value="0.35" />
+    <Setter Property="Cursor" Value="Arrow" />
+  </Style>
+  <Style Selector="Button.traffic.close">
+    <Setter Property="Background" Value="#FF5F57" />
+    <Setter Property="Tag" Value="{StaticResource GlyphClose}" />
+    <Setter Property="ToolTip.Tip" Value="Close" />
+  </Style>
+  <Style Selector="Button.traffic.min">
+    <Setter Property="Background" Value="#FEBC2E" />
+    <Setter Property="Tag" Value="{StaticResource GlyphMin}" />
+    <Setter Property="ToolTip.Tip" Value="Minimize" />
+  </Style>
+  <Style Selector="Button.traffic.max">
+    <Setter Property="Background" Value="#28C840" />
+    <Setter Property="Tag" Value="{StaticResource GlyphMax}" />
+    <Setter Property="IsEnabled" Value="False" />
   </Style>
 </Styles>

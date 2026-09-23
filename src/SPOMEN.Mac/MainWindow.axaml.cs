@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -48,6 +49,9 @@ public partial class MainWindow : Window
 	public MainWindow()
 	{
 		InitializeComponent();
+		btnWinClose.Click += delegate { Close(); };
+		btnWinMin.Click += delegate { WindowState = WindowState.Minimized; };
+		titleBar.PointerPressed += (_, e) => { if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) BeginMoveDrag(e); };
 		if (settings.LastIp.Length > 0)
 		{
 			txtIp.Text = settings.LastIp;

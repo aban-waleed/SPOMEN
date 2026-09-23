@@ -8,12 +8,18 @@
       <Style x:Key="{x:Type ListBoxItem}" BasedOn="{StaticResource GlassListItem}" TargetType="{x:Type ListBoxItem}" />
     </ResourceDictionary>
   </FrameworkElement.Resources>
+  <WindowChrome.WindowChrome>
+    <!-- No native title bar or caption buttons; the top strip below is the drag handle. GlassFrameThickness -1 keeps
+         the whole window on DWM glass so the acrylic backdrop (Glass.cs) still shows through. -->
+    <WindowChrome CaptionHeight="80" CornerRadius="0" GlassFrameThickness="-1" ResizeBorderThickness="0" NonClientFrameEdges="None" UseAeroCaptionButtons="False" />
+  </WindowChrome.WindowChrome>
   <Window.Background>
     <StaticResource ResourceKey="Backdrop" />
   </Window.Background>
-  <Border Background="{StaticResource Surface}" Padding="24,18,24,16">
+  <Border Background="{StaticResource Surface}" Padding="24,14,24,16">
     <DockPanel>
       <StackPanel DockPanel.Dock="Top">
+        <Button Name="btnWinClose" Style="{StaticResource TrafficClose}" HorizontalAlignment="Left" Margin="-8,0,0,12" />
         <StackPanel Orientation="Horizontal">
           <TextBlock Text="LIBRARY" FontSize="20" FontWeight="Black" Foreground="#FFFFFF" />
           <TextBlock Name="lblMode" Text="MULTIPLAYER" FontSize="20" FontWeight="Black" Foreground="{StaticResource Accent}" Margin="10,0,0,0" />

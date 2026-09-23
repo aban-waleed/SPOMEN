@@ -30,6 +30,8 @@ public partial class LibraryWindow : Window
 	public LibraryWindow(GameMode mode, List<LibraryPack> packs)
 	{
 		InitializeComponent();
+		btnWinClose.Click += delegate { Close(); };
+		titleBar.PointerPressed += (_, e) => { if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) BeginMoveDrag(e); };
 		lblMode.Text = GameModeInfo.Label(mode).ToUpperInvariant();
 		all = packs.Select(p => new Row(p)).ToList();
 		Refresh();

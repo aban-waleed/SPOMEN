@@ -28,8 +28,13 @@ public partial class LibraryWindow : Window
 
 	public LibraryWindow(GameMode mode, List<LibraryPack> packs)
 	{
-		SourceInitialized += delegate { Glass.TryApply(this); };
+		SourceInitialized += delegate
+		{
+			Glass.TryApply(this);
+			Glass.HideCaptionButtons(this);
+		};
 		InitializeComponent();
+		btnWinClose.Click += delegate { Close(); };
 		lblMode.Text = GameModeInfo.Label(mode).ToUpperInvariant();
 		all = packs.Select(p => new Row(p)).ToList();
 		Refresh();

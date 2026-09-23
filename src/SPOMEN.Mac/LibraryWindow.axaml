@@ -4,6 +4,7 @@
         x:Class="SPOMEN.Mac.LibraryWindow"
         x:DataType="local:LibraryWindow"
         Title="Library" Width="540" Height="580" CanResize="False"
+        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaChromeHints="NoChrome" ExtendClientAreaTitleBarHeightHint="-1"
         Background="Transparent" TransparencyLevelHint="AcrylicBlur, Blur, Transparent"
         Foreground="#EEF0F5"
         WindowStartupLocation="CenterOwner">
@@ -19,12 +20,15 @@
       </ExperimentalAcrylicBorder.Material>
     </ExperimentalAcrylicBorder>
 
-    <Border Background="{StaticResource Surface}" Padding="24,18,24,16">
+    <Border Background="{StaticResource Surface}" Padding="24,14,24,16">
       <DockPanel>
         <StackPanel DockPanel.Dock="Top">
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="LIBRARY" FontSize="20" FontWeight="Black" Foreground="#FFFFFF" />
-            <TextBlock Name="lblMode" Text="MULTIPLAYER" FontSize="20" FontWeight="Black" Foreground="{StaticResource Accent}" Margin="10,0,0,0" />
+          <StackPanel Name="titleBar" Background="Transparent">
+            <Button Name="btnWinClose" Classes="traffic close" HorizontalAlignment="Left" Margin="-8,0,0,12" />
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="LIBRARY" FontSize="20" FontWeight="Black" Foreground="#FFFFFF" />
+              <TextBlock Name="lblMode" Text="MULTIPLAYER" FontSize="20" FontWeight="Black" Foreground="{StaticResource Accent}" Margin="10,0,0,0" />
+            </StackPanel>
           </StackPanel>
           <TextBlock Name="lblCount" Text="" FontSize="10" Foreground="{StaticResource TextFaint}" Margin="1,0,0,8" />
           <TextBox Name="txtSearch" Watermark="search packs" Margin="0,0,0,8" />
